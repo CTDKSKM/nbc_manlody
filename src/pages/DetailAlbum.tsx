@@ -1,7 +1,12 @@
 import React from "react";
+import AlbumReview from "../components/AlbumReview";
 
 const DetailAlbum = () => {
-  return <div>DetailAlbum</div>;
+  return (
+    <div>
+      <AlbumReview />
+    </div>
+  );
 };
 
 export default DetailAlbum;
