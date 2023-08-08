@@ -1,12 +1,20 @@
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Home, DetailAlbum, DetailForm, SocialLogin } from "../pages/index.js";
+import React, { useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { Home, DetailAlbum, DetailForm, SocialLogin } from "../pages";
 import Layout from "./Layout";
 import GlobalStyle from "../GlobalStyle";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
 
 const Router = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (!user) navigate("/login");
+    });
+  }, []);
   return (
-    <BrowserRouter>
+    <>
       <GlobalStyle />
       <Routes>
         <Route path="/login" element={<SocialLogin />} />
@@ -16,7 +24,7 @@ const Router = () => {
           <Route path="/:album_id/comments" element={<DetailForm />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </>
   );
 };
 
