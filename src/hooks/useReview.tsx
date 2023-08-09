@@ -10,7 +10,10 @@ import {
 const useReview = (id?: string) => {
   const queryClient = useQueryClient();
   const { isLoading, isError, data } = useQuery(["comments"], getComments, {
-    select: (data) => data?.filter((comment) => comment.albumId === id),
+    select: (data) =>
+      data
+        ?.filter((comment) => comment.albumId === id)
+        .sort((a, b) => b.createdAt - a.createdAt),
   });
   const commentMutation = useMutation(saveComment, {
     onSuccess: () => {

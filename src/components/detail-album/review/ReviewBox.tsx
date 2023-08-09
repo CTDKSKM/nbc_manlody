@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { styled } from "styled-components";
 import useUser from "../../../hooks/useUser";
 import Review from "./Review";
@@ -12,7 +12,14 @@ const ReviewBox = ({ data }: Props) => {
   return (
     <StReviewBox>
       {data?.map((comment) => {
-        return <Review key={comment.docId} userId={userId} comment={comment} />;
+        return (
+          <Review
+            key={comment.docId}
+            userId={userId}
+            comment={comment}
+            changeListener={data.length}
+          />
+        );
       })}
     </StReviewBox>
   );

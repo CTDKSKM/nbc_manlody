@@ -6,9 +6,10 @@ import CreatedTime from "./CreatedTime";
 type Props = {
   userId: string;
   comment: ReviewCommentData;
+  changeListener: number;
 };
 
-const Review = ({ comment, userId }: Props) => {
+const Review = ({ comment, userId, changeListener }: Props) => {
   const { deleteMutation, updateMutation } = useReview();
   const [isOptBoxShow, setIsOptBoxShow] = useState<boolean>(false);
   const [isInputBoxShow, setIsInputBoxShow] = useState<boolean>(false);
@@ -81,6 +82,7 @@ const Review = ({ comment, userId }: Props) => {
           <CreatedTime
             createdAt={comment.createdAt}
             isUpdated={comment.isUpdated}
+            changeListener={changeListener}
           />
         </div>
         {comment.userId === userId && (
