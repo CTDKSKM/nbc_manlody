@@ -7,6 +7,8 @@ import {
     StepBackwardOutlined,
 } from "@ant-design/icons";
 import { Button, Tooltip, Space } from "antd";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
 const Header: React.FC = () => {
     // const searchIconRef = useRef<HTMLSpanElement | null>(null);
@@ -26,7 +28,9 @@ const Header: React.FC = () => {
     //         searchInputRef.current.style.transform = "translate(-30px)";
     //     }
     // };
-
+    const handleSignOut = async () => {
+    await signOut(auth);
+  };
     return (
         <HeaderTag>
             <Space style={{ gap: "4px" }}>
@@ -54,6 +58,7 @@ const Header: React.FC = () => {
                 />
             </form>
             <div>
+               <button onClick={handleSignOut}>로그아웃</button>
                 <Profile />
             </div>
         </HeaderTag>
