@@ -11,9 +11,13 @@ import TrackSearchResult from "./Dashboard/TrackSearchResult";
 export interface Track {
   albumUrl: string | undefined;
   artist: string | undefined;
+  name: string | undefined;
   title: string | undefined;
-  uri: string | undefined;
+  track_uri: string | undefined;
   albumId: string | number | undefined;
+  album_type: string | undefined;
+  release_date: string | undefined;
+  album_uri: string | undefined;
 }
 
 type AlbumImg = {
@@ -25,6 +29,8 @@ type AlbumImg = {
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
 });
+
+export const accessToken = "BQCa89N9dnKhzQIB2PLWS0VNesXUzIvcKryln8ziU8DYctM9GU47ztcSmlPjhz6fXptdrUv3OfSRNwG8hJ4M0ebEZLM2622UMVJ3UkXs1NlzYE1BsML3xT-_JilD67z9F79LmBhvXdHIe3DBs7m7nj8NghImqmvKIwjmoiRAzJW7VEz6L2quWQ293lN5mkPmc1d51vKLKxkoc5sH1wNrl-oC0f1O1kTT"
 
 const Header: React.FC = () => {
   // const searchIconRef = useRef<HTMLSpanElement | null>(null);
@@ -47,13 +53,11 @@ const Header: React.FC = () => {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState<Track[]>([]);
   const [playingTrack, setPlayingTrack] = useState<Track | undefined>();
-  const accessToken = "BQCAxdVYXf1AKZhIL93HuD1BxuNae0V0yI_FiWYlfjSrYpr9SzIyd3sJL8fdIcVig1PJEQN-Q3Xek11VH032zQWpyZ6jh3-Mvkypq4NyEyeoRJh4_trP5a4udfIJpwxZSzW3tW1MbewGDalt0R9G-HbiBSSzaF-qJbvMLDrJPiww-8J21ZhaXTiPstlsZ41mmTwnhTzRcUk-4GtFXntd_iZCXkoFVb-R";
-
+  
   const chooseTrack = (track: Track) => {
     setPlayingTrack(track);
     // setSearch("")
   };
-
   useEffect(() => {
     if (!accessToken) return;
     spotifyApi.setAccessToken(accessToken);
@@ -78,9 +82,13 @@ const Header: React.FC = () => {
         return {
           artist: track.artists[0].name,
           title: track.name,
-          uri: track.uri,
+          name: track.album.name,
+          track_uri: track.uri,
           albumUrl: biggestAlbumImage,
           albumId: track.album.id,
+          album_type: track.album.album_type,
+          release_date: track.album.release_date,
+          album_uri: track.album.uri
         };
       });
       setSearchResults(tracks);
@@ -93,6 +101,17 @@ const Header: React.FC = () => {
     await signOut(auth);
   };
 
+  const searchInputRef = useRef(null);
+  const handleWindowClick = (e: MouseEvent) => {
+    if (e.target !== searchInputRef.current) setSearch("");
+  };
+
+  useEffect(() => {
+    window.addEventListener("click", handleWindowClick);
+  }, []);
+
+
+  
   return (
     <HeaderTag>
       <Space style={{ gap: "4px" }}>
@@ -107,18 +126,8 @@ const Header: React.FC = () => {
         <label>
           <SearchOutlined />
         </label>
-        {/* <input
-                    type="text"
-                    placeholder="검색어를 입력해 주세요."
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            // 엔터 키가 눌렸을 때 검색 로직
-                        }
-                    }}
-                    // onFocus={handleInputFocus}
-                    // ref={searchInputRef}
-                /> */}
         <input
+        ref={searchInputRef}
           type="search"
           placeholder="검색어를 입력해 주세요."
           onKeyDown={(e) => {
@@ -133,7 +142,7 @@ const Header: React.FC = () => {
         />
         <div className="search-result">
           {searchResults.map((track) => (
-            <TrackSearchResult track={track} key={track.uri} chooseTrack={chooseTrack} />
+            <TrackSearchResult setSearch={setSearch} track={track} key={track.track_uri} chooseTrack={chooseTrack} />
           ))}
         </div>
       </form>
