@@ -12,7 +12,6 @@ const Player = ( {accessToken, trackUri}: PlayerProps ) => {
   return <SpotifyPlayer
   token={accessToken}
   showSaveIcon
-  // uris={trackUri ? [trackUri] : []}
   uris={trackUri ? [trackUri] : []}
   initialVolume={0.5}
   />
