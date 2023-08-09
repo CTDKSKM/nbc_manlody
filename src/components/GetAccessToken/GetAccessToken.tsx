@@ -49,7 +49,6 @@ const GetAccessToken = () => {
   return (
   <div>
     {accessToken ? (<Dashboard access_token={accessToken}/>) : (<button onClick={handleLogin}>Login to Spotify</button>)}
-    
   </div>
   )
 };
