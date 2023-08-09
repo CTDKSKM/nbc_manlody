@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { Home, DetailAlbum, DetailForm, SocialLogin } from "../pages";
+import { Home, DetailAlbum, SocialLogin } from "../pages";
 import Layout from "./Layout";
 import GlobalStyle from "../GlobalStyle";
 import { onAuthStateChanged } from "firebase/auth";
@@ -22,7 +22,6 @@ const Router = () => {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/:album_id" element={<DetailAlbum />} />
-          <Route path="/:album_id/comments" element={<DetailForm />} />
           <Route path="/access" element={<GetAccessToken />} />
         </Route>
       </Routes>

@@ -1,5 +1,5 @@
 import React from "react";
-import AlbumReview from "../components/AlbumReview";
+import AlbumReview from "../components/detail-album/review/AlbumReview";
 
 const DetailAlbum = () => {
   return (
