@@ -12,8 +12,13 @@ const Player = ( {accessToken, trackUri}: PlayerProps ) => {
   return <SpotifyPlayer
   token={accessToken}
   showSaveIcon
-  uris={trackUri ? [trackUri] : []}
+  // uris={trackUri ? [trackUri] : []}
+  uris={[
+    "spotify:album:0EjwJIZJGIGxK9AJG1KFmN"
+  ]}
+
   initialVolume={0.5}
+
   />
 }
 
