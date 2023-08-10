@@ -2945,7 +2945,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/spotify-api@*":
+"@types/spotify-api@*", "@types/spotify-api@^0.0.22":
   version "0.0.22"
   resolved "https://registry.yarnpkg.com/@types/spotify-api/-/spotify-api-0.0.22.tgz#762707c4ad323e9d1c4e75e85742ad50e1666942"
   integrity sha512-oZLKiI6Fck/BGd0QdmIdJCY351xQfRkfpx2Q23jIntL3YQx85vScYuFJMK81/NoSK9m7HYOl2DW4A9WomDuJOA==

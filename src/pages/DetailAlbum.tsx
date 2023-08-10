@@ -1,46 +1,42 @@
-import React, { useEffect, useState } from "react";
-import AlbumReview from "../components/detail-album/review/AlbumReview";
-import { useLocation, useParams } from "react-router-dom";
-import { styled } from "styled-components";
-import axios from "axios";
-import { accessToken } from "../components/Header";
+import React, { useEffect, useState } from 'react';
+import AlbumReview from '../components/detail-album/review/AlbumReview';
+import { useLocation, useParams } from 'react-router-dom';
+import { styled } from 'styled-components';
+import axios from 'axios';
+import { accessToken } from '../components/Header';
+
+interface Album {
+  id?: string;
+  name?: string;
+  uri?: string;
+  artists?: {
+    name?: string;
+  }[];
+}
 
 const DetailAlbum = () => {
-  const { album_id: albumId } = useParams();
-  const [album, setAlbum] = useState<any[]>([]);
-  const [openReview, setOpenReview] = useState(true);
+  const { album_id: albumId } = useParams<string>();
+  const [album, setAlbum] = useState<Album[]>([]);
+  const [openReview, setOpenReview] = useState<boolean>(true);
   const location = useLocation();
-  console.log("location.state=>", location.state);
-  // console.log("location.state.arr=>",location.state.arr)
   const albumData = location.state.track;
-  console.log("albumData=>", albumData);
 
   const headers = {
-    Authorization: `Bearer ${accessToken}`, // accessToken 변수에 실제 access token 값이 들어가야 합니다.
+    Authorization: `Bearer ${accessToken}`
   };
-
-  console.log("album=>", album);
-  console.log("album=>", album[0]);
-
+  console.log('album=>', album);
   useEffect(() => {
-    const getAlbumId = async () => {
-      const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, { headers });
-      console.log("response.data.items++====<>>=>", response.data.items);
-      setAlbum([...response.data.items]);
-      // return response.data
-    };
-    getAlbumId();
+    try {
+      const getAlbumId = async () => {
+        const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, { headers });
+        setAlbum([...response.data.items]);
+      };
+      getAlbumId();
+    } catch (error) {
+      alert('앨범데이터 Get Fail' + error);
+      return;
+    }
   }, [albumId]);
-
-
-  // const optBtnRef = useRef(null);
-  // const handleWindowClick = (e: MouseEvent) => {
-  //   if (e.target !== optBtnRef.current) setIsOptBoxShow(false);
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener("click", handleWindowClick);
-  // }, []);
 
   return (
     <AlbumTag>
@@ -55,18 +51,17 @@ const DetailAlbum = () => {
           </div>
           <p className="artist-name">{albumData.artist}</p>
         </div>
-        <button onClick={()=>(setOpenReview(!openReview))}>리뷰남기기</button>
+        <button onClick={() => setOpenReview(!openReview)}>리뷰남기기</button>
       </div>
       {openReview ? (
         <div className="result-album">
-          {album.map((item: any, index) => {
-            if (index < 5)
-              return (
-                <div key={item.uri}>
-                  <div>{item.name || "없음"}</div>
-                  <div>{item.uri}</div>
-                </div>
-              );
+          {album.map((item) => {
+            return (
+              <div key={item.uri}>
+                <div>{item.name || '없음'}</div>
+                <div>{item.uri}</div>
+              </div>
+            );
           })}
         </div>
       ) : (

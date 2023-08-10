@@ -1,36 +1,33 @@
-import React, { useEffect, useRef, useState } from "react";
-import Profile from "./Profile";
-import { styled } from "styled-components";
-import { SearchOutlined, StepForwardOutlined, StepBackwardOutlined } from "@ant-design/icons";
-import { Button, Tooltip, Space } from "antd";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
-import SpotifyWebApi from "spotify-web-api-node";
-import TrackSearchResult from "./Dashboard/TrackSearchResult";
+import React, { useEffect, useRef, useState } from 'react';
+import Profile from './Profile';
+import { styled } from 'styled-components';
+import { SearchOutlined, StepForwardOutlined, StepBackwardOutlined } from '@ant-design/icons';
+import { Button, Tooltip, Space } from 'antd';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+import SpotifyWebApi from 'spotify-web-api-node';
+import TrackSearchResult from './Dashboard/TrackSearchResult';
 
 export interface Track {
-  albumUrl: string | undefined;
-  artist: string | undefined;
-  name: string | undefined;
-  title: string | undefined;
-  track_uri: string | undefined;
-  albumId: string | number | undefined;
-  album_type: string | undefined;
-  release_date: string | undefined;
-  album_uri: string | undefined;
-}
-
-type AlbumImg = {
-  height: number;
-  width: number;
-  url: string;
-};
+  albumUrl?: string
+  artist?: string
+  name?: string
+  title?: string
+  track_uri?: string
+  albumId?: string | number
+  album_type?: string
+  release_date?: string
+  album_uri?: string
+} 
 
 const spotifyApi = new SpotifyWebApi({
-  clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
+  clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID
 });
 
-export const accessToken = "BQCa89N9dnKhzQIB2PLWS0VNesXUzIvcKryln8ziU8DYctM9GU47ztcSmlPjhz6fXptdrUv3OfSRNwG8hJ4M0ebEZLM2622UMVJ3UkXs1NlzYE1BsML3xT-_JilD67z9F79LmBhvXdHIe3DBs7m7nj8NghImqmvKIwjmoiRAzJW7VEz6L2quWQ293lN5mkPmc1d51vKLKxkoc5sH1wNrl-oC0f1O1kTT"
+// export const accessToken =
+//   'BQDWTDQNcR7tiQhF5BEvS2JudqqxjL6JQ6JD2pl-EYvj5Q0qSZl37dFIVtkrP7UbVvDUqVtnRZdehYGpXxeythdfahZuCe8Vy6GN_Xdty8Vk6ozhW0RSRMMLcrhiIof8g3L8_vw9BKWxj3scZVqguoUv9mpLE-qZ2nQZoF66NOpnwu75lb1nGzJJWR9LV0rkUiPn8UXtiy6u2nIdwJxnmSZo_xt3B4Z7';
+
+  export const accessToken = sessionStorage.getItem('access_token');
 
 const Header: React.FC = () => {
   // const searchIconRef = useRef<HTMLSpanElement | null>(null);
@@ -50,10 +47,10 @@ const Header: React.FC = () => {
   //         searchInputRef.current.style.transform = "translate(-30px)";
   //     }
   // };
-  const [search, setSearch] = useState("");
-  const [searchResults, setSearchResults] = useState<Track[]>([]);
-  const [playingTrack, setPlayingTrack] = useState<Track | undefined>();
-  
+  const [search, setSearch] = useState('');
+  const [searchResults, setSearchResults] = useState<Track[]>();
+  const [playingTrack, setPlayingTrack] = useState<Track>();
+  console.log("헤더 access토큰=>",accessToken || "토큰없음");
   const chooseTrack = (track: Track) => {
     setPlayingTrack(track);
     // setSearch("")
@@ -73,12 +70,13 @@ const Header: React.FC = () => {
 
     let cancel = false;
     //spotify로부터 어떤 곡을 검색할지 요청. { limit: 5}: 5개만 가져오기
-    spotifyApi.searchTracks(search, { limit: 5 }).then((res: any) => {
-      console.log("res==>>", res);
+    spotifyApi.searchTracks(search, { limit: 5 }).then((res) => {
+      console.log('res==>>', res);
       if (cancel) return;
 
-      const tracks: Track[] = res.body.tracks.items.map((track: any) => {
-        const biggestAlbumImage = track.album.images[0].url
+      const tracks = res.body.tracks?.items.map((track) => {
+        
+        const biggestAlbumImage = track.album.images[0].url;
         return {
           artist: track.artists[0].name,
           title: track.name,
@@ -103,18 +101,16 @@ const Header: React.FC = () => {
 
   const searchInputRef = useRef(null);
   const handleWindowClick = (e: MouseEvent) => {
-    if (e.target !== searchInputRef.current) setSearch("");
+    if (e.target !== searchInputRef.current) setSearch('');
   };
 
   useEffect(() => {
-    window.addEventListener("click", handleWindowClick);
+    window.addEventListener('click', handleWindowClick);
   }, []);
 
-
-  
   return (
     <HeaderTag>
-      <Space style={{ gap: "4px" }}>
+      <Space style={{ gap: '4px' }}>
         <Tooltip title="next">
           <Button shape="circle" icon={<StepBackwardOutlined />} />
         </Tooltip>
@@ -127,11 +123,11 @@ const Header: React.FC = () => {
           <SearchOutlined />
         </label>
         <input
-        ref={searchInputRef}
+          ref={searchInputRef}
           type="search"
           placeholder="검색어를 입력해 주세요."
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
+            if (e.key === 'Enter') {
               // 엔터 키가 눌렸을 때 검색 로직
             }
           }}
@@ -141,7 +137,7 @@ const Header: React.FC = () => {
           // ref={searchInputRef}
         />
         <div className="search-result">
-          {searchResults.map((track) => (
+          {searchResults?.map((track) => (
             <TrackSearchResult setSearch={setSearch} track={track} key={track.track_uri} chooseTrack={chooseTrack} />
           ))}
         </div>
@@ -179,16 +175,15 @@ const HeaderTag = styled.header`
     position: absolute;
     width: 88%;
     max-width: 310px;
-    overflow: hidden; 
-    
+    overflow: hidden;
+
     border-radius: 8px;
 
-    margin:4px 0 0;
-    margin-left: 20px; 
+    margin: 4px 0 0;
+    margin-left: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
   }
 `;
