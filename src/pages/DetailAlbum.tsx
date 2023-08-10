@@ -5,7 +5,7 @@ import { styled } from 'styled-components';
 import axios from 'axios';
 import { accessToken } from '../components/Header';
 import ReviewBox from '../components/detail-album/review/ReviewBox';
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux';
 import { addAlbum } from '../redux/modules/playUris';
 
 interface Album {
@@ -25,7 +25,7 @@ const DetailAlbum = ({ data }: any) => {
   const [openReview, setOpenReview] = useState<boolean>(true);
   const location = useLocation();
   const albumData = location.state.track;
-  
+
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
@@ -34,23 +34,22 @@ const DetailAlbum = ({ data }: any) => {
       const getAlbum = async () => {
         // const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, { headers });
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
-        console.log(response)
+        console.log(response);
         setAlbum([...response.data.tracks.items]);
-        const albumUris = response.data.tracks.items.map((item:any) => item.uri)
-        setAlbumUris([...albumUris])
+        const albumUris = response.data.tracks.items.map((item: any) => item.uri);
+        setAlbumUris([...albumUris]);
       };
       getAlbum();
     } catch (error) {
       alert('앨범데이터 Get Fail' + error);
       return;
     }
-    
   }, [albumId]);
   const playAlbum = () => {
-    dispatch(addAlbum(albumUris))
-  }
-  console.log("album==>",album)
-  console.log("albumuri==>",albumUris)
+    dispatch(addAlbum(albumUris));
+  };
+  console.log('album==>', album);
+  console.log('albumuri==>', albumUris);
   // const optBtnRef = useRef(null);
   // const handleWindowClick = (e: MouseEvent) => {
   //   if (e.target !== optBtnRef.current) setIsOptBoxShow(false);
@@ -59,7 +58,6 @@ const DetailAlbum = ({ data }: any) => {
   // useEffect(() => {
   //   window.addEventListener("click", handleWindowClick);
   // }, []);
-
 
   return (
     <AlbumTag>
@@ -76,7 +74,7 @@ const DetailAlbum = ({ data }: any) => {
             <p className="artist-name">{albumData.artist}</p>
           </div>
         </div>
-        <button onClick={() => setOpenReview(!openReview)}>리뷰남기기</button>
+        <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
       </div>
       {openReview ? (
         <div className="result-album">
@@ -84,34 +82,33 @@ const DetailAlbum = ({ data }: any) => {
             <GridItem>#</GridItem>
             <GridItem>곡 정보</GridItem>
             <GridItem>앨범 정보</GridItem>
-            <GridItem>날짜</GridItem>
             <GridItem>좋아요</GridItem>
             <GridItem>재생 시간</GridItem>
           </Grid>
-          <div className="track-box">{album.map((item: any, index) => {
-            // if (index < 5)
+          <div className="track-box">
+            {album.map((item: any, index) => {
+              // if (index < 5)
               return (
                 <BodyGrid key={item.uri}>
                   <GridItem>{index + 1}</GridItem>
                   <GridItem>
                     <img src={albumData.albumUrl} alt="image" />
+
                     <div>
                       <h1>{item.name}</h1>
                       <p>{item.artists[0].name}</p>
                     </div>
                   </GridItem>
-                  <GridItem>Future Nostelgia (The Moonlight Edition)</GridItem>
-                  <GridItem>3일 전</GridItem>
-                  <GridItem>♥</GridItem>
-                  <GridItem>2:45</GridItem>
+                  <GridItem>{albumData.name}</GridItem>
+                  <GridItem>❤</GridItem>
+                  <GridItem>{}</GridItem>
                 </BodyGrid>
               );
-          })}</div>
-          
+            })}
+          </div>
         </div>
       ) : (
         <>
-          {' '}
           <AlbumReview />
           <ReviewBox data={data} />
         </>
@@ -183,8 +180,10 @@ const GridItem = styled.div`
   :nth-child(6) {
     justify-content: center;
   }
+
   img {
     width: 40px;
+    margin-right: 10px;
   }
   & > div {
     height: 100%;
