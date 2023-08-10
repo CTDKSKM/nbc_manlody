@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import AlbumReview from '../components/detail-album/review/AlbumReview';
-import { useLocation, useParams } from 'react-router-dom';
-import { styled } from 'styled-components';
 import axios from 'axios';
-import { accessToken } from '../components/Header';
-import ReviewBox from '../components/detail-album/review/ReviewBox';
-import { db } from '../firebase';
+import { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 import { collection, query, where, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
+import { styled } from 'styled-components';
+
+import { db } from '../firebase';
+import { accessToken } from '../components/Header';
 import useUser from '../hooks/useUser';
+
+import AlbumReview from '../components/detail-album/review/AlbumReview';
+import ReviewBox from '../components/detail-album/review/ReviewBox';
 
 interface Album {
   id?: string;
@@ -25,7 +27,7 @@ const DetailAlbum = ({ data }: any) => {
   const location = useLocation();
   const albumData = location.state.track;
 
-  const { userId, userName } = useUser();
+  const { userId } = useUser();
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
