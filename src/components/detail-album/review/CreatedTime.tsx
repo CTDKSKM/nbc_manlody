@@ -9,7 +9,6 @@ type Props = {
 
 const CreatedTime = React.memo(
   ({ createdAt, isUpdated, changeListener }: Props) => {
-    console.log("렌더됨", changeListener);
     const nowTimestamp = new Date().getTime();
     const timeDifference: number = Math.floor(
       (nowTimestamp - createdAt) / 1000

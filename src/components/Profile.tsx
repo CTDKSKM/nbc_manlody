@@ -14,8 +14,6 @@ const Profile = () => {
     userEmail: string;
     userProfilePicture: string;
   }>("userInfo");
-  console.log(userInfo, "info");
-
 
   const handleSignOut = async () => {
     await signOut(auth);

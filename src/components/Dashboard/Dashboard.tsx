@@ -53,7 +53,6 @@ const Dashboard = ( {access_token}: DashboardAccessTokenProps ) => {
     let cancel = false;
     //spotify로부터 어떤 곡을 검색할지 요청. { limit: 5}: 5개만 가져오기
     spotifyApi.searchTracks(search, { limit: 5}).then((res: any) => {
-      console.log("res==>>",res)
       if(cancel) return;
 
       const tracks: Track[] = res.body.tracks.items.map((track: any) => {

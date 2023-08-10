@@ -50,7 +50,6 @@ const Header: React.FC = () => {
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState<Track[]>();
   const [playingTrack, setPlayingTrack] = useState<Track>();
-  console.log("헤더 access토큰=>",accessToken || "토큰없음");
   const chooseTrack = (track: Track) => {
     setPlayingTrack(track);
     // setSearch("")
@@ -71,7 +70,6 @@ const Header: React.FC = () => {
     let cancel = false;
     //spotify로부터 어떤 곡을 검색할지 요청. { limit: 5}: 5개만 가져오기
     spotifyApi.searchTracks(search, { limit: 5 }).then((res) => {
-      console.log('res==>>', res);
       if (cancel) return;
 
       const tracks = res.body.tracks?.items.map((track) => {

@@ -25,7 +25,6 @@ const DetailAlbum = ({ data }: any) => {
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
-  console.log('album=>', album);
   useEffect(() => {
     try {
       const getAlbumId = async () => {
@@ -164,6 +163,9 @@ const GridItem = styled.div`
   &:nth-child(5),
   :nth-child(6) {
     justify-content: center;
+  }
+  img {
+    width: 40px;
   }
   & > div {
     height: 100%;
