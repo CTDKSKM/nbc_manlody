@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { collection, query, where, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { styled } from 'styled-components';
 
 import { db } from '../firebase';
@@ -11,6 +12,9 @@ import useUser from '../hooks/useUser';
 import AlbumReview from '../components/detail-album/review/AlbumReview';
 import ReviewBox from '../components/detail-album/review/ReviewBox';
 
+import { useDispatch } from 'react-redux';
+import { addAlbum } from '../redux/modules/playUris';
+
 interface Album {
   id?: string;
   name?: string;
@@ -18,11 +22,15 @@ interface Album {
   artists?: {
     name?: string;
   }[];
+  duration_ms?: number;
+  liked?: boolean;
 }
 
 const DetailAlbum = ({ data }: any) => {
+  const dispatch = useDispatch();
   const { album_id: albumId } = useParams<string>();
   const [album, setAlbum] = useState<Album[]>([]);
+  const [albumUris, setAlbumUris] = useState<string[]>([]);
   const [openReview, setOpenReview] = useState<boolean>(true);
   const location = useLocation();
   const albumData = location.state.track;
@@ -35,12 +43,15 @@ const DetailAlbum = ({ data }: any) => {
 
   useEffect(() => {
     try {
-      const getAlbumId = async () => {
-        const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, { headers });
-        setAlbum([...response.data.items]);
+      const getAlbum = async () => {
+        const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
+        console.log(response);
+        setAlbum([...response.data.tracks.items]);
+        const albumUris = response.data.tracks.items.map((item: any) => item.uri);
+        setAlbumUris([...albumUris]);
       };
 
-      getAlbumId();
+      getAlbum();
     } catch (error) {
       alert('앨범데이터 Get Fail' + error);
       return;
@@ -71,10 +82,11 @@ const DetailAlbum = ({ data }: any) => {
     }
   }, [userId, album]);
 
-  // const optBtnRef = useRef(null);
-  // const handleWindowClick = (e: MouseEvent) => {
-  //   if (e.target !== optBtnRef.current) setIsOptBoxShow(false);
-  // };
+  const playAlbum = () => {
+    dispatch(addAlbum(albumUris));
+  };
+  console.log('album==>', album);
+  console.log('albumuri==>', albumUris);
 
   // useEffect(() => {
   //   window.addEventListener("click", handleWindowClick);
@@ -101,9 +113,26 @@ const DetailAlbum = ({ data }: any) => {
       setLikedTracks(likedTracks.filter((id) => id !== itemId));
     }
   };
+  // const toggleHeart = (index: number) => {
+  //   const newAlbum = [...album];
+  //   newAlbum[index].liked = !newAlbum[index].liked;
+  //   setAlbum(newAlbum);
+  // };
+  //
+  //  const timeData = album.map((item:any)=>{
+  //   const miliseconds = item.duration_ms
+  //   const seconds = Math.floor(miliseconds / 1000)
+  //   const minutes = Math.floor(seconds / 60)
+  //   const remainingSeconds = seconds % 60;
+  //
+  //   const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`
+  //   const formattedRemainingSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`
+  //    return `${formattedMinutes}:${formattedRemainingSeconds}`
+  // })
 
   return (
     <AlbumTag>
+      <button onClick={playAlbum}>앨범플레이</button>
       <div className="album-info">
         <div className="info-data">
           <img src={albumData.albumUrl} alt="image" />
@@ -127,8 +156,9 @@ const DetailAlbum = ({ data }: any) => {
             <GridItem>좋아요</GridItem>
             <GridItem>재생 시간</GridItem>
           </Grid>
-          {album.map((item: any, index) => {
-            if (index < 5)
+          <div className="track-box">
+            {album.map((item: any, index) => {
+              // if (index < 5)
               return (
                 <BodyGrid key={item.uri}>
                   <GridItem>{index + 1}</GridItem>
@@ -151,7 +181,8 @@ const DetailAlbum = ({ data }: any) => {
                   <GridItem>{}</GridItem>
                 </BodyGrid>
               );
-          })}
+            })}
+          </div>
         </div>
       ) : (
         <>
@@ -205,6 +236,10 @@ const AlbumTag = styled.div`
     justify-content: right;
     background-color: #eee;
   }
+  .track-box {
+    height: 35vh;
+    overflow-y: scroll;
+  }
 `;
 
 const Grid = styled.div`
@@ -253,6 +288,22 @@ const BodyGrid = styled(Grid)`
   &:hover {
     background: #3f3f3f;
   }
+  ${GridItem}:nth-child(4) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 0;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      margin-right: 5px;
+    }
+  }
+  // 4th-child{
+  //   loloClose: 20px;
+  // }
 `;
 
 const CommentWrap = styled.div`

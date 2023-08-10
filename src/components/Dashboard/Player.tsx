@@ -1,27 +1,19 @@
-import React from 'react'
+import React from 'react';
 //@ts-ignore
-import SpotifyPlayer from 'react-spotify-web-playback'
+import SpotifyPlayer from 'react-spotify-web-playback';
 import { accessToken } from '../Header';
-
+import { useSelector } from 'react-redux';
 type PlayerProps = {
   accessToken: string;
   trackUri: string | undefined;
-}
+};
 
 const Player = () => {
+  //@ts-ignore
+  const trackUri = useSelector((state) => state.albumTrackSliceReducer);
+  console.log('trackUri', trackUri);
+  if (!accessToken) return null;
+  return <SpotifyPlayer token={accessToken} showSaveIcon uris={trackUri} initialVolume={0.2} />;
+};
 
-  if (!accessToken) return null
-  return <SpotifyPlayer
-  token={accessToken}
-  showSaveIcon
-  // uris={trackUri ? [trackUri] : []}
-  uris={
-    'spotify:track:1jsY6pQeNaEConZWGau1L4'
-  }
-
-  initialVolume={0.5}
-
-  />
-}
-
-export default Player
+export default Player;

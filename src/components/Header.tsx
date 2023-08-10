@@ -48,11 +48,7 @@ const Header: React.FC = () => {
   // };
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState<Track[]>();
-  const [playingTrack, setPlayingTrack] = useState<Track>();
-  const chooseTrack = (track: Track) => {
-    setPlayingTrack(track);
-    // setSearch("")
-  };
+ 
   useEffect(() => {
     if (!accessToken) return;
     spotifyApi.setAccessToken(accessToken);
@@ -91,7 +87,7 @@ const Header: React.FC = () => {
     return () => {
       cancel = true;
     };
-  }, [search, accessToken, setSearch]);
+  }, [search, accessToken]);
   const handleSignOut = async () => {
     await signOut(auth);
   };
@@ -135,7 +131,7 @@ const Header: React.FC = () => {
         />
         <div className="search-result">
           {searchResults?.map((track) => (
-            <TrackSearchResult setSearch={setSearch} track={track} key={track.track_uri} chooseTrack={chooseTrack} />
+            <TrackSearchResult setSearch={setSearch} track={track} key={track.track_uri}/>
           ))}
         </div>
       </form>

@@ -33,7 +33,6 @@ const Dashboard = ( {access_token}: DashboardAccessTokenProps ) => {
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState<Track[]>([]);
   const [playingTrack, setPlayingTrack] = useState<Track | undefined>();
-
   const chooseTrack = (track: Track) => {
     setPlayingTrack(track);
     // setSearch("")
@@ -73,75 +72,9 @@ const Dashboard = ( {access_token}: DashboardAccessTokenProps ) => {
   }, [search, accessToken, setSearch]);
   return (
     <Container className="d-flex flex-column py-2" style={{ height: "100vh" }}>
-      {/* <div><Player accessToken={accessToken} trackUri={playingTrack?.uri}/></div> */}
       <Form.Control type="search" placeholder="Search Songs/Artists" value={search} onChange={(event) => setSearch(event.target.value)} />
-      {/* <div className="flex-grow-1 my-2" style={{ overflowY: "auto" }}>
-        {searchResults.map((track) => (
-          <TrackSearchResult track={track} key={track.uri} chooseTrack={chooseTrack}/>
-        ))}
-      </div> */}
-      
     </Container>
   );
 }
 
 export default Dashboard
-
-//   console.log(spotifyApi)
-//   const [searchInput, setSearchInput] = useState<string>("");
-//   // const [accessToken, setAccessToken] = useState("");
-//   const [albums, setAlbum] = useState<any[]>([]);
-//   const accessToken = access_token
-
-//   const search = async () => {
-//     const searchParameters = {
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: "Bearer " + accessToken,
-//       },
-//     };
-//     let artistResponse = await axios.get("https://api.spotify.com/v1/search?q=" + searchInput + "&type=artist", searchParameters);
-//     const artistId = artistResponse.data.artists.items[0].id;
-
-//     let albumsResponse = await axios.get("https://api.spotify.com/v1/artists/" + artistId + "/top-tracks" + "?&market=US&limit=1", searchParameters);
-//     const track = albumsResponse.data.tracks.slice(0, 2)
-//     console.log(track)
-//     setAlbum(track);
-//   };
-
-//   return (
-//     <div className="App">
-//       <Container>
-//         <InputGroup className="mb-3" size="lg">
-//           <FormControl
-//             placeholder="Search For Artist"
-//             type="input"
-//             onKeyPress={(event) => {
-//               if (event.key == "Enter") {
-//                 search()
-//               }
-//             }}
-//             value={searchInput}
-//             onChange={(event) => setSearchInput(event.target.value)}
-//           />
-//           <Button onClick={search}>Search</Button>
-//         </InputGroup>
-//       </Container>
-//       <Container>
-//         <Row className="mx-2">
-//           {albums.map((album, index) => 
-//              (
-//               <Col key={index} xs={12} sm={6} md={4} lg={3}>
-//               <Card>
-//               {/* <Player accessToken={accessToken} trackUri={album?.uri}/> */}
-//                 {/* <Card.Img src={album.images[0].url} /> */}
-//                 <Card.Body>
-//                   <Card.Title>{album.name}</Card.Title>
-//                 </Card.Body>
-//               </Card>
-//               </Col>
-//             ))}
-//         </Row>
-//       </Container>
-//     </div>
-//   );
