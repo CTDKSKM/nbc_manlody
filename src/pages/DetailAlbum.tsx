@@ -5,6 +5,8 @@ import { styled } from 'styled-components';
 import axios from 'axios';
 import { accessToken } from '../components/Header';
 import ReviewBox from '../components/detail-album/review/ReviewBox';
+import {useDispatch} from 'react-redux'
+import { addAlbum } from '../redux/modules/playUris';
 
 interface Album {
   id?: string;
@@ -16,28 +18,39 @@ interface Album {
 }
 
 const DetailAlbum = ({ data }: any) => {
+  const dispatch = useDispatch();
   const { album_id: albumId } = useParams<string>();
   const [album, setAlbum] = useState<Album[]>([]);
+  const [albumUris, setAlbumUris] = useState<string[]>([]);
   const [openReview, setOpenReview] = useState<boolean>(true);
   const location = useLocation();
   const albumData = location.state.track;
-
+  
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
   useEffect(() => {
     try {
-      const getAlbumId = async () => {
-        const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, { headers });
-        setAlbum([...response.data.items]);
+      const getAlbum = async () => {
+        // const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, { headers });
+        const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
+        console.log(response)
+        setAlbum([...response.data.tracks.items]);
+        const albumUris = response.data.tracks.items.map((item:any) => item.uri)
+        setAlbumUris([...albumUris])
       };
-      getAlbumId();
+      getAlbum();
     } catch (error) {
       alert('앨범데이터 Get Fail' + error);
       return;
     }
+    
   }, [albumId]);
-
+  const playAlbum = () => {
+    dispatch(addAlbum(albumUris))
+  }
+  console.log("album==>",album)
+  console.log("albumuri==>",albumUris)
   // const optBtnRef = useRef(null);
   // const handleWindowClick = (e: MouseEvent) => {
   //   if (e.target !== optBtnRef.current) setIsOptBoxShow(false);
@@ -50,6 +63,7 @@ const DetailAlbum = ({ data }: any) => {
 
   return (
     <AlbumTag>
+      <button onClick={playAlbum}>앨범플레이</button>
       <div className="album-info">
         <div className="info-data">
           <img src={albumData.albumUrl} alt="image" />
@@ -74,8 +88,8 @@ const DetailAlbum = ({ data }: any) => {
             <GridItem>좋아요</GridItem>
             <GridItem>재생 시간</GridItem>
           </Grid>
-          {album.map((item: any, index) => {
-            if (index < 5)
+          <div className="track-box">{album.map((item: any, index) => {
+            // if (index < 5)
               return (
                 <BodyGrid key={item.uri}>
                   <GridItem>{index + 1}</GridItem>
@@ -92,7 +106,8 @@ const DetailAlbum = ({ data }: any) => {
                   <GridItem>2:45</GridItem>
                 </BodyGrid>
               );
-          })}
+          })}</div>
+          
         </div>
       ) : (
         <>
@@ -146,6 +161,11 @@ const AlbumTag = styled.div`
     display: flex;
     justify-content: right;
     background-color: #eee;
+  }
+  .track-box {
+    height: 35vh;
+    overflow-y: scroll;
+    
   }
 `;
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Track, accessToken } from "../Header";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -6,18 +6,18 @@ import axios from "axios";
 
 type TrackSearchProps = {
   track: Track;
-  chooseTrack: (track: Track) => void;
+  // chooseTrack: (track: Track) => void;
   setSearch: React.Dispatch<React.SetStateAction<string>>
 };
 
-const TrackSearchResult = ({ track, chooseTrack, setSearch }: TrackSearchProps) => {
+const TrackSearchResult = ({ track }: TrackSearchProps) => {
   const navigate = useNavigate()
-
+  // const [playingTrack, setPlayingTrack] = useState("먼데");
   return (
     <TrackTag>
       <div className="search-list" onClick={() => {
-        setSearch("")
-        navigate(`detail/${track.albumId}`, { state: {track} })}}>
+        navigate(`detail/${track.albumId}`, { state: {track} })
+        }}>
         <img src={track.albumUrl} alt="img" />
         <div className="search-info">
           <h3>{track.title?.slice(0, 30)}</h3>
