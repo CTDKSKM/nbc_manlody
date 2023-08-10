@@ -5,8 +5,10 @@ import { styled } from 'styled-components';
 import axios from 'axios';
 import { accessToken } from '../components/Header';
 import ReviewBox from '../components/detail-album/review/ReviewBox';
+
 import { useDispatch } from 'react-redux';
 import { addAlbum } from '../redux/modules/playUris';
+import { AiFillHeart,AiOutlineHeart } from "react-icons/ai";
 
 interface Album {
   id?: string;
@@ -15,6 +17,8 @@ interface Album {
   artists?: {
     name?: string;
   }[];
+  duration_ms?:number;
+  liked?: boolean;
 }
 
 const DetailAlbum = ({ data }: any) => {
@@ -44,11 +48,29 @@ const DetailAlbum = ({ data }: any) => {
       return;
     }
   }, [albumId]);
+
   const playAlbum = () => {
     dispatch(addAlbum(albumUris));
   };
   console.log('album==>', album);
   console.log('albumuri==>', albumUris);
+
+  const toggleHeart = (index: number) => {
+    const newAlbum = [...album];
+    newAlbum[index].liked = !newAlbum[index].liked;
+    setAlbum(newAlbum);
+  };
+
+   const timeData = album.map((item:any)=>{
+    const miliseconds = item.duration_ms
+    const seconds = Math.floor(miliseconds / 1000)
+    const minutes = Math.floor(seconds / 60)
+    const remainingSeconds = seconds % 60;
+
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`
+    const formattedRemainingSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`
+     return `${formattedMinutes}:${formattedRemainingSeconds}`
+  })
 
   return (
     <AlbumTag>
@@ -91,8 +113,10 @@ const DetailAlbum = ({ data }: any) => {
                     </div>
                   </GridItem>
                   <GridItem>{albumData.name}</GridItem>
-                  <GridItem>❤</GridItem>
-                  <GridItem>{}</GridItem>
+                  <GridItem onClick={() => toggleHeart(index)}>
+                  {item.liked ? <AiFillHeart/> : <AiOutlineHeart/>}
+                </GridItem>
+                  <GridItem>{timeData[index]}</GridItem>
                 </BodyGrid>
               );
             })}
@@ -202,6 +226,22 @@ const BodyGrid = styled(Grid)`
   &:hover {
     background: #3f3f3f;
   }
+  ${GridItem}:nth-child(4) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 0;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      margin-right: 5px;
+    }
+  }
+  // 4th-child{
+  //   loloClose: 20px;
+  // }
 `;
 
 const CommentWrap = styled.div`
