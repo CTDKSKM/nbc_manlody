@@ -144,7 +144,6 @@ const Header: React.FC = () => {
       </form>
 
       <div>
-        <button onClick={handleSignOut}>로그아웃</button>
         <Profile />
       </div>
     </HeaderTag>
