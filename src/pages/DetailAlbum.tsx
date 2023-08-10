@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import AlbumReview from '../components/detail-album/review/AlbumReview';
-import { useLocation, useParams } from 'react-router-dom';
-import { styled } from 'styled-components';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
+import { collection, query, where, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { styled } from 'styled-components';
+
+import { db } from '../firebase';
 import { accessToken } from '../components/Header';
+import useUser from '../hooks/useUser';
+
+import AlbumReview from '../components/detail-album/review/AlbumReview';
 import ReviewBox from '../components/detail-album/review/ReviewBox';
 
 import { useDispatch } from 'react-redux';
 import { addAlbum } from '../redux/modules/playUris';
-import { AiFillHeart,AiOutlineHeart } from "react-icons/ai";
 
 interface Album {
   id?: string;
@@ -17,7 +22,7 @@ interface Album {
   artists?: {
     name?: string;
   }[];
-  duration_ms?:number;
+  duration_ms?: number;
   liked?: boolean;
 }
 
@@ -30,9 +35,12 @@ const DetailAlbum = ({ data }: any) => {
   const location = useLocation();
   const albumData = location.state.track;
 
+  const { userId } = useUser();
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
+  const [likedTracks, setLikedTracks] = useState<string[]>([]);
+
   useEffect(() => {
     try {
       const getAlbum = async () => {
@@ -42,12 +50,37 @@ const DetailAlbum = ({ data }: any) => {
         const albumUris = response.data.tracks.items.map((item: any) => item.uri);
         setAlbumUris([...albumUris]);
       };
+
       getAlbum();
     } catch (error) {
       alert('앨범데이터 Get Fail' + error);
       return;
     }
-  }, [albumId]);
+  }, []);
+
+  useEffect(() => {
+    if (userId && album.length > 0) {
+      const likesRef = collection(db, 'likes');
+      const q = query(
+        likesRef,
+        where('userId', '==', userId),
+        where(
+          'trackId',
+          'in',
+          album.map((a) => a.id)
+        )
+      );
+
+      getDocs(q)
+        .then((snapshot: any) => {
+          const likedTrackIds = snapshot.docs.map((doc: any) => doc.data().trackId);
+          setLikedTracks(likedTrackIds);
+        })
+        .catch((error) => {
+          console.error('Error fetching liked tracks: ', error);
+        });
+    }
+  }, [userId, album]);
 
   const playAlbum = () => {
     dispatch(addAlbum(albumUris));
@@ -55,22 +88,47 @@ const DetailAlbum = ({ data }: any) => {
   console.log('album==>', album);
   console.log('albumuri==>', albumUris);
 
-  const toggleHeart = (index: number) => {
-    const newAlbum = [...album];
-    newAlbum[index].liked = !newAlbum[index].liked;
-    setAlbum(newAlbum);
+  // useEffect(() => {
+  //   window.addEventListener("click", handleWindowClick);
+  // }, []);
+  //
+
+  const toggleLikeHandler = async (itemId: string) => {
+    const likesRef = collection(db, 'likes');
+    const q = query(likesRef, where('userId', '==', userId), where('trackId', '==', itemId));
+
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      await addDoc(likesRef, {
+        userId: userId,
+        trackId: itemId
+      });
+      setLikedTracks([...likedTracks, itemId]);
+    } else {
+      for (const docSnapshot of snapshot.docs) {
+        const docRef = doc(db, 'likes', docSnapshot.id);
+        await deleteDoc(docRef);
+      }
+      setLikedTracks(likedTracks.filter((id) => id !== itemId));
+    }
   };
-
-   const timeData = album.map((item:any)=>{
-    const miliseconds = item.duration_ms
-    const seconds = Math.floor(miliseconds / 1000)
-    const minutes = Math.floor(seconds / 60)
-    const remainingSeconds = seconds % 60;
-
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`
-    const formattedRemainingSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`
-     return `${formattedMinutes}:${formattedRemainingSeconds}`
-  })
+  // const toggleHeart = (index: number) => {
+  //   const newAlbum = [...album];
+  //   newAlbum[index].liked = !newAlbum[index].liked;
+  //   setAlbum(newAlbum);
+  // };
+  //
+  //  const timeData = album.map((item:any)=>{
+  //   const miliseconds = item.duration_ms
+  //   const seconds = Math.floor(miliseconds / 1000)
+  //   const minutes = Math.floor(seconds / 60)
+  //   const remainingSeconds = seconds % 60;
+  //
+  //   const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`
+  //   const formattedRemainingSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`
+  //    return `${formattedMinutes}:${formattedRemainingSeconds}`
+  // })
 
   return (
     <AlbumTag>
@@ -113,10 +171,14 @@ const DetailAlbum = ({ data }: any) => {
                     </div>
                   </GridItem>
                   <GridItem>{albumData.name}</GridItem>
-                  <GridItem onClick={() => toggleHeart(index)}>
-                  {item.liked ? <AiFillHeart/> : <AiOutlineHeart/>}
-                </GridItem>
-                  <GridItem>{timeData[index]}</GridItem>
+                  <GridItem
+                    onClick={() => {
+                      toggleLikeHandler(item.id);
+                    }}
+                  >
+                    {likedTracks.includes(item.id) ? '❤️' : '🤍'}
+                  </GridItem>
+                  <GridItem>{}</GridItem>
                 </BodyGrid>
               );
             })}
