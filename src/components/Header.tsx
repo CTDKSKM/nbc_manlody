@@ -30,7 +30,7 @@ const spotifyApi = new SpotifyWebApi({
   clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
 });
 
-export const accessToken = "BQCa89N9dnKhzQIB2PLWS0VNesXUzIvcKryln8ziU8DYctM9GU47ztcSmlPjhz6fXptdrUv3OfSRNwG8hJ4M0ebEZLM2622UMVJ3UkXs1NlzYE1BsML3xT-_JilD67z9F79LmBhvXdHIe3DBs7m7nj8NghImqmvKIwjmoiRAzJW7VEz6L2quWQ293lN5mkPmc1d51vKLKxkoc5sH1wNrl-oC0f1O1kTT"
+export const accessToken = "BQC6KXxVYg8XfTTd0Ygb8q9RQrIL-VNsSO1z6gucqIa4aU3kCtm_BB21UPWygHTd414uaz6J0B82qGJRw81rZlsmyFhhTYJ-7MfNrU5uy5lw3FGPC6knJ1FkT9GcQucCN5YKviPcmXQInFI7lciMWHjFssToltJU-OTedSxGTXnbgXYJ3Gy3fxtiRlLaR04VSOyn1BYbY3oR7XwI1-GccMH9-zUd4q9I"
 
 const Header: React.FC = () => {
   // const searchIconRef = useRef<HTMLSpanElement | null>(null);
@@ -148,7 +148,6 @@ const Header: React.FC = () => {
       </form>
 
       <div>
-        <button onClick={handleSignOut}>로그아웃</button>
         <Profile />
       </div>
     </HeaderTag>

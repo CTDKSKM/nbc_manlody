@@ -84,8 +84,7 @@ const Review = ({ comment, userId, changeListener }: Props) => {
             isUpdated={comment.isUpdated}
             changeListener={changeListener}
           />
-        </div>
-        {comment.userId === userId && (
+          {comment.userId === userId && (
           <StOptionBox>
             <div
               ref={optBtnRef}
@@ -105,6 +104,8 @@ const Review = ({ comment, userId, changeListener }: Props) => {
             )}
           </StOptionBox>
         )}
+        </div>
+        
       </div>
     </StReview>
   );
@@ -113,7 +114,8 @@ const Review = ({ comment, userId, changeListener }: Props) => {
 export default Review;
 const StReview = styled.div`
   .comment-div {
-    border: 1px solid gray;
+    border-bottom: solid 1px #eee;
+    padding: 20px 0px;
     display: flex;
     position: relative;
     /* justify-content: space-between; */

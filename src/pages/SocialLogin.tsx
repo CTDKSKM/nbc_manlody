@@ -1,49 +1,30 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import React from "react";
+import React, { useState } from "react";
 import { auth } from "../firebase";
 import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "react-query";
 
-const SocialLogin = () => {
-  // const testSignUp = async () => {
-  //   try {
-  //     const userCredential = await createUserWithEmailAndPassword(
-  //       auth,
-  //       "test@test.com",
-  //       "111111"
-  //     );
-  //     const user = userCredential.user;
-  //     console.log(user);
-  //   } catch (error) {
-  //     if (error instanceof FirebaseError) {
-  //       const errorMessage = error.message;
-  //       const errorCode = error.code;
-  //       console.log(errorMessage);
-  //     }
-  //   }
-  // };
-  // const testLogin = async () => {
-  //   try {
-  //     const userCredential = await signInWithEmailAndPassword(
-  //       auth,
-  //       "test@test.com",
-  //       "111111"
-  //     );
-  //   } catch (error) {
-  //     if (error instanceof FirebaseError) {
-  //       const errorMessage = error.message;
-  //       const errorCode = error.code;
-  //     }
-  //   }
-  // };
-  // const testLogout = async () => {
-  //   await signOut(auth);
-  // };
+
+const SocialLogin:React.FC= () => {
   const navigate = useNavigate();
+
+  const queryClient = useQueryClient()
+  
   const testGoogleLogin = async () => {
     try {
       const provider = new GoogleAuthProvider(); // provider 구글 설정
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user
+
+      const userName = user.displayName
+      const userEmail = user.email
+      const userProfilePicture = user.photoURL;
+
+      queryClient.setQueryData("userInfo",{userName,userEmail,userProfilePicture})
+      console.log(queryClient.getQueryData("userInfo"),"데이터저장")
+
+
       navigate("/");
     } catch (error) {
       if (error instanceof FirebaseError) {

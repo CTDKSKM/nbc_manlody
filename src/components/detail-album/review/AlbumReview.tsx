@@ -17,7 +17,7 @@ const AlbumReview = () => {
 
   return (
     <StAlbumReviewContainer>
-      <form
+      <StAlbumReviewForm
         onSubmit={(e) => {
           e.preventDefault();
           const newComment: ReviewCommentData = {
@@ -32,7 +32,6 @@ const AlbumReview = () => {
           setContent("");
         }}
       >
-        댓글달기
         <input
           type="text"
           value={content}
@@ -40,7 +39,8 @@ const AlbumReview = () => {
             setContent(e.target.value);
           }}
         />
-      </form>
+        <button>댓글달기</button>
+      </StAlbumReviewForm>
       {isLoading ? <Loading /> : <ReviewBox data={data} />}
     </StAlbumReviewContainer>
   );
@@ -49,8 +49,26 @@ const AlbumReview = () => {
 export default AlbumReview;
 
 const StAlbumReviewContainer = styled.div`
-  width: 95%;
-  height: 300px;
-  border: 1px solid rgba(255, 100, 0, 0.2);
-  margin: 10px auto;
+  padding: 20px 0px;
 `;
+const StAlbumReviewForm = styled.form`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  > input {
+    width: 93%;
+    padding: 10px 0px;
+    outline: none;
+    border-radius: 7px;
+    background: #eee;
+    border: none;
+  }
+  > button {
+    width: 7%;
+    background: #eee;
+    border: none;
+    border-radius: 7px;
+    color: #111;
+  }
+`;
+
