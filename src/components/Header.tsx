@@ -30,7 +30,7 @@ const spotifyApi = new SpotifyWebApi({
   clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
 });
 
-export const accessToken = "BQC6KXxVYg8XfTTd0Ygb8q9RQrIL-VNsSO1z6gucqIa4aU3kCtm_BB21UPWygHTd414uaz6J0B82qGJRw81rZlsmyFhhTYJ-7MfNrU5uy5lw3FGPC6knJ1FkT9GcQucCN5YKviPcmXQInFI7lciMWHjFssToltJU-OTedSxGTXnbgXYJ3Gy3fxtiRlLaR04VSOyn1BYbY3oR7XwI1-GccMH9-zUd4q9I"
+export const accessToken = "BQA_M1_42LHtL4_0wkLFJepUS4Aw5YjB9LtkapE9TWaGIJRNzdpMJRapA2DsEDzMwCJCN9EUBoC5ichyHkRkDbja94FZ01S5IC0eb5ww4fq-siwc1HzVjuvo3iO4f5l5sMscAMgubD-ZvTfzKtnkrgCRCQJV_LVKPBUn1jFkfJx-TGP-5pQyU_FraIhGUQP4NCwGwbPN3H7OA58jyrIrybHygDS0qsjr"
 
 const Header: React.FC = () => {
   // const searchIconRef = useRef<HTMLSpanElement | null>(null);

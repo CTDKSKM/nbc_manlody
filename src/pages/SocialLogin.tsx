@@ -14,15 +14,15 @@ const SocialLogin:React.FC= () => {
   const testGoogleLogin = async () => {
     try {
       const provider = new GoogleAuthProvider(); // provider 구글 설정
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user
+      await signInWithPopup(auth, provider);
 
-      const userName = user.displayName
-      const userEmail = user.email
-      const userProfilePicture = user.photoURL;
 
-      queryClient.setQueryData("userInfo",{userName,userEmail,userProfilePicture})
-      console.log(queryClient.getQueryData("userInfo"),"데이터저장")
+      // const userName = user.displayName
+      // const userEmail = user.email
+      // const userProfilePicture = user.photoURL;
+
+      // queryClient.setQueryData("userInfo",{userName,userEmail,userProfilePicture})
+      // console.log(queryClient.getQueryData("userInfo"),"데이터저장")
 
 
       navigate("/");
