@@ -15,8 +15,10 @@ const Profile = () => {
   const [newUserImg, setNewUserImg] = useState<string>('');
   const [isToggle, setIsToggle] = useState<boolean>(false);
 
+
   const { userName, userEmail, userImg } = useUser();
   console.log(userName);
+
 
   const handleSignOut = async () => {
     await signOut(auth);

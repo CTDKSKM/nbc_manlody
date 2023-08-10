@@ -6,32 +6,37 @@ import axios from 'axios';
 import { accessToken } from '../components/Header';
 import ReviewBox from '../components/detail-album/review/ReviewBox';
 
+interface Album {
+  id?: string;
+  name?: string;
+  uri?: string;
+  artists?: {
+    name?: string;
+  }[];
+}
+
 const DetailAlbum = ({ data }: any) => {
-  const { album_id: albumId } = useParams();
-  const [album, setAlbum] = useState<any[]>([]);
-  const [openReview, setOpenReview] = useState(true);
+  const { album_id: albumId } = useParams<string>();
+  const [album, setAlbum] = useState<Album[]>([]);
+  const [openReview, setOpenReview] = useState<boolean>(true);
   const location = useLocation();
-  console.log('location.state=>', location.state);
-  // console.log("location.state.arr=>",location.state.arr)
   const albumData = location.state.track;
-  console.log('albumData=>', albumData);
 
   
   const headers = {
-    Authorization: `Bearer ${accessToken}` // accessToken 변수에 실제 access token 값이 들어가야 합니다.
+    Authorization: `Bearer ${accessToken}`
   };
-
-  console.log('album=>', album);
-  console.log('album=>', album[0]);
-
   useEffect(() => {
-    const getAlbumId = async () => {
-      const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, { headers });
-      console.log('response.data.items++====<>>=>', response.data.items);
-      setAlbum([...response.data.items]);
-      // return response.data
-    };
-    getAlbumId();
+    try {
+      const getAlbumId = async () => {
+        const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, { headers });
+        setAlbum([...response.data.items]);
+      };
+      getAlbumId();
+    } catch (error) {
+      alert('앨범데이터 Get Fail' + error);
+      return;
+    }
   }, [albumId]);
 
   // const optBtnRef = useRef(null);
@@ -42,6 +47,7 @@ const DetailAlbum = ({ data }: any) => {
   // useEffect(() => {
   //   window.addEventListener("click", handleWindowClick);
   // }, []);
+
 
   return (
     <AlbumTag>
@@ -71,10 +77,12 @@ const DetailAlbum = ({ data }: any) => {
           {album.map((item: any, index) => {
             if (index < 5)
               return (
-                <BodyGrid key={item.url}>
+                <BodyGrid key={item.uri}>
                   <GridItem>{index + 1}</GridItem>
                   <GridItem>
-                    <img src={albumData.albumUrl} />
+
+                    <img src={albumData.albumUrl} alt="image" />
+
                     <div>
                       <h1>{item.name}</h1>
                       <p>{item.artists[0].name}</p>
@@ -156,9 +164,11 @@ const GridItem = styled.div`
   :nth-child(6) {
     justify-content: center;
   }
+
   img{
     width:40px;
     margin-right: 10px;
+
   }
   & > div {
     height: 100%;

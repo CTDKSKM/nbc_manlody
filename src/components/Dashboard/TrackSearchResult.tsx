@@ -12,30 +12,12 @@ type TrackSearchProps = {
 
 const TrackSearchResult = ({ track, chooseTrack, setSearch }: TrackSearchProps) => {
   const navigate = useNavigate()
-  // const handlePlay = () => {
-  //   console.log("track====>", track);
-  //   chooseTrack(track);
-  // };
-  // console.log("track====2>", track);
-  const headers = {
-    Authorization: `Bearer ${accessToken}` // accessToken 변수에 실제 access token 값이 들어가야 합니다.
-  };
-  const arr:any = [];
 
-
-  useEffect(() => {
-    const getAlbumId = async () => {
-      const response = await axios.get(`https://api.spotify.com/v1/albums/${track.albumId}/tracks`, { headers })
-      response.data.items.forEach((item: any) => arr.push(item))
-      return response.data
-    }
-    getAlbumId()
-  },[])
   return (
     <TrackTag>
       <div className="search-list" onClick={() => {
         setSearch("")
-        navigate(`/${track.albumId}`, { state: {track} })}}>
+        navigate(`detail/${track.albumId}`, { state: {track} })}}>
         <img src={track.albumUrl} alt="img" />
         <div className="search-info">
           <h3>{track.title?.slice(0, 30)}</h3>
