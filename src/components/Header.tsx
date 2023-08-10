@@ -24,10 +24,12 @@ const spotifyApi = new SpotifyWebApi({
   clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID
 });
 
+
 // export const accessToken =
 //   'BQDWTDQNcR7tiQhF5BEvS2JudqqxjL6JQ6JD2pl-EYvj5Q0qSZl37dFIVtkrP7UbVvDUqVtnRZdehYGpXxeythdfahZuCe8Vy6GN_Xdty8Vk6ozhW0RSRMMLcrhiIof8g3L8_vw9BKWxj3scZVqguoUv9mpLE-qZ2nQZoF66NOpnwu75lb1nGzJJWR9LV0rkUiPn8UXtiy6u2nIdwJxnmSZo_xt3B4Z7';
 
   export const accessToken = sessionStorage.getItem('access_token');
+
 
 const Header: React.FC = () => {
   // const searchIconRef = useRef<HTMLSpanElement | null>(null);

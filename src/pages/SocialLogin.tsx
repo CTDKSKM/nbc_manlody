@@ -37,7 +37,9 @@ const SocialLogin:React.FC = () => {
     try {
       const provider = new GoogleAuthProvider(); // provider 구글 설정
       await signInWithPopup(auth, provider);
+
       handleSpotifyLogin()
+
       navigate("/");
     } catch (error) {
       if (error instanceof FirebaseError) {

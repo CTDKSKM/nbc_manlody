@@ -5,15 +5,15 @@ import { auth } from "../firebase";
 import { AiFillSetting } from "react-icons/ai";
 import { TbLogout2 } from "react-icons/tb";
 import { useQuery, useQueryClient } from "react-query";
+import useUser from "../hooks/useUser";
 
 const Profile = () => {
   const [isToggle, setIsToggle] = useState<boolean>(false);
 
-  const { data: userInfo } = useQuery<{
-    userName: string;
-    userEmail: string;
-    userProfilePicture: string;
-  }>("userInfo");
+
+  const {userName,userEmail,userImg} = useUser()
+  console.log(userName)
+
 
   const handleSignOut = async () => {
     await signOut(auth);
@@ -27,18 +27,18 @@ const Profile = () => {
     <UserWrap>
       <UserInfo onClick={userToggleButton}>
         <div>
-          <h1>{userInfo?.userName}</h1>
+          <h1>{userName}</h1>
         </div>
-        <img src={userInfo?.userProfilePicture} />
+        <img src={userImg}/>
       </UserInfo>
       {isToggle && (
         <UserDetailWrap>
           <div>
             <h1>
-              Name<span>{userInfo?.userName}</span>
+              Name<span>{userName}</span>
             </h1>
             <h1>
-              Email<span>{userInfo?.userEmail}</span>
+              Email<span>{userEmail}</span>
             </h1>
           </div>
           <div>
