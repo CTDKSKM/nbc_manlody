@@ -4,9 +4,16 @@ import Carousel from '../components/Slider';
 import PauseCarousel from '../components/PuaseSlider';
 import { getReturnedParamsFromSpotifyAuth } from '../components/GetAccessToken/GetAccessToken';
 import axios from 'axios';
+import { spotifyApi } from '../components/Header';
+import { useNavigate } from 'react-router';
 
 const Home = () => {
+    const navigate = useNavigate()
   const [accessToken, setAccessToken] = useState<any>('');
+  const [homeShowTracks, setHomeShowTracks] = useState<any>([]);
+  const [homeShowArtists, setHomeShowArtists] = useState<any>([]);
+  const [homeShowAlbums, setHomeShowAlbums] = useState<any>([]);
+
   useEffect(() => {
     //윈도우 브라우저 현재 주소에 해쉬가 존재하면
     if (window.location.hash) {
@@ -24,79 +31,69 @@ const Home = () => {
     const headers = {
       Authorization: `Bearer ${accessToken}`
     };
-    try {
-      const getArtist = async () => {
-        const response = await axios.get(
-          'https://api.spotify.com/v1/search?q=2520artist%3AMiles%2520Davis&type=album',
-          { headers }
-        );
-        console.log('response home==>', response);
-      };
-      getArtist();
-    } catch (error) {
-      console.log('----에러---');
-    }
-  });
 
+    const generateRandomString = (length: number): string => {
+      const characters = 'abcdefghijklmnopqrstuvwxyz';
+      let result = '';
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters.charAt(randomIndex);
+      }
+      return result;
+    };
+
+    const randomString1 = generateRandomString(3);
+    const randomString2 = generateRandomString(3);
+    const randomString3 = generateRandomString(3);
+
+    spotifyApi.searchTracks(randomString1, { limit: 6 }).then((res) => {
+      const homeShowTracks = res.body.tracks?.items;
+      setHomeShowTracks(homeShowTracks);
+      //homeShowAlbumImage : [0].album.images[1]
+      //homeShowTrackId : [0].id
+      //homeShowTrackName : [0].name
+    });
+    spotifyApi.searchArtists(randomString2, { limit: 6 }).then((res) => {
+      const homeShowArtists = res.body.artists?.items;
+      setHomeShowArtists(homeShowArtists);
+      //homeShowArtistsImage : [0].album.images[1]
+      //homeShowArtistsId : [0].id
+      //homeShowArtistsName : [0].name
+    });
+    spotifyApi.searchAlbums(randomString3, { limit: 10 }).then((res) => {
+      const homeShowAlbums = res.body.albums?.items;
+      setHomeShowAlbums(homeShowAlbums);
+      //homeShowAlbumsImage : [0].album.images[1]
+      //homeShowAlbumsId : [0].id
+      //homeShowAlbumsName : [0].name
+    });
+  }, []);
   return (
     <HomeWrapper>
       <div className="recommdentaionTag">
         <h2>Today's recommended song</h2>
         <ul>
-          <li>
-            <img src="/img_test.jpg" alt="album" />
-            <div className="album-info">
-              <h4>sing sang sung</h4>
-              <p>Velit exercitation nulla laborum mollit pariatur tempor eiusmod tempor ut ad aliqua esse enim.</p>
-            </div>
-          </li>
-          <li>
-            <img src="/img_test2.jpg" alt="album" />
-            <div className="album-info">
-              <h4>sing sang sung</h4>
-              <p>Velit exercitation nulla laborum mollit pariatur tempor eiusmod tempor ut ad aliqua esse enim.</p>
-            </div>
-          </li>
-          <li>
-            <img src="/img_test.jpg" alt="album" />
-            <div className="album-info">
-              <h4>sing sang sung</h4>
-              <p>Velit exercitation nulla laborum mollit pariatur tempor eiusmod tempor ut ad aliqua esse enim.</p>
-            </div>
-          </li>
-          <li>
-            <img src="/img_test2.jpg" alt="album" />
-            <div className="album-info">
-              <h4>sing sang sung</h4>
-              <p>Velit exercitation nulla laborum mollit pariatur tempor eiusmod tempor ut ad aliqua esse enim.</p>
-            </div>
-          </li>
-          <li>
-            <img src="/img_test.jpg" alt="album" />
-            <div className="album-info">
-              <h4>sing sang sung</h4>
-              <p>Velit exercitation nulla laborum mollit pariatur tempor eiusmod tempor ut ad aliqua esse enim.</p>
-            </div>
-          </li>
-          <li>
-            <img src="/img_test2.jpg" alt="album" />
-            <div className="album-info">
-              <h4>sing sang sung</h4>
-              <p>Velit exercitation nulla laborum mollit pariatur tempor eiusmod tempor ut ad aliqua esse enim.</p>
-            </div>
-          </li>
+          {homeShowTracks?.map((item: any, index: number) => {
+            return (
+              <li key={index} onClick={() => navigate(`/detail/${item.album.id}`)}>
+                <img src={item.album.images[1].url} alt="이미지없음" />
+                <h3>{item.name}</h3>
+                <p>{item.artists[0].name}</p>
+              </li>
+            );
+          })}
         </ul>
       </div>
       <div id="hotAlbumTag">
         <h2>Now hot 10 albums</h2>
         <div>
-          <Carousel />
+          <Carousel homeShowAlbums={homeShowAlbums} />
         </div>
       </div>
       <div id="hotAlbumTag">
         <h2>Artists of the month</h2>
         <div>
-          <PauseCarousel />
+          <PauseCarousel homeShowArtists={homeShowArtists} />
         </div>
       </div>
     </HomeWrapper>

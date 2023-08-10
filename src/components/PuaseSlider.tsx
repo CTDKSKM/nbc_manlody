@@ -1,77 +1,57 @@
-import React from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { styled } from "styled-components";
-
-function Pausearousel() {
-    const pauseSettings = {
-        slide: "div",
-        dots: false,
-        // arrows: true,
-        // autoplay: true,
-        // autoplaySpeed: 5000,
-        // infinite: true,
-        // speed: 500,
-        slidesToShow: 4.82,
-        slidesToScroll: 1,
-        draggable: true,
-        cssEase: "linear",
-        arrows: false,
-        responsive: [
-            // 반응형 웹 구현 옵션
-            {
-                breakpoint: 960, //화면 사이즈 960px일 때
-                settings: {
-                    //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-                    slidesToShow: 3,
-                },
-            },
-            {
-                breakpoint: 768, //화면 사이즈 768px일 때
-                settings: {
-                    //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-                    slidesToShow: 2,
-                },
-            },
-        ],
-    };
-    return (
-        <CarouselWrapper>
-            <Slider {...pauseSettings}>
-                <div className="box">
-                    <img src="/img_test3.jpg" alt="test" />
-                    <h5>title</h5>
-                    <p>artist</p>
-                </div>
-                <div className="box">
-                    <img src="/img_test4.jpg" alt="test" />
-                    <h5>title</h5>
-                    <p>artist</p>
-                </div>
-                <div className="box">
-                    <img src="/img_test3.jpg" alt="test" />
-                    <h5>title</h5>
-                    <p>artist</p>
-                </div>
-                <div className="box">
-                    <img src="/img_test4.jpg" alt="test" />
-                    <h5>title</h5>
-                    <p>artist</p>
-                </div>
-                <div className="box">
-                    <img src="/img_test3.jpg" alt="test" />
-                    <h5>title</h5>
-                    <p>artist</p>
-                </div>
-                <div className="box">
-                    <img src="/img_test4.jpg" alt="test" />
-                    <h5>title</h5>
-                    <p>artist</p>
-                </div>
-            </Slider>
-        </CarouselWrapper>
-    );
+import React from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { styled } from 'styled-components';
+type Props = {
+  homeShowArtists: any;
+};
+function Pausearousel({ homeShowArtists }: Props) {
+  const pauseSettings = {
+    slide: 'div',
+    dots: false,
+    // arrows: true,
+    // autoplay: true,
+    // autoplaySpeed: 5000,
+    // infinite: true,
+    // speed: 500,
+    slidesToShow: 4.82,
+    slidesToScroll: 1,
+    draggable: true,
+    cssEase: 'linear',
+    arrows: false,
+    responsive: [
+      // 반응형 웹 구현 옵션
+      {
+        breakpoint: 960, //화면 사이즈 960px일 때
+        settings: {
+          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+          slidesToShow: 3
+        }
+      },
+      {
+        breakpoint: 768, //화면 사이즈 768px일 때
+        settings: {
+          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
+          slidesToShow: 2
+        }
+      }
+    ]
+  };
+  return (
+    <CarouselWrapper>
+      <Slider {...pauseSettings}>
+        {homeShowArtists.map((item: any, index: number) => {
+          return (
+            <div className="box" key={index}>
+              <img src={item.images[0].url} alt="No Image" />
+              <h5>{item.name}</h5>
+            </div>
+          );
+        })}
+      </Slider>
+    </CarouselWrapper>
+  );
 }
 
 export default Pausearousel;
@@ -136,9 +116,9 @@ const CarouselWrapper = styled.section`
     }
     .slick-prev,
     .slick-next{
-        margin-bottom{
+        /* margin-bottom{
             10px;
-        }
+        } */
     }
 
 

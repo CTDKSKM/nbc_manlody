@@ -11,7 +11,6 @@ type PlayerProps = {
 const Player = () => {
   //@ts-ignore
   const trackUri = useSelector((state) => state.albumTrackSliceReducer);
-  console.log('trackUri', trackUri);
   if (!accessToken) return null;
   return <SpotifyPlayer token={accessToken} showSaveIcon uris={trackUri} initialVolume={0.2} />;
 };

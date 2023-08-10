@@ -37,7 +37,6 @@ const DetailAlbum = ({ data }: any) => {
     try {
       const getAlbum = async () => {
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
-        console.log(response);
         setAlbum([...response.data.tracks.items]);
         const albumUris = response.data.tracks.items.map((item: any) => item.uri);
         setAlbumUris([...albumUris]);
@@ -52,9 +51,6 @@ const DetailAlbum = ({ data }: any) => {
   const playAlbum = () => {
     dispatch(addAlbum(albumUris));
   };
-  console.log('album==>', album);
-  console.log('albumuri==>', albumUris);
-
   const toggleHeart = (index: number) => {
     const newAlbum = [...album];
     newAlbum[index].liked = !newAlbum[index].liked;
@@ -100,7 +96,6 @@ const DetailAlbum = ({ data }: any) => {
           </Grid>
           <div className="track-box">
             {album.map((item: any, index) => {
-              // if (index < 5)
               return (
                 <BodyGrid key={item.uri}>
                   <GridItem>{index + 1}</GridItem>
