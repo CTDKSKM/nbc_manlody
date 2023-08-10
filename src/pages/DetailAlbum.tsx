@@ -32,7 +32,6 @@ const DetailAlbum = ({ data }: any) => {
   useEffect(() => {
     try {
       const getAlbum = async () => {
-        // const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, { headers });
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
         console.log(response);
         setAlbum([...response.data.tracks.items]);
@@ -50,14 +49,6 @@ const DetailAlbum = ({ data }: any) => {
   };
   console.log('album==>', album);
   console.log('albumuri==>', albumUris);
-  // const optBtnRef = useRef(null);
-  // const handleWindowClick = (e: MouseEvent) => {
-  //   if (e.target !== optBtnRef.current) setIsOptBoxShow(false);
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener("click", handleWindowClick);
-  // }, []);
 
   return (
     <AlbumTag>

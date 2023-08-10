@@ -6,6 +6,7 @@ import GlobalStyle from "../GlobalStyle";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import GetAccessToken from "../components/GetAccessToken/GetAccessToken";
+import TestPage from "../pages/TestPage";
 
 
 const Router = () => {
@@ -24,7 +25,7 @@ const Router = () => {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/detail/:album_id" element={<DetailAlbum />} />
-          <Route path="/access" element={<GetAccessToken />} />
+          <Route path="/access" element={<TestPage />} />
         </Route>
       </Routes>
     </>
