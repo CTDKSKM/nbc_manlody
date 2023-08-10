@@ -165,7 +165,6 @@ const AlbumTag = styled.div`
   .track-box {
     height: 35vh;
     overflow-y: scroll;
-    
   }
 `;
 
