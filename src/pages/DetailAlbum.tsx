@@ -5,6 +5,9 @@ import { styled } from 'styled-components';
 import axios from 'axios';
 import { accessToken } from '../components/Header';
 import ReviewBox from '../components/detail-album/review/ReviewBox';
+import { db } from '../firebase';
+import { collection, query, where, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
+import useUser from '../hooks/useUser';
 
 interface Album {
   id?: string;
@@ -22,22 +25,49 @@ const DetailAlbum = ({ data }: any) => {
   const location = useLocation();
   const albumData = location.state.track;
 
-  
+  const { userId, userName } = useUser();
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
+  const [likedTracks, setLikedTracks] = useState<string[]>([]);
+
   useEffect(() => {
     try {
       const getAlbumId = async () => {
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, { headers });
         setAlbum([...response.data.items]);
       };
+
       getAlbumId();
     } catch (error) {
       alert('앨범데이터 Get Fail' + error);
       return;
     }
-  }, [albumId]);
+  }, []);
+
+  useEffect(() => {
+    if (userId && album.length > 0) {
+      const likesRef = collection(db, 'likes');
+      const q = query(
+        likesRef,
+        where('userId', '==', userId),
+        where(
+          'trackId',
+          'in',
+          album.map((a) => a.id)
+        )
+      );
+
+      getDocs(q)
+        .then((snapshot: any) => {
+          const likedTrackIds = snapshot.docs.map((doc: any) => doc.data().trackId);
+          setLikedTracks(likedTrackIds);
+        })
+        .catch((error) => {
+          console.error('Error fetching liked tracks: ', error);
+        });
+    }
+  }, [userId, album]);
 
   // const optBtnRef = useRef(null);
   // const handleWindowClick = (e: MouseEvent) => {
@@ -47,7 +77,28 @@ const DetailAlbum = ({ data }: any) => {
   // useEffect(() => {
   //   window.addEventListener("click", handleWindowClick);
   // }, []);
+  //
 
+  const toggleLikeHandler = async (itemId: string) => {
+    const likesRef = collection(db, 'likes');
+    const q = query(likesRef, where('userId', '==', userId), where('trackId', '==', itemId));
+
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      await addDoc(likesRef, {
+        userId: userId,
+        trackId: itemId
+      });
+      setLikedTracks([...likedTracks, itemId]);
+    } else {
+      for (const docSnapshot of snapshot.docs) {
+        const docRef = doc(db, 'likes', docSnapshot.id);
+        await deleteDoc(docRef);
+      }
+      setLikedTracks(likedTracks.filter((id) => id !== itemId));
+    }
+  };
 
   return (
     <AlbumTag>
@@ -63,7 +114,7 @@ const DetailAlbum = ({ data }: any) => {
             <p className="artist-name">{albumData.artist}</p>
           </div>
         </div>
-        <button onClick={() => setOpenReview(!openReview)}>{openReview ?  "Review": "Album Track"} </button>
+        <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
       </div>
       {openReview ? (
         <div className="result-album">
@@ -80,7 +131,6 @@ const DetailAlbum = ({ data }: any) => {
                 <BodyGrid key={item.uri}>
                   <GridItem>{index + 1}</GridItem>
                   <GridItem>
-
                     <img src={albumData.albumUrl} alt="image" />
 
                     <div>
@@ -89,7 +139,13 @@ const DetailAlbum = ({ data }: any) => {
                     </div>
                   </GridItem>
                   <GridItem>{albumData.name}</GridItem>
-                  <GridItem>❤</GridItem>
+                  <GridItem
+                    onClick={() => {
+                      toggleLikeHandler(item.id);
+                    }}
+                  >
+                    {likedTracks.includes(item.id) ? '❤️' : '🤍'}
+                  </GridItem>
                   <GridItem>{}</GridItem>
                 </BodyGrid>
               );
@@ -165,10 +221,9 @@ const GridItem = styled.div`
     justify-content: center;
   }
 
-  img{
-    width:40px;
+  img {
+    width: 40px;
     margin-right: 10px;
-
   }
   & > div {
     height: 100%;
