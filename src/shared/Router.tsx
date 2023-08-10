@@ -7,6 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import GetAccessToken from "../components/GetAccessToken/GetAccessToken";
 
+
 const Router = () => {
   const navigate = useNavigate();
   useEffect(() => {
@@ -19,9 +20,10 @@ const Router = () => {
       <GlobalStyle />
       <Routes>
         <Route path="/login" element={<SocialLogin />} />
+        {/* <Route path="/auth" element={<GetAccessToken />} /> */}
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/:album_id" element={<DetailAlbum />} />
+          <Route path="/detail/:album_id" element={<DetailAlbum />} />
           <Route path="/access" element={<GetAccessToken />} />
         </Route>
       </Routes>

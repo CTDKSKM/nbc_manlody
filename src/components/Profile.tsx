@@ -10,6 +10,7 @@ import useUser from "../hooks/useUser";
 const Profile = () => {
   const [isToggle, setIsToggle] = useState<boolean>(false);
 
+
   const {userName,userEmail,userImg} = useUser()
   console.log(userName)
 
