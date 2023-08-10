@@ -3,3 +3,9 @@
 * {
     font-family: "Libre Franklin", sans-serif;
 }
+
+#albums-info{
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    }

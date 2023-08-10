@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Header from "../components/Header";
 import { styled } from "styled-components";
+import Player from "../components/Dashboard/Player";
 
 const Layout = () => {
     return (
@@ -14,7 +15,9 @@ const Layout = () => {
                 <ContentWrapper>
                     <Header />
                     <Outlet />
+                    <Player/>
                 </ContentWrapper>
+                
             </Wrapper>
         </>
     );

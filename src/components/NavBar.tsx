@@ -52,7 +52,10 @@ const Nav = styled.div`
     }
 
     img {
-        max-width: 100%;
+        margin: 0 auto;
+        display:flex;
+        justify-content:center;
+        max-width: 80%;
         height: auto;
         cursor: pointer;
         filter: grayscale(1);
