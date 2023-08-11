@@ -1,24 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { signOut } from 'firebase/auth';
-import { auth } from '../firebase';
-import { AiFillSetting } from 'react-icons/ai';
+import { auth, storage } from '../firebase';
 import { TbLogout2 } from 'react-icons/tb';
-import { useQuery, useQueryClient } from 'react-query';
 import useUser from '../hooks/useUser';
-import axios from "axios";
+import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
+import { useParams } from 'react-router-dom';
 
+import { IoSettingsOutline } from 'react-icons/io5';
 
 const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [newUserName, setNewUserName] = useState<string>('');
   const [newUserImg, setNewUserImg] = useState<string>('');
   const [isToggle, setIsToggle] = useState<boolean>(false);
+  const [selectefFile, setselectefFile] = useState<any>('');
 
+  const { userName, userEmail, userImg, setUserProfile } = useUser();
+  const [modalUserImg, setModalUserImg] = useState<any>(userImg);
 
-  const { userName, userEmail, userImg } = useUser();
-  console.log("userName=>",userName);
-
+  const params = useParams();
+  useEffect(() => {
+    setIsToggle(false);
+  }, [params]);
 
   const handleSignOut = async () => {
     await signOut(auth);
@@ -29,26 +33,26 @@ const Profile = () => {
     setNewUserName(userName);
     setNewUserImg(userImg);
   };
-  
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  // const toggleModal = () => {
-  //   setIsModalOpen((prev) => !prev);
-  // };
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewUserName(event.target.value);
   };
 
   const saveUserChanges = async () => {
-
     try {
-
-      await axios.put('/api/updateUserProfile', {
-        userName: newUserName,
-        userImg: newUserImg,
-      });
+      let imageUrl = userImg;
+      if (selectefFile) {
+        const storageRef = ref(storage, `profile/${selectefFile.name}`);
+        await uploadBytes(storageRef, selectefFile);
+        imageUrl = await getDownloadURL(storageRef);
+        setModalUserImg(imageUrl);
+      }
+      setUserProfile(newUserName, imageUrl);
+      closeModal();
     } catch (error) {
       console.error('Error updating user profile:', error);
     }
@@ -57,13 +61,13 @@ const Profile = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     saveUserChanges();
-    closeModal();
+    //closeModal();
   };
 
   const userToggleButton = () => {
-    setIsToggle((modal) => !modal);
+    setIsToggle(!isToggle);
+    setModalUserImg(userImg);
   };
-
 
   // const handleImageChange = (files) => {
   //   if (files.length > 0) {
@@ -74,7 +78,18 @@ const Profile = () => {
   //     reader.readAsDataURL(files[0]);
   //   }
   // };
-
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    setselectefFile(selectedFile);
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        setModalUserImg(e.target!.result);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+    // setModalUserImg(selectedFile)
+  };
 
   return (
     <>
@@ -98,12 +113,14 @@ const Profile = () => {
             <div>
               <UserSettingWrap>
                 <button onClick={openModal}>
-                  <AiFillSetting />
+                  <IoSettingsOutline size={18} />
                 </button>
-                <button onClick={handleSignOut}>
-                  <TbLogout2 />
-                  LogOut
-                </button>
+                <div onClick={handleSignOut}>
+                  <span>
+                    <TbLogout2 size={18} />
+                  </span>
+                  <p>LogOut</p>
+                </div>
               </UserSettingWrap>
             </div>
           </UserDetailWrap>
@@ -114,20 +131,31 @@ const Profile = () => {
             <Modal>
               <ModalContent>
                 <h2>프로필 수정</h2>
-                  <img src={userImg} />
-                  <input id='imgUploader'
+                <div>
+                  <p>
+                    <img 
+                    src={modalUserImg} />
+                  </p>
+                  <div>
+                    <label htmlFor="imgUploader">이미지 변경</label>
+                    <input
+                      id="imgUploader"
                       type="file"
-                      accept="image/*"
-                      // onChange={(e) => handleImageChange(e.target.files)}
+                      // accept="image/*"
+                      onChange={handleImageChange}
                     />
-                <form onSubmit={handleSubmit}>
-                  <label>
-                    User
-                    <input type="text" value={newUserName} onChange={handleNameChange} />
-                  </label>
-                  <button type="submit">저장</button>
-                </form>
-                <button onClick={closeModal}>닫기</button>
+                  </div>
+                </div>
+                <div>
+                  {/* <label>User</label> */}
+                  <input type="text" value={newUserName} onChange={handleNameChange} />
+                </div>
+                <ProfileBtnWrap>
+                  <button type="submit" onClick={handleSubmit}>
+                    저장
+                  </button>
+                  <button onClick={closeModal}>닫기</button>
+                </ProfileBtnWrap>
               </ModalContent>
             </Modal>
           </ModalWrap>
@@ -159,11 +187,11 @@ const Modal = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
-  width:40%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: white;
   // flex-direction:column;
   padding: 20px;
@@ -171,25 +199,23 @@ const Modal = styled.div`
   text-align: center;
   z-index: 99;
 
-  form{
-    
-    display:flex;
+  form {
+    display: flex;
   }
-  input{
-    width:60%;
+  input {
+    width: 60%;
     background-color: red;
-    margin-left:10px;
+    margin-left: 10px;
   }
 `;
 const ModalContent = styled.div`
-
-img{
-  border-radius:10px;
-  width:140px;
-}
-#imgUploader{
-  width: 40%;
-}
+  img {
+    border-radius: 10px;
+    width: 140px;
+  }
+  #imgUploader {
+    width: 40%;
+  }
 `;
 const UserWrap = styled.div`
   position: relative;
@@ -240,5 +266,16 @@ const UserDetailWrap = styled.div`
     height: 14px;
     background-color: #6e6e6e;
     transform: rotate(45deg);
+  }
+`;
+
+const ProfileBtnWrap = styled.div`
+  display: flex;
+  gap: 5px;
+  > button {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #999;
+    border-radius: 4px;
   }
 `;
