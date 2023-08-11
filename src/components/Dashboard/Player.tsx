@@ -18,10 +18,6 @@ const Player = () => {
     }
   }, [trackUri]);
 
-  // if (!trackUri.length) return null;
-
-  console.log('Playertrack', trackUri);
-  // if (!accessToken) return null;
   return (
     <StPlayerCtn>
       <SpotifyPlayer
