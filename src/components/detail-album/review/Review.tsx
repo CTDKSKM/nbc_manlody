@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 import useReview from "../../../hooks/useReview";
 import "firebase/firestore";
+import { PiDotsThreeOutlineFill } from "react-icons/pi";
 import CreatedTime from "./CreatedTime";
 type Props = {
   userId: string;
@@ -24,7 +25,11 @@ const Review = ({ comment, userId, changeListener }: Props) => {
     setIsInputBoxShow(!isInputBoxShow);
   };
   const deleteComment = () => {
-    deleteMutation.mutate(comment.docId!);
+    const isConfirmed = window.confirm("댓글을 삭제하시겠습니까?")
+    if(isConfirmed){
+      deleteMutation.mutate(comment.docId!);
+    }
+    
   };
   const submitUpdateComment = () => {
     const newComment: ReviewCommentData = {
@@ -94,7 +99,7 @@ const Review = ({ comment, userId, changeListener }: Props) => {
                 setIsOptBoxShow(!isOptBoxShow);
               }}
             >
-              ...
+              {/* <PiDotsThreeOutlineFill size={18}/> */}...
             </div>
             {isOptBoxShow && (
               <div className="select-box">
@@ -147,10 +152,30 @@ const StOptionBox = styled.div`
   }
   .select-box {
     position: absolute;
-    right: 0;
-    top: -50px;
+    right: 0px;
+    top: -100px;
+    padding: 8px 24px;
+    border-radius: 6px;
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
+    background-color: #666;
+    >div{
+      padding: 10px 0px;
+      cursor: pointer;
+    }
+    >div:first-child{
+      border-bottom: solid 1px #8a8a8a;
+    }
+    &::after{
+      display: block;
+      content: "";
+      position: absolute;
+      right:7px;
+      bottom: -3px;
+      width: 25px;
+      height: 25px;
+      background-color: #666;
+      transform: rotate(45deg);
+    }
   }
 `;

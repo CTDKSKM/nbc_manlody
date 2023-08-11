@@ -60,9 +60,6 @@ const DetailAlbum = ({ data }: any) => {
      return `${formattedMinutes}:${formattedRemainingSeconds}`
   })
 
-
-  console.log(albumData,"albumdata")
-  console.log(timeData,"aaaa");
   
   
   // console.log(album[0]..duration_ms);
