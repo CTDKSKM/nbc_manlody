@@ -9,13 +9,13 @@ type Props = {
   homeShowAlbums: any;
 };
 function Carousel({ homeShowAlbums }: Props) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const settings = {
     slide: 'div',
     dots: false,
     arrows: true,
     autoplay: true,
-    autoplaySpeed: 2500,
+    autoplaySpeed: 3000,
     pauseOnHover: true,
     infinite: true,
     speed: 500,
@@ -25,19 +25,17 @@ function Carousel({ homeShowAlbums }: Props) {
     cssEase: 'linear',
     gap: 10,
     responsive: [
-      // 반응형 웹 구현 옵션
       {
-        breakpoint: 960, //화면 사이즈 960px일 때
+        breakpoint: 1200,
         settings: {
-          //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-          slidesToShow: 3
+          slidesToShow: 4
         }
       },
       {
-        breakpoint: 768, //화면 사이즈 768px일 때
+        breakpoint: 925,
         settings: {
           //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-          slidesToShow: 2
+          slidesToShow: 3
         }
       }
     ]
@@ -62,31 +60,38 @@ function Carousel({ homeShowAlbums }: Props) {
 export default Carousel;
 
 const CarouselWrapper = styled.section`
-  margin-top: 1.5rem;
   height: 160px;
   .slick-slide .box {
-    width: 50%;
     margin: 0 auto;
     overflow: hidden;
   }
   .slick-slide {
     box-sizing: border-box;
-    width: 50%;
-    margin: 0 15px;
+    margin: 0 18px;
     background-color: rgba(236, 236, 236, 0.61);
+    border: 1px solid rgba(236, 236, 236, 0.678);
     border-radius: 8px;
     transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
   }
   .slick-slide:hover {
-    transform: scale(1.008);
-    filter: brightness(1.2);
+    transform: scale(1.01);
+    filter: brightness(1.08);
+    transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out, color 1s ease-in-out;
+    h5,
+    p {
+      color: rgb(109, 109, 109);
+    }
   }
 
   .container {
     width: 90%;
   }
   h5 {
+    font-size: 14px;
     margin-top: 10px;
+    padding: 0 4px;
+    height: 14px;
+    overflow: hidden;
     font-weight: 600;
   }
   h5,
@@ -118,9 +123,5 @@ const CarouselWrapper = styled.section`
     width: 60vw;
     height: 100%;
     margin: 0 auto;
-  }
-  .slick-prev,
-  .slick-next {
-    // margin-bottom: 10px;
   }
 `;

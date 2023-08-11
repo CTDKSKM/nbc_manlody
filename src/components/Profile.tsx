@@ -6,8 +6,7 @@ import { AiFillSetting } from 'react-icons/ai';
 import { TbLogout2 } from 'react-icons/tb';
 import { useQuery, useQueryClient } from 'react-query';
 import useUser from '../hooks/useUser';
-import axios from "axios";
-
+import axios from 'axios';
 
 const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -15,10 +14,8 @@ const Profile = () => {
   const [newUserImg, setNewUserImg] = useState<string>('');
   const [isToggle, setIsToggle] = useState<boolean>(false);
 
-
   const { userName, userEmail, userImg } = useUser();
-  console.log("userName=>",userName);
-
+  console.log('userName=>', userName);
 
   const handleSignOut = async () => {
     await signOut(auth);
@@ -29,7 +26,7 @@ const Profile = () => {
     setNewUserName(userName);
     setNewUserImg(userImg);
   };
-  
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -42,12 +39,10 @@ const Profile = () => {
   };
 
   const saveUserChanges = async () => {
-
     try {
-
       await axios.put('/api/updateUserProfile', {
         userName: newUserName,
-        userImg: newUserImg,
+        userImg: newUserImg
       });
     } catch (error) {
       console.error('Error updating user profile:', error);
@@ -64,7 +59,6 @@ const Profile = () => {
     setIsToggle((modal) => !modal);
   };
 
-
   // const handleImageChange = (files) => {
   //   if (files.length > 0) {
   //     const reader = new FileReader();
@@ -74,7 +68,6 @@ const Profile = () => {
   //     reader.readAsDataURL(files[0]);
   //   }
   // };
-
 
   return (
     <>
@@ -114,12 +107,13 @@ const Profile = () => {
             <Modal>
               <ModalContent>
                 <h2>프로필 수정</h2>
-                  <img src={userImg} />
-                  <input id='imgUploader'
-                      type="file"
-                      accept="image/*"
-                      // onChange={(e) => handleImageChange(e.target.files)}
-                    />
+                <img src={userImg} />
+                <input
+                  id="imgUploader"
+                  type="file"
+                  accept="image/*"
+                  // onChange={(e) => handleImageChange(e.target.files)}
+                />
                 <form onSubmit={handleSubmit}>
                   <label>
                     User
@@ -153,17 +147,17 @@ const ModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
+  // z-index: 1;
 `;
 const Modal = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
-  width:40%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: white;
   // flex-direction:column;
   padding: 20px;
@@ -171,25 +165,23 @@ const Modal = styled.div`
   text-align: center;
   z-index: 99;
 
-  form{
-    
-    display:flex;
+  form {
+    display: flex;
   }
-  input{
-    width:60%;
+  input {
+    width: 60%;
     background-color: red;
-    margin-left:10px;
+    margin-left: 10px;
   }
 `;
 const ModalContent = styled.div`
-
-img{
-  border-radius:10px;
-  width:140px;
-}
-#imgUploader{
-  width: 40%;
-}
+  img {
+    border-radius: 10px;
+    width: 140px;
+  }
+  #imgUploader {
+    width: 40%;
+  }
 `;
 const UserWrap = styled.div`
   position: relative;
@@ -210,6 +202,7 @@ const UserInfo = styled.h1`
 const UserSettingWrap = styled.div`
   display: flex;
   justify-content: space-between;
+  // z-index: 99;
   > button {
     margin: 0;
   }
@@ -221,6 +214,7 @@ const UserDetailWrap = styled.div`
   padding: 18px 22px;
   background: #6e6e6e;
   border-radius: 6px;
+  z-index: 99;
   > div > h1 {
     margin-bottom: 6px;
   }

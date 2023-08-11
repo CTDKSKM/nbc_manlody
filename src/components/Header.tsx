@@ -9,30 +9,27 @@ import SpotifyWebApi from 'spotify-web-api-node';
 import TrackSearchResult from './Dashboard/TrackSearchResult';
 
 export interface Track {
-  albumUrl?: string
-  artist?: string
-  name?: string
-  title?: string
-  track_uri?: string
-  albumId?: string | number
-  album_type?: string
-  release_date?: string
-  album_uri?: string
-} 
+  albumUrl?: string;
+  artist?: string;
+  name?: string;
+  title?: string;
+  track_uri?: string;
+  albumId?: string | number;
+  album_type?: string;
+  release_date?: string;
+  album_uri?: string;
+}
 
 export const spotifyApi = new SpotifyWebApi({
   clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID
 });
 
-
-  export const accessToken = sessionStorage.getItem('access_token');
-
+export const accessToken = sessionStorage.getItem('access_token');
 
 const Header: React.FC = () => {
-
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState<Track[]>();
- 
+
   useEffect(() => {
     if (!accessToken) return;
     spotifyApi.setAccessToken(accessToken);
@@ -52,7 +49,6 @@ const Header: React.FC = () => {
       if (cancel) return;
 
       const tracks = res.body.tracks?.items.map((track) => {
-        
         const biggestAlbumImage = track.album.images[0].url;
         return {
           artist: track.artists[0].name,
@@ -113,7 +109,7 @@ const Header: React.FC = () => {
         />
         <div className="search-result">
           {searchResults?.map((track) => (
-            <TrackSearchResult setSearch={setSearch} track={track} key={track.track_uri}/>
+            <TrackSearchResult setSearch={setSearch} track={track} key={track.track_uri} />
           ))}
         </div>
       </form>
@@ -137,7 +133,6 @@ const HeaderTag = styled.header`
   align-items: center;
 
   border: 1px dotted gray;
-  padding: 1.5rem 0;
 
   input {
     padding: 10px;

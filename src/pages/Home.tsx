@@ -8,7 +8,7 @@ import { spotifyApi } from '../components/Header';
 import { useNavigate } from 'react-router';
 
 const Home = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
   const [accessToken, setAccessToken] = useState<any>('');
   const [homeShowTracks, setHomeShowTracks] = useState<any>([]);
   const [homeShowArtists, setHomeShowArtists] = useState<any>([]);
@@ -62,14 +62,16 @@ const Home = () => {
   return (
     <HomeWrapper>
       <div className="recommdentaionTag">
-        <h2>Today's recommended song</h2>
+        <h2>Today's Song</h2>
         <ul>
           {homeShowTracks?.map((item: any, index: number) => {
             return (
               <li key={index} onClick={() => navigate(`/detail/${item.album.id}`)}>
-                <img src={item.album.images[1].url} alt="이미지없음" />
-                <h3>{item.name}</h3>
-                <p>{item.artists[0].name}</p>
+                <img src={item.album.images[1].url} alt="no Album cover" />
+                <div className="info-wrapper">
+                  <h3>{item.name}</h3>
+                  <p>{item.artists[0].name}</p>
+                </div>
               </li>
             );
           })}
@@ -96,22 +98,21 @@ const HomeWrapper = styled.div`
   width: 100%;
   height: 100%;
 
+  z-index: 10;
   border: 1px dotted gray;
 
   .recommdentaionTag {
-    height: 25%;
+    height: 30%;
   }
   h2 {
     margin: 10px 0;
-    letter-spacing: -0.5px;
-    font-weight: 600;
     color: white;
+    font-weight: bold;
   }
   ul {
-    margin-top: 1.5rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 8px 20px;
   }
   li {
     padding: 6px 10px;
@@ -132,7 +133,14 @@ const HomeWrapper = styled.div`
     height: auto;
     object-fit: cover;
   }
-
+  li > .info-wrapper {
+    margin-left: 8px;
+  }
+  .info-wrapper > h3 {
+    font-size: 15px;
+    height: 16px;
+    overflow: hidden;
+  }
   .album-info {
     height: 45px;
     flex-grow: 1;
@@ -146,13 +154,13 @@ const HomeWrapper = styled.div`
     font-weight: 600;
   }
   p {
-    margin-top: 2px;
-    padding: 4px;
+    margin: 4px 0;
+
     font-size: 10px;
   }
 
   #hotAlbumTag {
-    margin-top: 20px;
+    margin-top: 14px;
     height: 30%;
   }
 `;
