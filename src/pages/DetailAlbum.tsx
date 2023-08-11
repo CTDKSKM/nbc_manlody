@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import { useMutation, useQueryClient } from 'react-query';
 import { collection, query, where, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { styled } from 'styled-components';
 
@@ -13,7 +14,6 @@ import ReviewBox from '../components/detail-album/review/ReviewBox';
 
 import { useDispatch } from 'react-redux';
 import { addAlbum } from '../redux/modules/playUris';
-import { useMutation, useQueryClient } from 'react-query';
 
 interface ImageProps {
   url: string;
@@ -453,53 +453,4 @@ const BodyGrid = styled(Grid)`
       margin-right: 5px;
     }
   }
-  // 4th-child{
-  //   loloClose: 20px;
-  // }
-`;
-
-const CommentWrap = styled.div`
-  padding: 20px 0px;
-`;
-const CommentWiteForm = styled.form`
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
-  > input {
-    width: 100%;
-    padding: 10px 0px;
-    outline: none;
-    border-radius: 7px;
-    background: #999;
-    border: none;
-  }
-  > button {
-    background: #999;
-    border: none;
-    border-radius: 7px;
-    color: #fff;
-  }
-`;
-const Comment = styled.div`
-  display: flex;
-  justify-content: space-between;
-  color: #fff;
-  padding: 16px 10px;
-  border-bottom: solid 1px #adadad;
-`;
-
-const ToggleButton = styled.p`
-  position: relative;
-  left: 0px;
-  top: 0px;
-`;
-const ToggleBoxWrap = styled.div`
-  position: absolute;
-  right: 0px;
-  bottom: 30px;
-  width: 100px;
-  background: #eee;
-  border-radius: 7px;
-  text-align: center;
 `;
