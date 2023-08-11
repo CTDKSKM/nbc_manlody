@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import useUser from '../hooks/useUser';
@@ -19,7 +18,7 @@ const NavBar = () => {
         {userId && <FavoriteSong />}
       </ul>
       <div>
-        <h2>🐱‍🏍PLAYLIST🎶</h2>
+        <Link to="/playlist">🐱‍🏍PLAYLIST🎶</Link>
         <ul>
           <li>2: title - artist - playBtn</li>
           <li>2: title - artist - playBtn</li>
