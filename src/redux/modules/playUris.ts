@@ -4,8 +4,8 @@ const albumTrackSlice = createSlice({
   name: "albumAllTrack",
   initialState,
   reducers: {
-    playAlbum: (state, action) => {
-      return [...state, action.payload]
+    changePlaylist: (state, action)=>{
+      return [...action.payload]
     },
     addAlbum: (state, action)=>{
       return [...state, ...action.payload]
@@ -13,5 +13,5 @@ const albumTrackSlice = createSlice({
   },
 });
 
-export const { playAlbum, addAlbum } = albumTrackSlice.actions;
+export const { changePlaylist, addAlbum } = albumTrackSlice.actions;
 export default albumTrackSlice.reducer;
