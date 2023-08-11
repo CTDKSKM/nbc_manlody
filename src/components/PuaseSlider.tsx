@@ -44,7 +44,7 @@ function Pausearousel({ homeShowArtists }: Props) {
         {homeShowArtists.map((item: any, index: number) => {
           return (
             <div className="box" key={index}>
-              <img src={item.images[0].url} alt="No Image" />
+              <img src={item.images[0]?.url} alt="No Image" />
               <h5>{item.name}</h5>
             </div>
           );

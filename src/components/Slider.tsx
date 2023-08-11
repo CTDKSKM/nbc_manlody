@@ -3,11 +3,13 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { styled } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   homeShowAlbums: any;
 };
 function Carousel({ homeShowAlbums }: Props) {
+  const navigate = useNavigate()
   const settings = {
     slide: 'div',
     dots: false,
@@ -45,7 +47,7 @@ function Carousel({ homeShowAlbums }: Props) {
       <Slider {...settings}>
         {homeShowAlbums?.map((item: any, index: number) => {
           return (
-            <div className="box" key={index}>
+            <div className="box" key={index} onClick={() => navigate(`/detail/${item.id}`)}>
               <img src={item.images[0].url} alt="No Image" />
               <h5>{item.name}</h5>
               <p>{item.artists[0].name}</p>

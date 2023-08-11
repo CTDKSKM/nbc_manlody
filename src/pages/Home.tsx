@@ -49,23 +49,14 @@ const Home = () => {
     spotifyApi.searchTracks(randomString1, { limit: 6 }).then((res) => {
       const homeShowTracks = res.body.tracks?.items;
       setHomeShowTracks(homeShowTracks);
-      //homeShowAlbumImage : [0].album.images[1]
-      //homeShowTrackId : [0].id
-      //homeShowTrackName : [0].name
     });
     spotifyApi.searchArtists(randomString2, { limit: 6 }).then((res) => {
       const homeShowArtists = res.body.artists?.items;
       setHomeShowArtists(homeShowArtists);
-      //homeShowArtistsImage : [0].album.images[1]
-      //homeShowArtistsId : [0].id
-      //homeShowArtistsName : [0].name
     });
     spotifyApi.searchAlbums(randomString3, { limit: 10 }).then((res) => {
       const homeShowAlbums = res.body.albums?.items;
       setHomeShowAlbums(homeShowAlbums);
-      //homeShowAlbumsImage : [0].album.images[1]
-      //homeShowAlbumsId : [0].id
-      //homeShowAlbumsName : [0].name
     });
   }, []);
   return (
