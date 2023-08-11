@@ -14,6 +14,7 @@ import ReviewBox from '../components/detail-album/review/ReviewBox';
 
 import { useDispatch } from 'react-redux';
 import { addAlbum } from '../redux/modules/playUris';
+import { useMutation, useQueryClient } from 'react-query';
 
 interface Album {
   id?: string;
@@ -84,9 +85,8 @@ const DetailAlbum = ({ data }: any) => {
   const playAlbum = () => {
     dispatch(addAlbum(albumUris));
   };
-  console.log('album==>', album);
-  console.log('albumuri==>', albumUris);
-
+  // console.log('album==>', album);
+  // console.log('albumuri==>', albumUris);
 
   const toggleLikeHandler = async (itemId: string) => {
     const likesRef = collection(db, 'likes');
@@ -108,17 +108,23 @@ const DetailAlbum = ({ data }: any) => {
       setLikedTracks(likedTracks.filter((id) => id !== itemId));
     }
   };
+  const queryClient = useQueryClient();
+  const toggleMutation = useMutation(toggleLikeHandler, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['likes']);
+    }
+  });
 
-    const timeData = album.map((item:any)=>{
-    const miliseconds = item.duration_ms
-    const seconds = Math.floor(miliseconds / 1000)
-    const minutes = Math.floor(seconds / 60)
+  const timeData = album.map((item: any) => {
+    const miliseconds = item.duration_ms;
+    const seconds = Math.floor(miliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-  
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`
-    const formattedRemainingSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`
-     return `${formattedMinutes}:${formattedRemainingSeconds}`
-  })
+
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+    const formattedRemainingSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`;
+    return `${formattedMinutes}:${formattedRemainingSeconds}`;
+  });
 
   return (
     <AlbumTag>
@@ -162,7 +168,7 @@ const DetailAlbum = ({ data }: any) => {
                   <GridItem>{albumData.name}</GridItem>
                   <GridItem
                     onClick={() => {
-                      toggleLikeHandler(item.id);
+                      toggleMutation.mutate(item.id);
                     }}
                   >
                     {likedTracks.includes(item.id) ? '❤️' : '🤍'}

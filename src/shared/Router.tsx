@@ -5,18 +5,17 @@ import Layout from './Layout';
 import GlobalStyle from '../GlobalStyle';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
-import GetAccessToken from '../components/GetAccessToken/GetAccessToken';
-import TestPage from '../pages/TestPage';
+import { accessToken } from '../components/Header';
 
 const Router = () => {
-  const navigate = useNavigate();
-  const [render, setRender] = useState(false);
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (!user) navigate('/login');
-      setRender(true);
-    });
-  }, []);
+  // const navigate = useNavigate();
+  // const [render, setRender] = useState(false);
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (!user || !accessToken) navigate('/login');
+  //     setRender(true);
+  //   });
+  // }, []);
   return (
     <>
       <GlobalStyle />
