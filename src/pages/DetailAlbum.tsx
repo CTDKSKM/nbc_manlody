@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { collection, query, where, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { styled } from 'styled-components';
 
-import { db } from '../firebase';
+import { db, storage } from '../firebase';
 import { accessToken } from '../components/Header';
 import useUser from '../hooks/useUser';
 
@@ -14,6 +14,7 @@ import ReviewBox from '../components/detail-album/review/ReviewBox';
 
 import { useDispatch } from 'react-redux';
 import { addAlbum } from '../redux/modules/playUris';
+import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 
 interface ImageProps {
   url: string;
@@ -258,8 +259,6 @@ const DetailAlbum = ({ data }: any) => {
         await updateDoc(playlistRef, {
           tracks: updatedTracks
         });
-
-        console.log('Track added to the playlist');
       } else {
         console.error('Playlist not found');
       }
@@ -268,30 +267,69 @@ const DetailAlbum = ({ data }: any) => {
     }
   };
   const [image, setImage] = useState<any>('');
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  // useEffect(() => {
-  //   if (canvasRef.current instanceof HTMLCanvasElement) {
-  //     const canvas = canvasRef.current;
-  //     canvas.width = image.width;
-  //     canvas.height = image.height;
-  //     const ctx = canvas.getContext('2d');
-  //     ctx?.drawImage(image, 0, 0);
-  //     const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
-  //     console.log('이미지데이타제발!!=>>', imageData);
-  //   }
-  // }, []);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const extractRGBColors = () => {
+    const image = imageRef.current as HTMLImageElement;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas?.getContext('2d');
+
+    canvas.width = image?.width;
+    canvas.height = image?.height;
+
+    ctx?.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
+
+    console.log('어디서 나냐?');
+    const pixels = imageData?.data as Uint8ClampedArray;
+
+    let redSum = 0;
+    let greenSum = 0;
+    let blueSum = 0;
+
+    for (let i = 0; i < pixels?.length; i += 4) {
+      redSum += pixels[i];
+      greenSum += pixels[i + 1];
+      blueSum += pixels[i + 2];
+    }
+
+    const pixelCount = pixels.length / 4;
+    const averageRed = Math.round(redSum / pixelCount);
+    const averageGreen = Math.round(greenSum / pixelCount);
+    const averageBlue = Math.round(blueSum / pixelCount);
+
+    console.log(`Average RGB: ${averageRed}, ${averageGreen}, ${averageBlue}`);
+  };
+  const [imageUrl, setImageUrl] = useState<string>('');
+  const saveAlbumImage = async () => {
+    console.log('실행됐냐', album.images[0]?.url);
+    try {
+      console.log('세이브앨범실행');
+      const response = await fetch('https://i.scdn.co/image/ab67616d0000b27391ee4ab5782c9b197766ca02');
+      const imageBlob = await response.blob();
+
+      const storageRef = ref(storage, `albumImgs/${Date.now()}`);
+      await uploadBytes(storageRef, imageBlob);
+      const url = await getDownloadURL(storageRef);
+      console.log('url=>', url);
+      setImageUrl(url);
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+    }
+  };
+  console.log('imageUrl!!', imageUrl);
   return (
     <>
       <AlbumTag>
-        <canvas ref={canvasRef}></canvas>
+        <button onClick={saveAlbumImage}>이미지겟</button>
         <button onClick={playAlbum}>앨범플레이</button>
         <div className="album-info">
           <div className="info-data">
             <img
-              onLoad={(e) => {
-                console.log('e.target==>>', e.target);
-                // setImage(e);
-              }}
+              crossOrigin="anonymous"
+              ref={imageRef}
+              onLoad={extractRGBColors}
               src={album.images[0]?.url}
               alt="No image"
             />
