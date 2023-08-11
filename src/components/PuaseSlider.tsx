@@ -57,69 +57,66 @@ function Pausearousel({ homeShowArtists }: Props) {
 export default Pausearousel;
 
 const CarouselWrapper = styled.section`
-    margin-top:1.5rem;
-    height:100%;
+  margin-top: 1.5rem;
+  height: 100%;
 
-    .slick-track{
-        height: 80%;
-    }
-    .slick-slider {
-        width: 62vw;
-        height: 180px;
-        margin: 0 auto;
-    }
-    .slick-slide .box {
-        // width: 50%;
-        // margin: 0 auto;
-        overflow:hidden;
-        
-    }
-    .slick-slide {
-        box-sizing: border-box;
-        width:50%;
-        height: 180px;
-        margin: 0 15px;
-        background-color: rgba(201, 201, 201, 0.726);
-        border-radius: 8px;
-        transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
-    }
-    .slick-slide:hover {
-        transform: scale(1.008);
-        filter: brightness(1.2);
-    }
+  .slick-track {
+    height: 80%;
+  }
+  .slick-slider {
+    width: 62vw;
+    height: 180px;
+    margin: 0 auto;
+  }
+  .slick-slide .box {
+    // width: 50%;
+    // margin: 0 auto;
+    overflow: hidden;
+  }
+  .slick-slide {
+    box-sizing: border-box;
+    width: 50%;
+    height: 180px;
+    margin: 0 15px;
+    background-color: rgba(201, 201, 201, 0.726);
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
+  }
+  .slick-slide:hover {
+    transform: scale(1.008);
+    filter: brightness(1.2);
+  }
 
-    .container{
-        width:90%;
-    }
-    img {
-        margin: 0 auto;
-        margin-top: 20px;
-        width: 100px;
-        border-radius: 4px;
-        object-fit: cover;
-        box-sizing: border-box;
-        transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
-    }
-    h5{
-        margin-top: 10px;
-        font-weight:600;
-    }
-    h5,p{
-        text-align: center;
-    }
-    p{
-
-    }
-    img:hover {
-        transform: scale(1.05);
-        filter: brightness(1.2);
-    }
-    .slick-prev,
-    .slick-next{
-        /* margin-bottom{
+  .container {
+    width: 90%;
+  }
+  img {
+    margin: 0 auto;
+    margin-top: 20px;
+    width: 100px;
+    border-radius: 4px;
+    object-fit: cover;
+    box-sizing: border-box;
+    transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
+  }
+  h5 {
+    margin-top: 10px;
+    font-weight: 600;
+  }
+  h5,
+  p {
+    text-align: center;
+  }
+  p {
+  }
+  img:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+  }
+  .slick-prev,
+  .slick-next {
+    /* margin-bottom{
             10px;
         } */
-    }
-
-
+  }
 `;
