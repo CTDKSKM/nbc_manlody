@@ -66,13 +66,12 @@ const DetailAlbum = ({ data }: any) => {
     Authorization: `Bearer ${accessToken}`
   };
   const [likedTracks, setLikedTracks] = useState<string[]>([]);
-  console.log('album==>', album);
+
   useEffect(() => {
     try {
       const getAlbum = async () => {
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
-        console.log('response.data=>', response.data);
-        console.log('response.data.tracks=>', response.data.tracks);
+
         setAlbum(response.data);
         setAlbumTracks(response.data.tracks.items);
 

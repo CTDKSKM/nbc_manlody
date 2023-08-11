@@ -3,7 +3,7 @@ import { auth } from '../firebase';
 
 const useUser = () => {
   const user = auth.currentUser;
-
+  console.log(user);
   const [userId, setUserId] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');

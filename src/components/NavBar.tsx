@@ -1,29 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
-import useLikes from '../hooks/useLikes';
 import useUser from '../hooks/useUser';
+import FavoriteSong from './FavoriteSong';
 
 const NavBar = () => {
   const { userId } = useUser();
-  console.log(userId, 'userId');
-  const [likes, setLikes] = useState<any>([]);
-  const { isLoading, isError, data } = useLikes();
-  useEffect(() => {
-    if (data) setLikes(data);
-  }, [data]);
+
   return (
     <Nav>
       <div id="logoBody">
         <Link to="/">
           <img src="/logo_horizontal.png" alt="Logo" />
-          {/* <h3>NavBar</h3> */}
         </Link>
       </div>
       <ul>
         <li>Settings</li>
-        {/* {data ? <li>My favorite Song{data!.length}</li> : <li>My favorite Song</li>} */}
-        <li>My favorite Song{likes.length}</li>
+        {userId && <FavoriteSong />}
       </ul>
       <div>
         <h2>🐱‍🏍PLAYLIST🎶</h2>

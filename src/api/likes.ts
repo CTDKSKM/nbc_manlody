@@ -1,11 +1,12 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 
-const userId = auth.currentUser?.uid;
-
 export const getLikes = async () => {
+  console.log(auth.currentUser, '어스커런트');
+  const userId = auth.currentUser?.uid;
+  console.log(userId, 'getlikes');
   try {
-    console.log(userId, 'getLikes');
+    // console.log(userId, 'getLikes');
     const q = query(collection(db, 'likes'), where('userId', '==', userId));
 
     const snapshot = await getDocs(q);
