@@ -13,16 +13,32 @@ import ReviewBox from '../components/detail-album/review/ReviewBox';
 
 import { useDispatch } from 'react-redux';
 import { addAlbum } from '../redux/modules/playUris';
+import { useMutation, useQueryClient } from 'react-query';
+
+interface ImageProps {
+  url: string;
+  height: number;
+  width: number;
+}
+
+interface ImageProps {
+  url: string;
+  height: number;
+  width: number;
+}
 
 interface Album {
-  id?: string;
-  name?: string;
-  uri?: string;
-  artists?: {
-    name?: string;
+  id: string;
+  name: string;
+  uri: string;
+  artists: {
+    name: string;
   }[];
-  duration_ms?: number;
-  liked?: boolean;
+  duration_ms: number;
+  liked: boolean;
+  images: ImageProps[];
+  album_type: string;
+  release_date: string;
 }
 
 interface PlaylistModalProps {
@@ -88,7 +104,19 @@ interface Playlist {
 const DetailAlbum = ({ data }: any) => {
   const dispatch = useDispatch();
   const { album_id: albumId } = useParams<string>();
-  const [album, setAlbum] = useState<Album[]>([]);
+
+  const [album, setAlbum] = useState<Album>({
+    id: '',
+    name: '',
+    uri: '',
+    artists: [],
+    duration_ms: 0,
+    liked: false,
+    images: [],
+    album_type: '',
+    release_date: ''
+  });
+  const [albumTracks, setAlbumTracks] = useState<any>([]);
   const [albumUris, setAlbumUris] = useState<string[]>([]);
   const [openReview, setOpenReview] = useState<boolean>(true);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -109,7 +137,10 @@ const DetailAlbum = ({ data }: any) => {
     try {
       const getAlbum = async () => {
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
-        setAlbum([...response.data.tracks.items]);
+
+        setAlbum(response.data);
+        setAlbumTracks(response.data.tracks.items);
+
         const albumUris = response.data.tracks.items.map((item: any) => item.uri);
         setAlbumUris([...albumUris]);
       };
@@ -139,7 +170,7 @@ const DetailAlbum = ({ data }: any) => {
   }, [userId]);
 
   useEffect(() => {
-    if (userId && album.length > 0) {
+    if (userId && albumTracks.length > 0) {
       const likesRef = collection(db, 'likes');
       const q = query(
         likesRef,
@@ -147,7 +178,7 @@ const DetailAlbum = ({ data }: any) => {
         where(
           'trackId',
           'in',
-          album.map((a) => a.id)
+          albumTracks.map((a: any) => a.id)
         )
       );
 
@@ -160,13 +191,11 @@ const DetailAlbum = ({ data }: any) => {
           console.error('Error fetching liked tracks: ', error);
         });
     }
-  }, [userId, album]);
+  }, [userId, albumTracks]);
 
   const playAlbum = () => {
     dispatch(addAlbum(albumUris));
   };
-  console.log('album==>', album);
-  console.log('albumuri==>', albumUris);
 
   const toggleLikeHandler = async (itemId: string) => {
     const likesRef = collection(db, 'likes');
@@ -188,8 +217,14 @@ const DetailAlbum = ({ data }: any) => {
       setLikedTracks(likedTracks.filter((id) => id !== itemId));
     }
   };
+  const queryClient = useQueryClient();
+  const toggleMutation = useMutation(toggleLikeHandler, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['likes']);
+    }
+  });
 
-  const timeData = album.map((item: any) => {
+  const timeData = albumTracks.map((item: any) => {
     const miliseconds = item.duration_ms;
     const seconds = Math.floor(miliseconds / 1000);
     const minutes = Math.floor(seconds / 60);
@@ -259,7 +294,7 @@ const DetailAlbum = ({ data }: any) => {
               <GridItem>재생 시간</GridItem>
             </Grid>
             <div className="track-box">
-              {album.map((item: any, index) => {
+              {albumTracks.map((item: any, index: number) => {
                 return (
                   <BodyGrid key={item.uri}>
                     <GridItem>{index + 1}</GridItem>

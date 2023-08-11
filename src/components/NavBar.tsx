@@ -1,19 +1,21 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
+import useUser from '../hooks/useUser';
+import FavoriteSong from './FavoriteSong';
 
 const NavBar = () => {
+  const { userId } = useUser();
+
   return (
     <Nav>
       <div id="logoBody">
         <Link to="/">
           <img src="/logo_horizontal.png" alt="Logo" />
-          {/* <h3>NavBar</h3> */}
         </Link>
       </div>
       <ul>
         <li>Settings</li>
-        <li>My favorite Song</li>
+        {userId && <FavoriteSong />}
       </ul>
       <div>
         <Link to="/playlist">🐱‍🏍PLAYLIST🎶</Link>
