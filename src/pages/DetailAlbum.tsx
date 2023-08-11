@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMutation, useQueryClient } from 'react-query';
 import { collection, query, where, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -120,7 +120,7 @@ const DetailAlbum = ({ data }: any) => {
   const [albumUris, setAlbumUris] = useState<string[]>([]);
   const [openReview, setOpenReview] = useState<boolean>(true);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [imgUrl, setImgUrl] = useState<string>("")
+  const [imgUrl, setImgUrl] = useState<string>('');
 
   const { userId } = useUser();
   const [likedTracks, setLikedTracks] = useState<string[]>([]);
@@ -147,8 +147,6 @@ const DetailAlbum = ({ data }: any) => {
       };
 
       getAlbum();
-
-
     } catch (error) {
       alert('앨범데이터 Get Fail' + error);
       return;
@@ -270,14 +268,35 @@ const DetailAlbum = ({ data }: any) => {
       console.error('Error adding track to playlist: ', error);
     }
   };
+  const [image, setImage] = useState<any>('');
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  // useEffect(() => {
+  //   if (canvasRef.current instanceof HTMLCanvasElement) {
+  //     const canvas = canvasRef.current;
+  //     canvas.width = image.width;
+  //     canvas.height = image.height;
+  //     const ctx = canvas.getContext('2d');
+  //     ctx?.drawImage(image, 0, 0);
 
+  //     const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
+  //     console.log('이미지데이타제발!!=>>', imageData);
+  //   }
+  // }, []);
   return (
     <>
       <AlbumTag>
+        <canvas ref={canvasRef}></canvas>
         <button onClick={playAlbum}>앨범플레이</button>
         <div className="album-info">
           <div className="info-data">
-            <img src={album.images[0]?.url} alt="image" />
+            <img
+              onLoad={(e) => {
+                console.log('e.target==>>', e.target);
+                // setImage(e);
+              }}
+              src={album.images[0]?.url}
+              alt="No image"
+            />
             <div>
               <h1>{album.name}</h1>
               <div>
