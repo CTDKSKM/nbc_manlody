@@ -17,7 +17,6 @@ const Player = () => {
     <StPlayerCtn>
       <SpotifyPlayer
         hideAttribution={true}
-
         styles={{
           trackNameColor: 'red',
           altColor: 'blue',
@@ -37,7 +36,7 @@ const Player = () => {
 export default Player;
 
 const StPlayerCtn = styled.div`
-min-height: 80px;
+  min-height: 80px;
   width: 800px;
   border-radius: 15px;
   overflow: hidden;
