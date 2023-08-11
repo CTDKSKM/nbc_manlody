@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useMutation, useQueryClient } from 'react-query';
 import { collection, query, where, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { styled } from 'styled-components';
@@ -120,7 +120,7 @@ const DetailAlbum = ({ data }: any) => {
   const [albumUris, setAlbumUris] = useState<string[]>([]);
   const [openReview, setOpenReview] = useState<boolean>(true);
   const [isModalOpen, setModalOpen] = useState(false);
-  const location = useLocation();
+  const [imgUrl, setImgUrl] = useState<string>("")
 
   const { userId } = useUser();
   const [likedTracks, setLikedTracks] = useState<string[]>([]);
@@ -143,9 +143,12 @@ const DetailAlbum = ({ data }: any) => {
 
         const albumUris = response.data.tracks.items.map((item: any) => item.uri);
         setAlbumUris([...albumUris]);
+        setImgUrl(response.data.images[0].url);
       };
 
       getAlbum();
+
+
     } catch (error) {
       alert('앨범데이터 Get Fail' + error);
       return;
@@ -306,7 +309,7 @@ const DetailAlbum = ({ data }: any) => {
                         <p>{item.artists[0].name}</p>
                       </div>
                     </GridItem>
-                    <GridItem>{album.images[0]?.url}</GridItem>
+                    <GridItem>{album.name}</GridItem>
                     <GridItem
                       onClick={() => {
                         toggleLikeHandler(item.id);
