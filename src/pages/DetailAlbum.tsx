@@ -16,37 +16,66 @@ import { useDispatch } from 'react-redux';
 import { addAlbum } from '../redux/modules/playUris';
 import { useMutation, useQueryClient } from 'react-query';
 
+interface ImageProps {
+  url: string;
+  height: number;
+  width: number;
+}
+
+interface ImageProps {
+  url: string;
+  height: number;
+  width: number;
+}
+
 interface Album {
-  id?: string;
-  name?: string;
-  uri?: string;
-  artists?: {
-    name?: string;
+  id: string;
+  name: string;
+  uri: string;
+  artists: {
+    name: string;
   }[];
-  duration_ms?: number;
-  liked?: boolean;
+  duration_ms: number;
+  liked: boolean;
+  images: ImageProps[];
+  album_type: string;
+  release_date: string;
 }
 
 const DetailAlbum = ({ data }: any) => {
   const dispatch = useDispatch();
   const { album_id: albumId } = useParams<string>();
-  const [album, setAlbum] = useState<Album[]>([]);
+
+  const [album, setAlbum] = useState<Album>({
+    id: '',
+    name: '',
+    uri: '',
+    artists: [],
+    duration_ms: 0,
+    liked: false,
+    images: [],
+    album_type: '',
+    release_date: ''
+  });
+  const [albumTracks, setAlbumTracks] = useState<any>([]);
   const [albumUris, setAlbumUris] = useState<string[]>([]);
   const [openReview, setOpenReview] = useState<boolean>(true);
-  const location = useLocation();
-  const albumData = location.state.track;
 
   const { userId } = useUser();
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
   const [likedTracks, setLikedTracks] = useState<string[]>([]);
-
+  console.log('album==>', album);
   useEffect(() => {
     try {
       const getAlbum = async () => {
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
-        setAlbum([...response.data.tracks.items]);
+        console.log('response.data=>', response.data);
+        console.log('response.data.tracks=>', response.data.tracks);
+        setAlbum(response.data);
+        setAlbumTracks(response.data.tracks.items);
+
         const albumUris = response.data.tracks.items.map((item: any) => item.uri);
         setAlbumUris([...albumUris]);
       };
@@ -59,7 +88,7 @@ const DetailAlbum = ({ data }: any) => {
   }, []);
 
   useEffect(() => {
-    if (userId && album.length > 0) {
+    if (userId && albumTracks.length > 0) {
       const likesRef = collection(db, 'likes');
       const q = query(
         likesRef,
@@ -67,7 +96,7 @@ const DetailAlbum = ({ data }: any) => {
         where(
           'trackId',
           'in',
-          album.map((a) => a.id)
+          albumTracks.map((a: any) => a.id)
         )
       );
 
@@ -80,13 +109,11 @@ const DetailAlbum = ({ data }: any) => {
           console.error('Error fetching liked tracks: ', error);
         });
     }
-  }, [userId, album]);
+  }, [userId, albumTracks]);
 
   const playAlbum = () => {
     dispatch(addAlbum(albumUris));
   };
-  // console.log('album==>', album);
-  // console.log('albumuri==>', albumUris);
 
   const toggleLikeHandler = async (itemId: string) => {
     const likesRef = collection(db, 'likes');
@@ -115,7 +142,7 @@ const DetailAlbum = ({ data }: any) => {
     }
   });
 
-  const timeData = album.map((item: any) => {
+  const timeData = albumTracks.map((item: any) => {
     const miliseconds = item.duration_ms;
     const seconds = Math.floor(miliseconds / 1000);
     const minutes = Math.floor(seconds / 60);
@@ -131,14 +158,14 @@ const DetailAlbum = ({ data }: any) => {
       <button onClick={playAlbum}>앨범플레이</button>
       <div className="album-info">
         <div className="info-data">
-          <img src={albumData.albumUrl} alt="image" />
+          <img src={album.images[0]?.url} alt="image" />
           <div>
-            <h1>{albumData.name}</h1>
+            <h1>{album.name}</h1>
             <div>
-              <p>{albumData.album_type}</p>
-              <p>{albumData.release_date}</p>
+              <p>{album.album_type}</p>
+              <p>{album.release_date}</p>
             </div>
-            <p className="artist-name">{albumData.artist}</p>
+            <p className="artist-name">{album.artists[0]?.name}</p>
           </div>
         </div>
         <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
@@ -153,19 +180,19 @@ const DetailAlbum = ({ data }: any) => {
             <GridItem>재생 시간</GridItem>
           </Grid>
           <div className="track-box">
-            {album.map((item: any, index) => {
+            {albumTracks.map((item: any, index: number) => {
               return (
                 <BodyGrid key={item.uri}>
                   <GridItem>{index + 1}</GridItem>
                   <GridItem>
-                    <img src={albumData.albumUrl} alt="image" />
+                    <img src={album.images[0]?.url} alt="image" />
 
                     <div>
                       <h1>{item.name}</h1>
                       <p>{item.artists[0].name}</p>
                     </div>
                   </GridItem>
-                  <GridItem>{albumData.name}</GridItem>
+                  <GridItem>{album.name}</GridItem>
                   <GridItem
                     onClick={() => {
                       toggleMutation.mutate(item.id);
