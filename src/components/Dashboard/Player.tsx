@@ -3,6 +3,7 @@ import React from 'react';
 import SpotifyPlayer from 'react-spotify-web-playback';
 import { accessToken } from '../Header';
 import { useSelector } from 'react-redux';
+import { styled } from 'styled-components';
 type PlayerProps = {
   accessToken: string;
   trackUri: string | undefined;
