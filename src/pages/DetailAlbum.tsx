@@ -128,7 +128,7 @@ const DetailAlbum = ({ data }: any) => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [selectedTrack, setSelectedTrack] = useState<{ id: string } | null>(null);
 
-  const albumData = location.state.track;
+  // const albumData = location.state.track;
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
@@ -272,14 +272,14 @@ const DetailAlbum = ({ data }: any) => {
         <button onClick={playAlbum}>앨범플레이</button>
         <div className="album-info">
           <div className="info-data">
-            <img src={albumData.albumUrl} alt="image" />
+            <img src={album.images[0]?.url} alt="image" />
             <div>
-              <h1>{albumData.name}</h1>
+              <h1>{album.name}</h1>
               <div>
-                <p>{albumData.album_type}</p>
-                <p>{albumData.release_date}</p>
+                <p>{album.album_type}</p>
+                <p>{album.release_date}</p>
               </div>
-              <p className="artist-name">{albumData.artist}</p>
+              <p className="artist-name">{album.artists[0]?.name}</p>
             </div>
           </div>
           <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
@@ -299,14 +299,14 @@ const DetailAlbum = ({ data }: any) => {
                   <BodyGrid key={item.uri}>
                     <GridItem>{index + 1}</GridItem>
                     <GridItem>
-                      <img src={albumData.albumUrl} alt="image" />
+                      <img src={album.images[0]?.url} alt="image" />
 
                       <div>
                         <h1>{item.name}</h1>
                         <p>{item.artists[0].name}</p>
                       </div>
                     </GridItem>
-                    <GridItem>{albumData.name}</GridItem>
+                    <GridItem>{album.images[0]?.url}</GridItem>
                     <GridItem
                       onClick={() => {
                         toggleLikeHandler(item.id);

@@ -3,6 +3,7 @@ import { Home, DetailAlbum, SocialLogin } from '../pages';
 import Layout from './Layout';
 import GlobalStyle from '../GlobalStyle';
 import PlayList from '../pages/PlayList';
+import ColorTest from '../pages/ColorTest';
 
 const Router = () => {
   return (
@@ -14,6 +15,8 @@ const Router = () => {
           <Route path="/" element={<Home />} />
           <Route path="/playlist" element={<PlayList />} />
           <Route path="/detail/:album_id" element={<DetailAlbum />} />
+          <Route path="/access" element={<ColorTest />} />
+
         </Route>
       </Routes>
     </>
