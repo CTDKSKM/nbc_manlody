@@ -110,8 +110,6 @@ const Header: React.FC = () => {
           }}
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          // onFocus={handleInputFocus}
-          // ref={searchInputRef}
         />
         <div className="search-result">
           {searchResults?.map((track) => (
