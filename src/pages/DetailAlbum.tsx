@@ -109,6 +109,17 @@ const DetailAlbum = ({ data }: any) => {
     }
   };
 
+    const timeData = album.map((item:any)=>{
+    const miliseconds = item.duration_ms
+    const seconds = Math.floor(miliseconds / 1000)
+    const minutes = Math.floor(seconds / 60)
+    const remainingSeconds = seconds % 60;
+  
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`
+    const formattedRemainingSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`
+     return `${formattedMinutes}:${formattedRemainingSeconds}`
+  })
+
   return (
     <AlbumTag>
       <button onClick={playAlbum}>앨범플레이</button>
@@ -156,7 +167,7 @@ const DetailAlbum = ({ data }: any) => {
                   >
                     {likedTracks.includes(item.id) ? '❤️' : '🤍'}
                   </GridItem>
-                  <GridItem>{}</GridItem>
+                  <GridItem>{timeData[index]}</GridItem>
                 </BodyGrid>
               );
             })}
