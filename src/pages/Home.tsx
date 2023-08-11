@@ -1,14 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
 import Carousel from '../components/Slider';
 import PauseCarousel from '../components/PuaseSlider';
 import { getReturnedParamsFromSpotifyAuth } from '../components/GetAccessToken/GetAccessToken';
-import axios from 'axios';
 import { spotifyApi } from '../components/Header';
 import { useNavigate } from 'react-router';
 
 const Home = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
   const [accessToken, setAccessToken] = useState<any>('');
   const [homeShowTracks, setHomeShowTracks] = useState<any>([]);
   const [homeShowArtists, setHomeShowArtists] = useState<any>([]);
