@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { collection, query, where, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { collection, query, where, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { styled } from 'styled-components';
 
 import { db } from '../firebase';
@@ -42,6 +41,66 @@ interface Album {
   release_date: string;
 }
 
+interface PlaylistModalProps {
+  isOpen: boolean;
+  closeModal: () => void;
+  playlists: {}[];
+  selectedTrack: {} | null;
+  addTrackToPlaylist: (id: string) => void;
+}
+
+const PlaylistModal: React.FC<PlaylistModalProps> = ({ isOpen, closeModal, playlists, addTrackToPlaylist }) => {
+  if (!isOpen) return null;
+
+  return (
+    <ModalWrapper>
+      <ModalContent>
+        <h2>Select a playlist</h2>
+        <ul>
+          {playlists.map((playlist: any) => (
+            <li
+              key={playlist.id}
+              onClick={() => {
+                addTrackToPlaylist(playlist.id);
+              }}
+            >
+              {playlist.name}
+            </li>
+          ))}
+        </ul>
+        <button onClick={closeModal}>Close</button>
+      </ModalContent>
+    </ModalWrapper>
+  );
+};
+
+const ModalWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContent = styled.div`
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+`;
+
+interface Playlist {
+  id: string;
+  name: string;
+  userId: string;
+  tracks: string[];
+}
+
 const DetailAlbum = ({ data }: any) => {
   const dispatch = useDispatch();
   const { album_id: albumId } = useParams<string>();
@@ -60,12 +119,19 @@ const DetailAlbum = ({ data }: any) => {
   const [albumTracks, setAlbumTracks] = useState<any>([]);
   const [albumUris, setAlbumUris] = useState<string[]>([]);
   const [openReview, setOpenReview] = useState<boolean>(true);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const location = useLocation();
 
   const { userId } = useUser();
+  const [likedTracks, setLikedTracks] = useState<string[]>([]);
+
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [selectedTrack, setSelectedTrack] = useState<{ id: string } | null>(null);
+
+  const albumData = location.state.track;
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
-  const [likedTracks, setLikedTracks] = useState<string[]>([]);
 
   useEffect(() => {
     try {
@@ -85,6 +151,23 @@ const DetailAlbum = ({ data }: any) => {
       return;
     }
   }, []);
+
+  useEffect(() => {
+    const fetchPlaylists = async () => {
+      if (userId) {
+        try {
+          const q = query(collection(db, 'playlists'), where('userId', '==', userId));
+          const querySnapshot = await getDocs(q);
+
+          setPlaylists(querySnapshot.docs.map((doc) => ({ id: doc.id, ...(doc.data() as Omit<Playlist, 'id'>) })));
+        } catch (error) {
+          console.error('Error fetching playlists: ', error);
+        }
+      }
+    };
+
+    fetchPlaylists();
+  }, [userId]);
 
   useEffect(() => {
     if (userId && albumTracks.length > 0) {
@@ -152,66 +235,114 @@ const DetailAlbum = ({ data }: any) => {
     return `${formattedMinutes}:${formattedRemainingSeconds}`;
   });
 
-  return (
-    <AlbumTag>
-      <button onClick={playAlbum}>앨범플레이</button>
-      <div className="album-info">
-        <div className="info-data">
-          <img src={album.images[0]?.url} alt="image" />
-          <div>
-            <h1>{album.name}</h1>
-            <div>
-              <p>{album.album_type}</p>
-              <p>{album.release_date}</p>
-            </div>
-            <p className="artist-name">{album.artists[0]?.name}</p>
-          </div>
-        </div>
-        <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
-      </div>
-      {openReview ? (
-        <div className="result-album">
-          <Grid>
-            <GridItem>#</GridItem>
-            <GridItem>곡 정보</GridItem>
-            <GridItem>앨범 정보</GridItem>
-            <GridItem>좋아요</GridItem>
-            <GridItem>재생 시간</GridItem>
-          </Grid>
-          <div className="track-box">
-            {albumTracks.map((item: any, index: number) => {
-              return (
-                <BodyGrid key={item.uri}>
-                  <GridItem>{index + 1}</GridItem>
-                  <GridItem>
-                    <img src={album.images[0]?.url} alt="image" />
+  const addTrackToPlaylist = async (playlistId: string) => {
+    if (!selectedTrack) {
+      console.error('No track selected');
+      return;
+    }
 
-                    <div>
-                      <h1>{item.name}</h1>
-                      <p>{item.artists[0].name}</p>
-                    </div>
-                  </GridItem>
-                  <GridItem>{album.name}</GridItem>
-                  <GridItem
-                    onClick={() => {
-                      toggleMutation.mutate(item.id);
-                    }}
-                  >
-                    {likedTracks.includes(item.id) ? '❤️' : '🤍'}
-                  </GridItem>
-                  <GridItem>{timeData[index]}</GridItem>
-                </BodyGrid>
-              );
-            })}
+    try {
+      const playlistRef = doc(db, 'playlists', playlistId);
+      const playlistSnapshot = await getDoc(playlistRef);
+
+      if (playlistSnapshot.exists()) {
+        const playlistData = playlistSnapshot.data() as Playlist;
+        if (playlistData.tracks.includes(selectedTrack.id)) {
+          console.warn('Track already exists in the playlist');
+          return;
+        }
+
+        const updatedTracks = [...playlistData.tracks, selectedTrack];
+        await updateDoc(playlistRef, {
+          tracks: updatedTracks
+        });
+
+        console.log('Track added to the playlist');
+      } else {
+        console.error('Playlist not found');
+      }
+    } catch (error) {
+      console.error('Error adding track to playlist: ', error);
+    }
+  };
+
+  return (
+    <>
+      <AlbumTag>
+        <button onClick={playAlbum}>앨범플레이</button>
+        <div className="album-info">
+          <div className="info-data">
+            <img src={albumData.albumUrl} alt="image" />
+            <div>
+              <h1>{albumData.name}</h1>
+              <div>
+                <p>{albumData.album_type}</p>
+                <p>{albumData.release_date}</p>
+              </div>
+              <p className="artist-name">{albumData.artist}</p>
+            </div>
           </div>
+          <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
         </div>
-      ) : (
-        <>
-          <AlbumReview />
-          <ReviewBox data={data} />
-        </>
-      )}
-    </AlbumTag>
+        {openReview ? (
+          <div className="result-album">
+            <Grid>
+              <GridItem>#</GridItem>
+              <GridItem>곡 정보</GridItem>
+              <GridItem>앨범 정보</GridItem>
+              <GridItem>좋아요</GridItem>
+              <GridItem>재생 시간</GridItem>
+            </Grid>
+            <div className="track-box">
+              {albumTracks.map((item: any, index: number) => {
+                return (
+                  <BodyGrid key={item.uri}>
+                    <GridItem>{index + 1}</GridItem>
+                    <GridItem>
+                      <img src={albumData.albumUrl} alt="image" />
+
+                      <div>
+                        <h1>{item.name}</h1>
+                        <p>{item.artists[0].name}</p>
+                      </div>
+                    </GridItem>
+                    <GridItem>{albumData.name}</GridItem>
+                    <GridItem
+                      onClick={() => {
+                        toggleLikeHandler(item.id);
+                      }}
+                    >
+                      {likedTracks.includes(item.id) ? '❤️' : '🤍'}
+                    </GridItem>
+                    <GridItem
+                      onClick={() => {
+                        setSelectedTrack(item);
+                        setModalOpen(true);
+                      }}
+                    >
+                      Add playlist
+                    </GridItem>
+                    <GridItem>{timeData[index]}</GridItem>
+                  </BodyGrid>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          <>
+            <AlbumReview />
+            <ReviewBox data={data} />
+          </>
+        )}
+      </AlbumTag>
+      <PlaylistModal
+        isOpen={isModalOpen}
+        closeModal={() => setModalOpen(false)}
+        playlists={playlists}
+        addTrackToPlaylist={addTrackToPlaylist}
+        selectedTrack={selectedTrack}
+      />
+    </>
   );
 };
 
