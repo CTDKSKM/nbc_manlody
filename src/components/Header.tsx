@@ -1,58 +1,35 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Profile from './Profile';
+import { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
-import { SearchOutlined, StepForwardOutlined, StepBackwardOutlined } from '@ant-design/icons';
+
 import { Button, Tooltip, Space } from 'antd';
-import { signOut } from 'firebase/auth';
-import { auth } from '../firebase';
+import { SearchOutlined, StepForwardOutlined, StepBackwardOutlined } from '@ant-design/icons';
 import SpotifyWebApi from 'spotify-web-api-node';
+
 import TrackSearchResult from './Dashboard/TrackSearchResult';
+import Profile from './Profile';
 
 export interface Track {
-  albumUrl?: string
-  artist?: string
-  name?: string
-  title?: string
-  track_uri?: string
-  albumId?: string | number
-  album_type?: string
-  release_date?: string
-  album_uri?: string
-} 
+  albumUrl?: string;
+  artist?: string;
+  name?: string;
+  title?: string;
+  track_uri?: string;
+  albumId?: string | number;
+  album_type?: string;
+  release_date?: string;
+  album_uri?: string;
+}
 
-const spotifyApi = new SpotifyWebApi({
+export const spotifyApi = new SpotifyWebApi({
   clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID
 });
 
-
-  export const accessToken = sessionStorage.getItem('access_token');
-
+export const accessToken = sessionStorage.getItem('access_token');
 
 const Header: React.FC = () => {
-  // const searchIconRef = useRef<HTMLSpanElement | null>(null);
-  // const searchInputRef = useRef<HTMLSpanElement | null>(null);
-
-  // useEffect(() => {
-  //     if (searchInputRef.current) {
-  //         searchInputRef.current.focus(); // 컴포넌트 마운트 시 자동 포커스
-  //     }
-  // }, []);
-
-  // const handleInputFocus = () => {
-  //     if (searchIconRef.current) {
-  //         searchIconRef.current.style.opacity = "0";
-  //     }
-  //     if (searchInputRef.current) {
-  //         searchInputRef.current.style.transform = "translate(-30px)";
-  //     }
-  // };
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState<Track[]>();
-  const [playingTrack, setPlayingTrack] = useState<Track>();
-  const chooseTrack = (track: Track) => {
-    setPlayingTrack(track);
-    // setSearch("")
-  };
+
   useEffect(() => {
     if (!accessToken) return;
     spotifyApi.setAccessToken(accessToken);
@@ -72,7 +49,6 @@ const Header: React.FC = () => {
       if (cancel) return;
 
       const tracks = res.body.tracks?.items.map((track) => {
-        
         const biggestAlbumImage = track.album.images[0].url;
         return {
           artist: track.artists[0].name,
@@ -91,10 +67,7 @@ const Header: React.FC = () => {
     return () => {
       cancel = true;
     };
-  }, [search, accessToken, setSearch]);
-  const handleSignOut = async () => {
-    await signOut(auth);
-  };
+  }, [search, accessToken]);
 
   const searchInputRef = useRef(null);
   const handleWindowClick = (e: MouseEvent) => {
@@ -130,12 +103,10 @@ const Header: React.FC = () => {
           }}
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          // onFocus={handleInputFocus}
-          // ref={searchInputRef}
         />
         <div className="search-result">
           {searchResults?.map((track) => (
-            <TrackSearchResult setSearch={setSearch} track={track} key={track.track_uri} chooseTrack={chooseTrack} />
+            <TrackSearchResult setSearch={setSearch} track={track} key={track.track_uri} />
           ))}
         </div>
       </form>
@@ -152,8 +123,6 @@ export default Header;
 const HeaderTag = styled.header`
   position: relative;
   width: 100%;
-  // margin: 0 auto;
-  // margin-right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;

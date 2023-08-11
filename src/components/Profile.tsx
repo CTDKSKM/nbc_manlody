@@ -20,6 +20,7 @@ const Profile = () => {
   const [isToggle, setIsToggle] = useState<boolean>(false);
 
 
+<<<<<<< HEAD
   const {userName, userEmail, userImg, setUserProfile } = useUser();
   //
   // console.log('유저이미지',userImg)
@@ -29,6 +30,11 @@ const Profile = () => {
   useEffect(() => {
     setIsToggle(false);
   }, [params]);
+=======
+  const { userName, userEmail, userImg } = useUser();
+  console.log("userName=>",userName);
+
+>>>>>>> cbd9046a66d25dc66a1d532684680deb42a2a6a7
 
   const handleSignOut = async () => {
     await signOut(auth);
