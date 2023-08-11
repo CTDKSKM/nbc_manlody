@@ -118,10 +118,7 @@ const DetailAlbum = ({ data }: any) => {
   const [albumUris, setAlbumUris] = useState<string[]>([]);
   const [openReview, setOpenReview] = useState<boolean>(true);
   const [isModalOpen, setModalOpen] = useState(false);
-<<<<<<< HEAD
   const [imgUrl, setImgUrl] = useState<string>('');
-=======
->>>>>>> cbd9046a66d25dc66a1d532684680deb42a2a6a7
 
   const { userId } = useUser();
   const [likedTracks, setLikedTracks] = useState<string[]>([]);
@@ -197,7 +194,7 @@ const DetailAlbum = ({ data }: any) => {
     dispatch(addAlbum(albumUris));
   };
   const playTrack = (item: any) => {
-    const playTrack = [item]
+    const playTrack = [item];
     dispatch(addAlbum(playTrack));
   };
 
@@ -270,7 +267,6 @@ const DetailAlbum = ({ data }: any) => {
       console.error('Error adding track to playlist: ', error);
     }
   };
-<<<<<<< HEAD
   const [image, setImage] = useState<any>('');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   // useEffect(() => {
@@ -280,13 +276,10 @@ const DetailAlbum = ({ data }: any) => {
   //     canvas.height = image.height;
   //     const ctx = canvas.getContext('2d');
   //     ctx?.drawImage(image, 0, 0);
-
   //     const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
   //     console.log('이미지데이타제발!!=>>', imageData);
   //   }
   // }, []);
-=======
->>>>>>> cbd9046a66d25dc66a1d532684680deb42a2a6a7
   return (
     <>
       <AlbumTag>
