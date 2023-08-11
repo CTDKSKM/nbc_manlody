@@ -95,14 +95,14 @@ const NewPlayList = ({ onAddPlaylist }: { onAddPlaylist: (playlist: Playlist) =>
     }
   };
 
-  const changePlaylistNameHandler = (e: any) => {
+  const changePlaylistNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlaylistName(e.target.value);
   };
 
   return (
     <form onSubmit={submitHandler}>
       <label>플레이리스트 이름</label>
-      <input type="text" value={playlistName} onChange={changePlaylistNameHandler} />
+      <input type="text" value={playlistName} onChange={changePlaylistNameHandler}/>
       <button>생성</button>
     </form>
   );

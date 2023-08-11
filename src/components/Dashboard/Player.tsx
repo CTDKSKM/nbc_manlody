@@ -19,7 +19,7 @@ const Player = () => {
     }
   }, [trackUri]);
 
-  if (!trackUri.length) return null;
+  // if (!trackUri.length) return null;
 
   console.log('Playertrack', trackUri);
   if (!accessToken) return null;
@@ -50,5 +50,5 @@ const StPlayerCtn = styled.div`
   width: 800px;
   border-radius: 15px;
   overflow: hidden;
-  margin-top: 300px;
+  margin-top: 0px;
 `;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
@@ -7,6 +7,7 @@ import { TbLogout2 } from 'react-icons/tb';
 import { useQuery, useQueryClient } from 'react-query';
 import useUser from '../hooks/useUser';
 import axios from "axios";
+import { useParams } from 'react-router-dom';
 
 
 const Profile = () => {
@@ -17,8 +18,12 @@ const Profile = () => {
 
 
   const { userName, userEmail, userImg } = useUser();
-  console.log("userName=>",userName);
-
+  
+  const params = useParams()
+  console.log("params=>",params)
+  useEffect(() => {
+    setIsToggle(false)
+  },[params])
 
   const handleSignOut = async () => {
     await signOut(auth);
