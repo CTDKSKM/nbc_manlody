@@ -51,7 +51,6 @@ interface PlaylistModalProps {
 
 const PlaylistModal: React.FC<PlaylistModalProps> = ({ isOpen, closeModal, playlists, addTrackToPlaylist }) => {
   if (!isOpen) return null;
-
   return (
     <ModalWrapper>
       <ModalContent>
@@ -104,7 +103,6 @@ interface Playlist {
 const DetailAlbum = ({ data }: any) => {
   const dispatch = useDispatch();
   const { album_id: albumId } = useParams<string>();
-
   const [album, setAlbum] = useState<Album>({
     id: '',
     name: '',
@@ -120,7 +118,10 @@ const DetailAlbum = ({ data }: any) => {
   const [albumUris, setAlbumUris] = useState<string[]>([]);
   const [openReview, setOpenReview] = useState<boolean>(true);
   const [isModalOpen, setModalOpen] = useState(false);
+<<<<<<< HEAD
   const [imgUrl, setImgUrl] = useState<string>('');
+=======
+>>>>>>> cbd9046a66d25dc66a1d532684680deb42a2a6a7
 
   const { userId } = useUser();
   const [likedTracks, setLikedTracks] = useState<string[]>([]);
@@ -128,7 +129,6 @@ const DetailAlbum = ({ data }: any) => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [selectedTrack, setSelectedTrack] = useState<{ id: string } | null>(null);
 
-  // const albumData = location.state.track;
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
@@ -137,13 +137,12 @@ const DetailAlbum = ({ data }: any) => {
     try {
       const getAlbum = async () => {
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
-
         setAlbum(response.data);
         setAlbumTracks(response.data.tracks.items);
 
-        const albumUris = response.data.tracks.items.map((item: any) => item.uri);
+        // const albumUris = response.data.tracks.items.map((item: any) => item.uri);
+        const albumUris = response.data.tracks.items;
         setAlbumUris([...albumUris]);
-        setImgUrl(response.data.images[0].url);
       };
 
       getAlbum();
@@ -197,6 +196,10 @@ const DetailAlbum = ({ data }: any) => {
   const playAlbum = () => {
     dispatch(addAlbum(albumUris));
   };
+  const playTrack = (item: any) => {
+    const playTrack = [item]
+    dispatch(addAlbum(playTrack));
+  };
 
   const toggleLikeHandler = async (item: any) => {
     const likesRef = collection(db, 'likes');
@@ -209,7 +212,6 @@ const DetailAlbum = ({ data }: any) => {
         userId: userId,
         trackId: item.id,
         track: item
-        // album:
       });
       setLikedTracks([...likedTracks, item.id]);
     } else {
@@ -268,6 +270,7 @@ const DetailAlbum = ({ data }: any) => {
       console.error('Error adding track to playlist: ', error);
     }
   };
+<<<<<<< HEAD
   const [image, setImage] = useState<any>('');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   // useEffect(() => {
@@ -282,6 +285,8 @@ const DetailAlbum = ({ data }: any) => {
   //     console.log('이미지데이타제발!!=>>', imageData);
   //   }
   // }, []);
+=======
+>>>>>>> cbd9046a66d25dc66a1d532684680deb42a2a6a7
   return (
     <>
       <AlbumTag>
@@ -323,6 +328,7 @@ const DetailAlbum = ({ data }: any) => {
                   <BodyGrid key={item.uri}>
                     <GridItem>{index + 1}</GridItem>
                     <GridItem>
+                      <button onClick={() => playTrack(item)}>재생 추가</button>
                       <img src={album.images[0]?.url} alt="image" />
 
                       <div>

@@ -1,17 +1,27 @@
-import React from 'react';
-//@ts-ignore
+import React, { useEffect, useRef } from 'react';
 import SpotifyPlayer from 'react-spotify-web-playback';
 import { accessToken } from '../Header';
 import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
-type PlayerProps = {
-  accessToken: string;
-  trackUri: string | undefined;
-};
+
 
 const Player = () => {
   //@ts-ignore
-  const trackUri = useSelector((state) => state.albumTrackSliceReducer);
+  const track = useSelector((state) => state.albumTrackSliceReducer);
+  const trackUri = track.map((item: any) => item.uri)
+  const playerRef = useRef(null);
+  useEffect(() => {
+    if (playerRef.current && trackUri.length > 0) {
+      //@ts-ignore
+      playerRef.current.play({
+        uris: trackUri,
+      });
+    }
+  }, [trackUri]);
+
+  if (!trackUri.length) return null;
+
+  console.log('Playertrack', trackUri);
   if (!accessToken) return null;
   return (
     <StPlayerCtn>
@@ -40,4 +50,5 @@ const StPlayerCtn = styled.div`
   width: 800px;
   border-radius: 15px;
   overflow: hidden;
+  margin-top: 300px;
 `;
