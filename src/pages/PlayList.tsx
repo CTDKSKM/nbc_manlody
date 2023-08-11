@@ -4,6 +4,8 @@ import { addDoc, collection, query, where, deleteDoc, doc, getDocs } from 'fireb
 
 import { db } from '../firebase';
 import useUser from '../hooks/useUser';
+import { useDispatch } from 'react-redux';
+import { changePlaylist, addAlbum } from '../redux/modules/playUris';
 
 interface Playlist {
   id: string;
@@ -13,6 +15,15 @@ interface Playlist {
 }
 
 const Modal: React.FC<ModalProps> = ({ onClose, tracks }) => {
+  const dispatch = useDispatch()
+  console.log("tracks Playlist==>",tracks)
+  const newPlaylistSong =  tracks.map((item: any)=> ({name: item.name, artists: item.artists, uri: item.uri})) 
+
+
+  const newPlaylist = () => {
+    dispatch(changePlaylist(newPlaylistSong));
+  }; 
+
   const handleWrapperClick = () => {
     onClose();
   };
@@ -25,8 +36,9 @@ const Modal: React.FC<ModalProps> = ({ onClose, tracks }) => {
     <ModalWrapper onClick={handleWrapperClick}>
       <ModalContent onClick={handleModalContentClick}>
         <button onClick={onClose}>닫기</button>
+        <button onClick={newPlaylist}>플레이리스트 재생</button>
         {tracks.map((track: any, index) => (
-          <p key={index}>
+          <p key={track.id}>
             {track.name} - {track.artists[0].name}
           </p>
         ))}
