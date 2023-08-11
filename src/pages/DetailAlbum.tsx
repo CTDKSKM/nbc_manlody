@@ -79,7 +79,7 @@ const DetailAlbum = ({ data }: any) => {
       alert('앨범데이터 Get Fail' + error);
       return;
     }
-  }, []);
+  }, [albumId]);
 
   useEffect(() => {
     if (userId && albumTracks.length > 0) {
