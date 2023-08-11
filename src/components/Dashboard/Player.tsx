@@ -4,17 +4,16 @@ import { accessToken } from '../Header';
 import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 
-
 const Player = () => {
   //@ts-ignore
   const track = useSelector((state) => state.albumTrackSliceReducer);
-  const trackUri = track.map((item: any) => item.uri)
+  const trackUri = track.map((item: any) => item.uri);
   const playerRef = useRef(null);
   useEffect(() => {
     if (playerRef.current && trackUri.length > 0) {
       //@ts-ignore
       playerRef.current.play({
-        uris: trackUri,
+        uris: trackUri
       });
     }
   }, [trackUri]);
@@ -46,5 +45,6 @@ const StPlayerCtn = styled.div`
   width: 800px;
   border-radius: 15px;
   overflow: hidden;
-  margin-top: 300px;
+  position: absolute;
+  bottom: 0px;
 `;
