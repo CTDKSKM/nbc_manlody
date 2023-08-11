@@ -9,6 +9,7 @@ import GetAccessToken from '../components/GetAccessToken/GetAccessToken';
 import TestPage from '../pages/TestPage';
 import PlayList from '../pages/PlayList';
 import { accessToken } from '../components/Header';
+import FavoriteSongs from '../pages/FavoriteSongs';
 
 const Router = () => {
   // const navigate = useNavigate();
@@ -28,6 +29,7 @@ const Router = () => {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/playlist" element={<PlayList />} />
+          <Route path="/favorites" element={<FavoriteSongs />} />
           <Route path="/detail/:album_id" element={<DetailAlbum />} />
         </Route>
       </Routes>

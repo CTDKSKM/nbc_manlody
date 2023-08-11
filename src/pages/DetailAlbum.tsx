@@ -197,24 +197,26 @@ const DetailAlbum = ({ data }: any) => {
     dispatch(addAlbum(albumUris));
   };
 
-  const toggleLikeHandler = async (itemId: string) => {
+  const toggleLikeHandler = async (item: any) => {
     const likesRef = collection(db, 'likes');
-    const q = query(likesRef, where('userId', '==', userId), where('trackId', '==', itemId));
+    const q = query(likesRef, where('userId', '==', userId), where('trackId', '==', item.id));
 
     const snapshot = await getDocs(q);
 
     if (snapshot.empty) {
       await addDoc(likesRef, {
         userId: userId,
-        trackId: itemId
+        trackId: item.id,
+        track: item
+        // album:
       });
-      setLikedTracks([...likedTracks, itemId]);
+      setLikedTracks([...likedTracks, item.id]);
     } else {
       for (const docSnapshot of snapshot.docs) {
         const docRef = doc(db, 'likes', docSnapshot.id);
         await deleteDoc(docRef);
       }
-      setLikedTracks(likedTracks.filter((id) => id !== itemId));
+      setLikedTracks(likedTracks.filter((id) => id !== item.id));
     }
   };
   const queryClient = useQueryClient();
@@ -309,7 +311,7 @@ const DetailAlbum = ({ data }: any) => {
                     <GridItem>{albumData.name}</GridItem>
                     <GridItem
                       onClick={() => {
-                        toggleLikeHandler(item.id);
+                        toggleMutation.mutate(item);
                       }}
                     >
                       {likedTracks.includes(item.id) ? '❤️' : '🤍'}
