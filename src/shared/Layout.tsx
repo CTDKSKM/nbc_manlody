@@ -56,7 +56,7 @@ const BackgroundImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(5px); /* Apply blur effect to the image */
+  filter: blur(4px); /* Apply blur effect to the image */
 `;
 const NavBarWrapper = styled.div`
   flex: 0.65;
