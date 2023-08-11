@@ -1,19 +1,20 @@
-import React, { useEffect } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
-import { Home, DetailAlbum, SocialLogin } from "../pages";
-import Layout from "./Layout";
-import GlobalStyle from "../GlobalStyle";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase";
-import GetAccessToken from "../components/GetAccessToken/GetAccessToken";
-import TestPage from "../pages/TestPage";
-
+import React, { useEffect, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Home, DetailAlbum, SocialLogin } from '../pages';
+import Layout from './Layout';
+import GlobalStyle from '../GlobalStyle';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase';
+import GetAccessToken from '../components/GetAccessToken/GetAccessToken';
+import TestPage from '../pages/TestPage';
 
 const Router = () => {
   const navigate = useNavigate();
+  const [render, setRender] = useState(false);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if (!user) navigate("/login");
+      if (!user) navigate('/login');
+      setRender(true);
     });
   }, []);
   return (
@@ -25,7 +26,6 @@ const Router = () => {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/detail/:album_id" element={<DetailAlbum />} />
-          <Route path="/access" element={<TestPage />} />
         </Route>
       </Routes>
     </>

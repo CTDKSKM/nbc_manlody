@@ -17,7 +17,7 @@ const Profile = () => {
 
 
   const { userName, userEmail, userImg } = useUser();
-  console.log(userName);
+  console.log("userName=>",userName);
 
 
   const handleSignOut = async () => {

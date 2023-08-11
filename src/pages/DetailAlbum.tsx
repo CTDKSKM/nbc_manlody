@@ -45,7 +45,6 @@ const DetailAlbum = ({ data }: any) => {
     try {
       const getAlbum = async () => {
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
-        console.log(response);
         setAlbum([...response.data.tracks.items]);
         const albumUris = response.data.tracks.items.map((item: any) => item.uri);
         setAlbumUris([...albumUris]);
@@ -88,10 +87,6 @@ const DetailAlbum = ({ data }: any) => {
   console.log('album==>', album);
   console.log('albumuri==>', albumUris);
 
-  // useEffect(() => {
-  //   window.addEventListener("click", handleWindowClick);
-  // }, []);
-  //
 
   const toggleLikeHandler = async (itemId: string) => {
     const likesRef = collection(db, 'likes');
@@ -113,22 +108,17 @@ const DetailAlbum = ({ data }: any) => {
       setLikedTracks(likedTracks.filter((id) => id !== itemId));
     }
   };
-  // const toggleHeart = (index: number) => {
-  //   const newAlbum = [...album];
-  //   newAlbum[index].liked = !newAlbum[index].liked;
-  //   setAlbum(newAlbum);
-  // };
-  //
-  //  const timeData = album.map((item:any)=>{
-  //   const miliseconds = item.duration_ms
-  //   const seconds = Math.floor(miliseconds / 1000)
-  //   const minutes = Math.floor(seconds / 60)
-  //   const remainingSeconds = seconds % 60;
-  //
-  //   const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`
-  //   const formattedRemainingSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`
-  //    return `${formattedMinutes}:${formattedRemainingSeconds}`
-  // })
+
+    const timeData = album.map((item:any)=>{
+    const miliseconds = item.duration_ms
+    const seconds = Math.floor(miliseconds / 1000)
+    const minutes = Math.floor(seconds / 60)
+    const remainingSeconds = seconds % 60;
+  
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`
+    const formattedRemainingSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`
+     return `${formattedMinutes}:${formattedRemainingSeconds}`
+  })
 
   return (
     <AlbumTag>
@@ -158,7 +148,6 @@ const DetailAlbum = ({ data }: any) => {
           </Grid>
           <div className="track-box">
             {album.map((item: any, index) => {
-              // if (index < 5)
               return (
                 <BodyGrid key={item.uri}>
                   <GridItem>{index + 1}</GridItem>
@@ -178,7 +167,7 @@ const DetailAlbum = ({ data }: any) => {
                   >
                     {likedTracks.includes(item.id) ? '❤️' : '🤍'}
                   </GridItem>
-                  <GridItem>{}</GridItem>
+                  <GridItem>{timeData[index]}</GridItem>
                 </BodyGrid>
               );
             })}

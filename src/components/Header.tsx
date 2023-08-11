@@ -20,7 +20,7 @@ export interface Track {
   album_uri?: string
 } 
 
-const spotifyApi = new SpotifyWebApi({
+export const spotifyApi = new SpotifyWebApi({
   clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID
 });
 
@@ -29,23 +29,7 @@ const spotifyApi = new SpotifyWebApi({
 
 
 const Header: React.FC = () => {
-  // const searchIconRef = useRef<HTMLSpanElement | null>(null);
-  // const searchInputRef = useRef<HTMLSpanElement | null>(null);
 
-  // useEffect(() => {
-  //     if (searchInputRef.current) {
-  //         searchInputRef.current.focus(); // 컴포넌트 마운트 시 자동 포커스
-  //     }
-  // }, []);
-
-  // const handleInputFocus = () => {
-  //     if (searchIconRef.current) {
-  //         searchIconRef.current.style.opacity = "0";
-  //     }
-  //     if (searchInputRef.current) {
-  //         searchInputRef.current.style.transform = "translate(-30px)";
-  //     }
-  // };
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState<Track[]>();
  
