@@ -1,12 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
-import albumTrackSliceReducer from "../modules/playUris";
+import { configureStore } from '@reduxjs/toolkit';
+import albumTrackSliceReducer from '../modules/playUris';
+import rgbSliceReducer from '../modules/rgb';
 // ...
 
 export const store = configureStore({
   reducer: {
-    //@ts-ignore
     albumTrackSliceReducer,
-  },
+    rgbSliceReducer
+  }
 });
 
 export type RootState = ReturnType<typeof store.getState>;

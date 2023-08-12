@@ -1,11 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Libre+Franklin&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin&display=swap');
 
 * {
-    font-family: "Libre Franklin", sans-serif;
+  font-family: 'Libre Franklin', sans-serif;
 }
 
 /* #albums-info{
     display: flex;
     justify-content: center;
     align-items: end;
+    color: rgba(255,100,0,0.5)
     } */
