@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation, useQueryClient } from 'react-query';
-import { collection, query, where, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { styled } from 'styled-components';
 
 import { db } from '../firebase';
@@ -14,6 +13,7 @@ import ReviewBox from '../components/detail-album/review/ReviewBox';
 
 import { useDispatch } from 'react-redux';
 import { addAlbum } from '../redux/modules/playUris';
+import useLikes from '../hooks/useLikes';
 
 interface ImageProps {
   url: string;
@@ -121,6 +121,7 @@ const DetailAlbum = ({ data }: any) => {
 
   const { userId } = useUser();
   const [likedTracks, setLikedTracks] = useState<string[]>([]);
+  const { toggleMutation } = useLikes();
 
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [selectedTrack, setSelectedTrack] = useState<{ id: string } | null>(null);
@@ -195,34 +196,6 @@ const DetailAlbum = ({ data }: any) => {
     dispatch(addAlbum(playTrack));
   };
 
-  const toggleLikeHandler = async (item: any) => {
-    const likesRef = collection(db, 'likes');
-    const q = query(likesRef, where('userId', '==', userId), where('trackId', '==', item.id));
-
-    const snapshot = await getDocs(q);
-
-    if (snapshot.empty) {
-      await addDoc(likesRef, {
-        userId: userId,
-        trackId: item.id,
-        track: item
-      });
-      setLikedTracks([...likedTracks, item.id]);
-    } else {
-      for (const docSnapshot of snapshot.docs) {
-        const docRef = doc(db, 'likes', docSnapshot.id);
-        await deleteDoc(docRef);
-      }
-      setLikedTracks(likedTracks.filter((id) => id !== item.id));
-    }
-  };
-  const queryClient = useQueryClient();
-  const toggleMutation = useMutation(toggleLikeHandler, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['likes']);
-    }
-  });
-
   const timeData = albumTracks.map((item: any) => {
     const miliseconds = item.duration_ms;
     const seconds = Math.floor(miliseconds / 1000);
@@ -262,6 +235,7 @@ const DetailAlbum = ({ data }: any) => {
       console.error('Error adding track to playlist: ', error);
     }
   };
+
   const imageRef = useRef<HTMLImageElement>(null);
   const extractRGBColors = () => {
     const image = imageRef.current as HTMLImageElement;
@@ -289,20 +263,21 @@ const DetailAlbum = ({ data }: any) => {
 
     console.log(`Average RGB: ${averageRed}, ${averageGreen}, ${averageBlue}`);
   };
-
+  const toggleLikeHandler = (item: any) => {
+    toggleMutation.mutate({ ...item, trackImg: album.images[0]?.url });
+    if (likedTracks.includes(item.id)) {
+      setLikedTracks(likedTracks.filter((id) => id !== item.id));
+    } else {
+      setLikedTracks([...likedTracks, item.id]);
+    }
+  };
   return (
     <>
       <AlbumTag>
         <button onClick={playAlbum}>앨범플레이</button>
         <div className="album-info">
           <div className="info-data">
-            <img
-              crossOrigin="anonymous"
-              ref={imageRef}
-              onLoad={extractRGBColors}
-              src={album.images[0]?.url}
-              alt="No image"
-            />
+            <img crossOrigin="anonymous" ref={imageRef} onLoad={extractRGBColors} src={album.images[0]?.url} alt="" />
             <div>
               <h1>{album.name}</h1>
               <div>
@@ -330,7 +305,7 @@ const DetailAlbum = ({ data }: any) => {
                     <GridItem>{index + 1}</GridItem>
                     <GridItem>
                       <button onClick={() => playTrack(item)}>재생 추가</button>
-                      <img src={album.images[0]?.url} alt="image" />
+                      <img src={album.images[0]?.url} alt="" />
 
                       <div>
                         <h1>{item.name}</h1>
@@ -338,11 +313,7 @@ const DetailAlbum = ({ data }: any) => {
                       </div>
                     </GridItem>
                     <GridItem>{album.name}</GridItem>
-                    <GridItem
-                      onClick={() => {
-                        toggleMutation.mutate(item);
-                      }}
-                    >
+                    <GridItem onClick={() => toggleLikeHandler(item)}>
                       {likedTracks.includes(item.id) ? '❤️' : '🤍'}
                     </GridItem>
                     <GridItem
