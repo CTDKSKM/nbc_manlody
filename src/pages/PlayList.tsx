@@ -6,6 +6,7 @@ import { db } from '../firebase';
 import useUser from '../hooks/useUser';
 import { useDispatch } from 'react-redux';
 import { changePlaylist, addAlbum } from '../redux/modules/playUris';
+import { PiPlaylistBold, PiPlayFill } from 'react-icons/pi';
 
 interface Playlist {
   id: string;
@@ -15,14 +16,21 @@ interface Playlist {
 }
 
 const Modal: React.FC<ModalProps> = ({ onClose, tracks }) => {
-  const dispatch = useDispatch()
-  console.log("tracks Playlist==>",tracks)
-  const newPlaylistSong =  tracks.map((item: any)=> ({name: item.name, artists: item.artists, uri: item.uri})) 
-
+  const dispatch = useDispatch();
+  console.log('tracks Playlist==>', tracks);
+  const newPlaylistSong = tracks.map((item: any) => ({ name: item.name, artists: item.artists, uri: item.uri }));
 
   const newPlaylist = () => {
     dispatch(changePlaylist(newPlaylistSong));
-  }; 
+  };
+
+  const playTrack = (item: any) => {
+    dispatch(changePlaylist([{ name: item.name, artists: item.artists[0].name, uri: item.uri }]));
+  };
+
+  const addPlayingNow = (item: any) => {
+    dispatch(addAlbum([{ name: item.name, artists: item.artists[0].name, uri: item.uri }]));
+  };
 
   const handleWrapperClick = () => {
     onClose();
@@ -35,13 +43,48 @@ const Modal: React.FC<ModalProps> = ({ onClose, tracks }) => {
   return (
     <ModalWrapper onClick={handleWrapperClick}>
       <ModalContent onClick={handleModalContentClick}>
-        <button onClick={onClose}>닫기</button>
-        <button onClick={newPlaylist}>플레이리스트 재생</button>
-        {tracks.map((track: any, index) => (
+        <div className="button-ctn">
+          <button onClick={newPlaylist}>Play to List</button>
+          <button onClick={onClose}>❎</button>
+        </div>
+        {/* {tracks.map((track: any, index) => (
           <p key={track.id}>
             {track.name} - {track.artists[0].name}
           </p>
-        ))}
+        ))} */}
+
+        {/* ================================================================ */}
+        <div className="track-box">
+          {tracks.map((item: any, index: number) => {
+            console.log('item===>', item);
+            return (
+              <BodyGrid key={item.uri}>
+                <GridItem>{index + 1}</GridItem>
+                <GridItem>
+                  <PiPlayFill onClick={() => playTrack(item)}/>
+                  <img src={item.albumImg} alt="No Image" />
+                  <div>
+                    <h1>{item.name}</h1>
+                    <p>{item.artists[0].name}</p>
+                  </div>
+                </GridItem>
+                <GridItem>{item.albumName}</GridItem>
+
+                <GridItem>
+                  <PiPlaylistBold
+                    onClick={() => {
+                      addPlayingNow(item);
+                      // setModalOpen(true);
+                    }}
+                  />
+                </GridItem>
+                {/* <GridItem>{timeData[index]}</GridItem> */}
+              </BodyGrid>
+            );
+          })}
+        </div>
+
+        {/* ============================================================== */}
       </ModalContent>
     </ModalWrapper>
   );
@@ -69,8 +112,84 @@ const ModalContent = styled.div`
   padding: 20px;
   border-radius: 10px;
   width: 60%;
-  max-width: 500px;
+  max-width: 600px;
+
+  .button-ctn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    > button {
+      margin: 0;
+    }
+  }
 `;
+
+// ================================
+
+const GridItem = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0px 10px;
+  font-size: 14px;
+  &:nth-child(5),
+  :nth-child(6) {
+    justify-content: center;
+  }
+
+  img {
+    width: 40px;
+    margin-right: 10px;
+  }
+  & > div {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+  & > div > h1 {
+    font-size: 16px;
+    letter-spacing: -0.5px;
+  }
+  & > div > p {
+    font-size: 14px;
+    letter-spacing: -0.5px;
+    color: #bdbdbd;
+  }
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 3fr 4fr 0.7fr 0.7fr 0.7fr;
+  padding: 10px 0px;
+  color: #000;
+`;
+
+const BodyGrid = styled(Grid)`
+  padding: 10px 0px;
+  /* border-radius: 10px; */
+  margin: 6px 0px;
+  background: #353535;
+  color: #fff;
+  &:hover {
+    background: #3f3f3f;
+  }
+  ${GridItem}:nth-child(4) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 0;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      margin-right: 5px;
+    }
+  }
+`;
+
+// ================================================
 
 const NewPlayList = ({ onAddPlaylist }: { onAddPlaylist: (playlist: Playlist) => void }) => {
   const [playlistName, setPlaylistName] = useState('');
@@ -95,7 +214,7 @@ const NewPlayList = ({ onAddPlaylist }: { onAddPlaylist: (playlist: Playlist) =>
     }
   };
 
-  const changePlaylistNameHandler = (e: any) => {
+  const changePlaylistNameHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlaylistName(e.target.value);
   };
 

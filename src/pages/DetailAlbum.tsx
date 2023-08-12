@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { useMutation, useQueryClient } from 'react-query';
-import { collection, query, where, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { styled } from 'styled-components';
 
-import { db, storage } from '../firebase';
+import { db } from '../firebase';
 import { accessToken } from '../components/Header';
 import useUser from '../hooks/useUser';
 
@@ -14,7 +13,7 @@ import ReviewBox from '../components/detail-album/review/ReviewBox';
 
 import { useDispatch } from 'react-redux';
 import { addAlbum } from '../redux/modules/playUris';
-import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
+import useLikes from '../hooks/useLikes';
 
 interface ImageProps {
   url: string;
@@ -119,10 +118,10 @@ const DetailAlbum = ({ data }: any) => {
   const [albumUris, setAlbumUris] = useState<string[]>([]);
   const [openReview, setOpenReview] = useState<boolean>(true);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [imgUrl, setImgUrl] = useState<string>('');
 
   const { userId } = useUser();
   const [likedTracks, setLikedTracks] = useState<string[]>([]);
+  const { toggleMutation } = useLikes();
 
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [selectedTrack, setSelectedTrack] = useState<{ id: string } | null>(null);
@@ -137,8 +136,6 @@ const DetailAlbum = ({ data }: any) => {
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
         setAlbum(response.data);
         setAlbumTracks(response.data.tracks.items);
-
-        // const albumUris = response.data.tracks.items.map((item: any) => item.uri);
         const albumUris = response.data.tracks.items;
         setAlbumUris([...albumUris]);
       };
@@ -199,34 +196,6 @@ const DetailAlbum = ({ data }: any) => {
     dispatch(addAlbum(playTrack));
   };
 
-  const toggleLikeHandler = async (item: any) => {
-    const likesRef = collection(db, 'likes');
-    const q = query(likesRef, where('userId', '==', userId), where('trackId', '==', item.id));
-
-    const snapshot = await getDocs(q);
-
-    if (snapshot.empty) {
-      await addDoc(likesRef, {
-        userId: userId,
-        trackId: item.id,
-        track: item
-      });
-      setLikedTracks([...likedTracks, item.id]);
-    } else {
-      for (const docSnapshot of snapshot.docs) {
-        const docRef = doc(db, 'likes', docSnapshot.id);
-        await deleteDoc(docRef);
-      }
-      setLikedTracks(likedTracks.filter((id) => id !== item.id));
-    }
-  };
-  const queryClient = useQueryClient();
-  const toggleMutation = useMutation(toggleLikeHandler, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['likes']);
-    }
-  });
-
   const timeData = albumTracks.map((item: any) => {
     const miliseconds = item.duration_ms;
     const seconds = Math.floor(miliseconds / 1000);
@@ -266,8 +235,7 @@ const DetailAlbum = ({ data }: any) => {
       console.error('Error adding track to playlist: ', error);
     }
   };
-  const [image, setImage] = useState<any>('');
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+
   const imageRef = useRef<HTMLImageElement>(null);
   const extractRGBColors = () => {
     const image = imageRef.current as HTMLImageElement;
@@ -276,18 +244,12 @@ const DetailAlbum = ({ data }: any) => {
 
     canvas.width = image?.width;
     canvas.height = image?.height;
-
     ctx?.drawImage(image, 0, 0, canvas.width, canvas.height);
-
     const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
-
-    console.log('어디서 나냐?');
     const pixels = imageData?.data as Uint8ClampedArray;
-
     let redSum = 0;
     let greenSum = 0;
     let blueSum = 0;
-
     for (let i = 0; i < pixels?.length; i += 4) {
       redSum += pixels[i];
       greenSum += pixels[i + 1];
@@ -301,38 +263,21 @@ const DetailAlbum = ({ data }: any) => {
 
     console.log(`Average RGB: ${averageRed}, ${averageGreen}, ${averageBlue}`);
   };
-  const [imageUrl, setImageUrl] = useState<string>('');
-  const saveAlbumImage = async () => {
-    console.log('실행됐냐', album.images[0]?.url);
-    try {
-      console.log('세이브앨범실행');
-      const response = await fetch('https://i.scdn.co/image/ab67616d0000b27391ee4ab5782c9b197766ca02');
-      const imageBlob = await response.blob();
-
-      const storageRef = ref(storage, `albumImgs/${Date.now()}`);
-      await uploadBytes(storageRef, imageBlob);
-      const url = await getDownloadURL(storageRef);
-      console.log('url=>', url);
-      setImageUrl(url);
-    } catch (error) {
-      console.error('Error updating user profile:', error);
+  const toggleLikeHandler = (item: any) => {
+    toggleMutation.mutate({ ...item, trackImg: album.images[0]?.url });
+    if (likedTracks.includes(item.id)) {
+      setLikedTracks(likedTracks.filter((id) => id !== item.id));
+    } else {
+      setLikedTracks([...likedTracks, item.id]);
     }
   };
-  console.log('imageUrl!!', imageUrl);
   return (
     <>
       <AlbumTag>
-        <button onClick={saveAlbumImage}>이미지겟</button>
         <button onClick={playAlbum}>앨범플레이</button>
         <div className="album-info">
           <div className="info-data">
-            <img
-              crossOrigin="anonymous"
-              ref={imageRef}
-              onLoad={extractRGBColors}
-              src={album.images[0]?.url}
-              alt="No image"
-            />
+            <img crossOrigin="anonymous" ref={imageRef} onLoad={extractRGBColors} src={album.images[0]?.url} alt="" />
             <div>
               <h1>{album.name}</h1>
               <div>
@@ -355,12 +300,14 @@ const DetailAlbum = ({ data }: any) => {
             </Grid>
             <div className="track-box">
               {albumTracks.map((item: any, index: number) => {
+                console.log("detail item===>", item)
+                const albumTrackWithAlbumData = {...item, albumImg : album.images[0]?.url, albumName : album.name }
                 return (
                   <BodyGrid key={item.uri}>
                     <GridItem>{index + 1}</GridItem>
                     <GridItem>
                       <button onClick={() => playTrack(item)}>재생 추가</button>
-                      <img src={album.images[0]?.url} alt="image" />
+                      <img src={album.images[0]?.url} alt="" />
 
                       <div>
                         <h1>{item.name}</h1>
@@ -368,16 +315,13 @@ const DetailAlbum = ({ data }: any) => {
                       </div>
                     </GridItem>
                     <GridItem>{album.name}</GridItem>
-                    <GridItem
-                      onClick={() => {
-                        toggleMutation.mutate(item);
-                      }}
-                    >
+                    <GridItem onClick={() => toggleLikeHandler(item)}>
                       {likedTracks.includes(item.id) ? '❤️' : '🤍'}
                     </GridItem>
                     <GridItem
                       onClick={() => {
-                        setSelectedTrack(item);
+                        // setSelectedTrack(item);
+                        setSelectedTrack(albumTrackWithAlbumData);
                         setModalOpen(true);
                       }}
                     >
@@ -466,10 +410,10 @@ const GridItem = styled.div`
   align-items: center;
   padding: 0px 10px;
   font-size: 14px;
-  &:nth-child(5),
+  /* &:nth-child(5),
   :nth-child(6) {
     justify-content: center;
-  }
+  } */
 
   img {
     width: 40px;

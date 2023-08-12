@@ -4,9 +4,9 @@ import { signOut } from 'firebase/auth';
 import { auth, storage } from '../firebase';
 import { TbLogout2 } from 'react-icons/tb';
 import useUser from '../hooks/useUser';
+import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 import { useParams } from 'react-router-dom';
-
 import { IoSettingsOutline } from 'react-icons/io5';
 import { BsCamera } from 'react-icons/bs';
 
@@ -70,15 +70,6 @@ const Profile = () => {
     setModalUserImg(userImg);
   };
 
-  // const handleImageChange = (files) => {
-  //   if (files.length > 0) {
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       setNewUserImg(e.target.result);
-  //     };
-  //     reader.readAsDataURL(files[0]);
-  //   }
-  // };
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     setselectefFile(selectedFile);
@@ -89,7 +80,6 @@ const Profile = () => {
       };
       reader.readAsDataURL(selectedFile);
     }
-    // setModalUserImg(selectedFile)
   };
 
   return (

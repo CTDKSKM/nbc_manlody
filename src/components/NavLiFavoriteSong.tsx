@@ -1,19 +1,20 @@
 import React from 'react';
-import { useQuery } from 'react-query';
-import { getLikes } from '../api/likes';
 import Loading from './Loading';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import useLikes from '../hooks/useLikes';
+import Error from './Error';
 
 type Props = {};
 
 const NavLiFavoriteSong = (props: Props) => {
   const navigate = useNavigate();
-  const { isLoading, isError, data } = useQuery(['likes'], getLikes);
+  const { isLoading, isError, data } = useLikes();
+
+  if (isError) return <Error />;
   return (
     <>
-      {isLoading ? (
+      {isLoading || !data ? (
         <Loading />
       ) : (
         <StLiFavoriteSong
@@ -21,7 +22,8 @@ const NavLiFavoriteSong = (props: Props) => {
             navigate('/favorites');
           }}
         >
-          My favorite Song{data!.length}
+          My favorite Song
+          {data!.length}
         </StLiFavoriteSong>
       )}
     </>
