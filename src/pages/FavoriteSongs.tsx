@@ -3,41 +3,46 @@ import useLikes from '../hooks/useLikes';
 import { styled } from 'styled-components';
 
 const FavoriteSongs = () => {
-  const { data } = useLikes();
+  const { data, deleteMutation } = useLikes();
+  data?.sort((a, b) => a.likedAt - b.likedAt);
+
   return (
     <div>
-      {data?.map((item, index) => {
-        return (
-          <BodyGrid key={item.track.uri}>
-            <GridItem>{index + 1}</GridItem>
-            <GridItem>
-              <img src={item.track.albumUrl} alt="image" />
+      {
+        //@ts-ignore
+        data?.map((item, index) => {
+          return (
+            <BodyGrid key={item.track.uri}>
+              <GridItem>{index + 1}</GridItem>
+              <GridItem>
+                <img src={item.trackImg} alt="" />
 
-              <div>
-                <h1>{item.track.name}</h1>
-                <p>{item.track.artists[0].name}</p>
-              </div>
-            </GridItem>
-            <GridItem>{item.track.name}</GridItem>
-            <GridItem
-              onClick={() => {
-                //   toggleMutation.mutate(item.id);
-              }}
-            >
-              {/* {item.includes(item.id) ? '❤️' : '🤍'} */}
-            </GridItem>
-            <GridItem
-            // onClick={() => {
-            //   setSelectedTrack(item);
-            //   setModalOpen(true);
-            // }}
-            >
-              Add playlist
-            </GridItem>
-            <GridItem>{/* {timeData[index]} */}</GridItem>
-          </BodyGrid>
-        );
-      })}
+                <div>
+                  <h1>{item.track.name}</h1>
+                  <p>{item.track.artists[0].name}</p>
+                </div>
+              </GridItem>
+              <GridItem>{item.track.name}</GridItem>
+              <GridItem
+                onClick={() => {
+                  deleteMutation.mutate(item.trackId);
+                }}
+              >
+                ❤️
+              </GridItem>
+              <GridItem
+              // onClick={() => {
+              //   setSelectedTrack(item);
+              //   setModalOpen(true);
+              // }}
+              >
+                Add playlist
+              </GridItem>
+              <GridItem>{/* {timeData[index]} */}</GridItem>
+            </BodyGrid>
+          );
+        })
+      }
     </div>
   );
 };
