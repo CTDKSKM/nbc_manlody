@@ -14,7 +14,7 @@ const NavLiFavoriteSong = (props: Props) => {
   if (isError) return <Error />;
   return (
     <>
-      {isLoading ? (
+      {isLoading || !data ? (
         <Loading />
       ) : (
         <StLiFavoriteSong
