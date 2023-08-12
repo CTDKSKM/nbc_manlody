@@ -8,7 +8,7 @@ const NavBar = () => {
   const { userId } = useUser();
   //@ts-ignore
   const track = useSelector((state) => state.albumTrackSliceReducer);
-  console.log("NavBarTrack==>",track)
+  console.log('NavBarTrack==>', track);
   const trackData = track.map((item: any) => ({ title: item.name, artist: item.artists[0].name }));
   return (
     <Nav>
@@ -24,7 +24,7 @@ const NavBar = () => {
       <div>
         <Link to="/playlist">🐱‍🏍PLAYLIST🎶</Link>
         {trackData.map((item: any, index: number) => {
-          console.log("Navbar name==>",item.title)
+          console.log('Navbar name==>', item.title);
           return (
             <ul className="playListCtn">
               <li key={item.uri}>{item.title.length < 10 ? item.title : `${item.title.slice(0, 10)}...`} -</li>
@@ -45,10 +45,13 @@ const Nav = styled.div`
   // hight: 100vh;
   // background-color: rgba(75, 75, 75, 0.836);
   border: 1px dotted gray;
-
   padding: 0 0.5rem 0.5rem;
+  position: relative;
+  z-index: 9;
 
   #logoBody {
+    position: relative;
+    z-index: 9;
     background-color: rgba(163, 163, 163, 0.856);
     border-radius: 8px;
     padding: 0.7rem;
@@ -64,6 +67,7 @@ const Nav = styled.div`
     margin: 0 auto;
     display: flex;
     justify-content: center;
+    width: 200px;
     max-width: 80%;
     height: auto;
     cursor: pointer;
