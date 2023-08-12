@@ -8,6 +8,12 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     }
+    
+    a{
+        text-decoration: none;
+        color: black;
+    }
+
     @import url("https://fonts.googleapis.com/css2?family=Libre+Franklin&display=swap");
     html,
     body {

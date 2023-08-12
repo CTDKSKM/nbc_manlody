@@ -400,7 +400,7 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
     display: flex;
     justify-content: space-between;
     align-items: end;
-    margin-bottom: 15px;
+    margin: 15px 0;
     position: relative;
     img {
       width: 180px;
