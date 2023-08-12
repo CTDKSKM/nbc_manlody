@@ -11,9 +11,10 @@ import useUser from '../hooks/useUser';
 import AlbumReview from '../components/detail-album/review/AlbumReview';
 import ReviewBox from '../components/detail-album/review/ReviewBox';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addAlbum } from '../redux/modules/playUris';
 import useLikes from '../hooks/useLikes';
+import { setRGB } from '../redux/modules/rgb';
 
 interface ImageProps {
   url: string;
@@ -101,6 +102,8 @@ interface Playlist {
 }
 
 const DetailAlbum = ({ data }: any) => {
+  //@ts-ignore
+  const rgba = useSelector((state) => state.rgbSliceReducer);
   const dispatch = useDispatch();
   const { album_id: albumId } = useParams<string>();
   const [album, setAlbum] = useState<Album>({
@@ -247,9 +250,11 @@ const DetailAlbum = ({ data }: any) => {
     ctx?.drawImage(image, 0, 0, canvas.width, canvas.height);
     const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
     const pixels = imageData?.data as Uint8ClampedArray;
+
     let redSum = 0;
     let greenSum = 0;
     let blueSum = 0;
+
     for (let i = 0; i < pixels?.length; i += 4) {
       redSum += pixels[i];
       greenSum += pixels[i + 1];
@@ -261,6 +266,7 @@ const DetailAlbum = ({ data }: any) => {
     const averageGreen = Math.round(greenSum / pixelCount);
     const averageBlue = Math.round(blueSum / pixelCount);
 
+    dispatch(setRGB([averageRed, averageGreen, averageBlue, 1]));
     console.log(`Average RGB: ${averageRed}, ${averageGreen}, ${averageBlue}`);
   };
   const toggleLikeHandler = (item: any) => {
@@ -273,21 +279,23 @@ const DetailAlbum = ({ data }: any) => {
   };
   return (
     <>
-      <AlbumTag>
-        <button onClick={playAlbum}>앨범플레이</button>
-        <div className="album-info">
-          <div className="info-data">
-            <img crossOrigin="anonymous" ref={imageRef} onLoad={extractRGBColors} src={album.images[0]?.url} alt="" />
-            <div>
-              <h1>{album.name}</h1>
+      <AlbumTag rgba={rgba}>
+        <div className="album-gradient">
+          <button onClick={playAlbum}>앨범플레이</button>
+          <div className="album-info">
+            <div className="info-data">
+              <img crossOrigin="anonymous" ref={imageRef} onLoad={extractRGBColors} src={album.images[0]?.url} alt="" />
               <div>
-                <p>{album.album_type}</p>
-                <p>{album.release_date}</p>
+                <h1>{album.name}</h1>
+                <div>
+                  <p>{album.album_type}</p>
+                  <p>{album.release_date}</p>
+                </div>
+                <p className="artist-name">{album.artists[0]?.name}</p>
               </div>
-              <p className="artist-name">{album.artists[0]?.name}</p>
             </div>
+            <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
           </div>
-          <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
         </div>
         {openReview ? (
           <div className="result-album">
@@ -300,8 +308,8 @@ const DetailAlbum = ({ data }: any) => {
             </Grid>
             <div className="track-box">
               {albumTracks.map((item: any, index: number) => {
-                console.log("detail item===>", item)
-                const albumTrackWithAlbumData = {...item, albumImg : album.images[0]?.url, albumName : album.name }
+                console.log('detail item===>', item);
+                const albumTrackWithAlbumData = { ...item, albumImg: album.images[0]?.url, albumName: album.name };
                 return (
                   <BodyGrid key={item.uri}>
                     <GridItem>{index + 1}</GridItem>
@@ -353,8 +361,13 @@ const DetailAlbum = ({ data }: any) => {
 
 export default DetailAlbum;
 
-const AlbumTag = styled.div`
+const AlbumTag = styled.div<{ rgba: number[] }>`
   width: 100%;
+  .album-gradient {
+    background-color: ${({ rgba }) => {
+      return `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, ${rgba[3]})`;
+    }};
+  }
   .album-info {
     display: flex;
     justify-content: space-between;
