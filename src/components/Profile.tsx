@@ -4,7 +4,7 @@ import { signOut } from 'firebase/auth';
 import { auth, storage } from '../firebase';
 import { TbLogout2 } from 'react-icons/tb';
 import useUser from '../hooks/useUser';
-import axios from "axios";
+import axios from 'axios';
 import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 import { useParams } from 'react-router-dom';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -181,7 +181,6 @@ const Modal = styled.div`
   background-color: #4e4e4e;
   padding: 20px;
   border-radius: 10px;
-  /* text-align: center; */
   z-index: 99;
 
   form {
@@ -255,6 +254,7 @@ const UserInfo = styled.h1`
 const UserSettingWrap = styled.div`
   display: flex;
   justify-content: space-between;
+  // z-index: 99;
   > button {
     margin: 0;
   }
@@ -266,6 +266,7 @@ const UserDetailWrap = styled.div`
   padding: 18px 22px;
   background: #6e6e6e;
   border-radius: 6px;
+  z-index: 99;
   > div > h1 {
     margin-bottom: 6px;
   }
@@ -292,7 +293,7 @@ const ProfileBtnWrap = styled.div`
   display: flex;
   justify-content: center;
   gap: 5px;
-  >div> button {
+  > div > button {
     display: inline-block;
     padding: 8px 16px;
     background: #999;

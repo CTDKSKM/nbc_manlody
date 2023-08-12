@@ -8,8 +8,10 @@ import { useNavigate } from 'react-router-dom';
 type Props = {
   playlists: any;
 };
-function CarouselFavorite ({ playlists }: Props) {
-  const navigate = useNavigate()
+
+function CarouselFavorite({ playlists }: Props) {
+  const navigate = useNavigate();
+
   const settings = {
     slide: 'div',
     dots: false,
@@ -46,7 +48,6 @@ function CarouselFavorite ({ playlists }: Props) {
     <CarouselWrapper>
       <Slider {...settings}>
         {playlists?.map((item: any, index: number) => {
-          console.log("playlists==>",playlists)
           return (
             <div className="box" key={index} onClick={() => navigate(`/detail/${item.id}`)}>
               {/* <img src={item.images[0].url} alt="No Image" /> */}
@@ -119,9 +120,5 @@ const CarouselWrapper = styled.section`
     width: 60vw;
     height: 100%;
     margin: 0 auto;
-  }
-  .slick-prev,
-  .slick-next {
-    // margin-bottom: 10px;
   }
 `;

@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addAlbum } from '../redux/modules/playUris';
 import useLikes from '../hooks/useLikes';
 import { setRGB } from '../redux/modules/rgb';
+import { PiPlaylistBold, PiPlayFill } from 'react-icons/pi';
 
 interface ImageProps {
   url: string;
@@ -106,6 +107,8 @@ const DetailAlbum = ({ data }: any) => {
   const rgba = useSelector((state) => state.rgbSliceReducer);
   const dispatch = useDispatch();
   const { album_id: albumId } = useParams<string>();
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+
   const [album, setAlbum] = useState<Album>({
     id: '',
     name: '',
@@ -139,6 +142,8 @@ const DetailAlbum = ({ data }: any) => {
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
         setAlbum(response.data);
         setAlbumTracks(response.data.tracks.items);
+
+        // const albumUris = response.data.tracks.items.map((item: any) => item.uri);
         const albumUris = response.data.tracks.items;
         setAlbumUris([...albumUris]);
       };
@@ -163,7 +168,6 @@ const DetailAlbum = ({ data }: any) => {
         }
       }
     };
-
     fetchPlaylists();
   }, [userId]);
 
@@ -281,7 +285,7 @@ const DetailAlbum = ({ data }: any) => {
     <>
       <AlbumTag rgba={rgba}>
         <div className="album-gradient">
-          <button onClick={playAlbum}>앨범플레이</button>
+          {/* <button onClick={playAlbum}>앨범플레이</button> */}
           <div className="album-info">
             <div className="info-data">
               <img crossOrigin="anonymous" ref={imageRef} onLoad={extractRGBColors} src={album.images[0]?.url} alt="" />
@@ -294,28 +298,54 @@ const DetailAlbum = ({ data }: any) => {
                 <p className="artist-name">{album.artists[0]?.name}</p>
               </div>
             </div>
-            <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
           </div>
+        </div>
+        <div className="add-player">
+          <HoverableImage
+            src="/addToPlayer_Btn.png"
+            style={{ width: '34px' }}
+            onMouseEnter={() => setTooltipVisible(true)}
+            onMouseLeave={() => setTooltipVisible(false)}
+            onClick={playAlbum}
+          />
+          {tooltipVisible && <span className="tooltip">Add to player</span>}
+          <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
         </div>
         {openReview ? (
           <div className="result-album">
-            <Grid>
-              <GridItem>#</GridItem>
-              <GridItem>곡 정보</GridItem>
-              <GridItem>앨범 정보</GridItem>
-              <GridItem>좋아요</GridItem>
-              <GridItem>재생 시간</GridItem>
-            </Grid>
+            <div className="result-wrapper">
+              <p>Track</p>
+              <p>Track Infomation</p>
+              <p>Album Infomation</p>
+              <p>Love it</p>
+              <p>Playing Time</p>
+            </div>
             <div className="track-box">
               {albumTracks.map((item: any, index: number) => {
-                const albumTrackWithAlbumData = {...item, albumImg: album.images[0]?.url, albumName : album.name }
+                const albumTrackWithAlbumData = { ...item, albumImg: album.images[0]?.url, albumName: album.name };
                 return (
                   <BodyGrid key={item.uri}>
+                    <GridItem
+                      onClick={() => {
+                        // setSelectedTrack(item);
+                        setSelectedTrack(albumTrackWithAlbumData);
+                        setModalOpen(true);
+                      }}
+                    >
+                      <PiPlayFill className="PiPlayFill" />
+                    </GridItem>
                     <GridItem>{index + 1}</GridItem>
-                    <GridItem>
-                      <button onClick={() => playTrack(item)}>재생 추가</button>
-                      <img src={album.images[0]?.url} alt="" />
+                    {/* <GridItem>
+                      <button onClick={() => playTrack(item)}>
+                        <PiPlaylistBold />
+                      </button>
+                    </GridItem> */}
 
+                    <GridItem>
+                      <button onClick={() => playTrack(item)}>
+                        <PiPlaylistBold style={{ fontSize: '20px', marginRight: '10px' }} />
+                      </button>
+                      <img src={album.images[0]?.url} alt="image" />
                       <div>
                         <h1>{item.name}</h1>
                         <p>{item.artists[0].name}</p>
@@ -325,15 +355,7 @@ const DetailAlbum = ({ data }: any) => {
                     <GridItem onClick={() => toggleLikeHandler(item)}>
                       {likedTracks.includes(item.id) ? '❤️' : '🤍'}
                     </GridItem>
-                    <GridItem
-                      onClick={() => {
-                        // setSelectedTrack(item);
-                        setSelectedTrack(albumTrackWithAlbumData);
-                        setModalOpen(true);
-                      }}
-                    >
-                      Add playlist
-                    </GridItem>
+
                     <GridItem>{timeData[index]}</GridItem>
                   </BodyGrid>
                 );
@@ -341,10 +363,10 @@ const DetailAlbum = ({ data }: any) => {
             </div>
           </div>
         ) : (
-          <>
+          <div className="toggle-wrapper">
             <AlbumReview />
             <ReviewBox data={data} />
-          </>
+          </div>
         )}
       </AlbumTag>
       <PlaylistModal
@@ -362,21 +384,31 @@ export default DetailAlbum;
 
 const AlbumTag = styled.div<{ rgba: number[] }>`
   width: 100%;
+  height: 80%;
+  margin-bottom: 3rem;
   .album-gradient {
-    background-color: ${({ rgba }) => {
-      return `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, ${rgba[3]})`;
-    }};
+    z-index:9;
+    position:relative;
+    background: linear-gradient(to top left, ${({ rgba }) =>
+      `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.7)`}, transparent);
+      backdrop-filter: blur(10px);
+    
+      padding-bottom: 0.1px;
+      margin-bottom: 10px;
   }
   .album-info {
     display: flex;
     justify-content: space-between;
     align-items: end;
     margin-bottom: 15px;
+    position: relative;
     img {
       width: 180px;
     }
   }
+
   .info-data {
+    padding-top: 1rem;
     display: flex;
     align-items: end;
     margin-left: 10px;
@@ -386,8 +418,12 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
       margin-right: 10px;
     }
     h1 {
-      font-size: 3rem;
+      font-size: 2rem;
       font-weight: 600;
+      height: 32px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      // min-width: 0;
     }
     p {
       font-size: 18px;
@@ -405,30 +441,158 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
     justify-content: right;
     background-color: #eee;
   }
+
+  .add-player {
+    position: relative;
+    display:flex;
+    justify-content: space-between;
+  }
+
+  }
+  .tooltip {
+    position: absolute;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    top: -30px;
+    left: 2%;
+    transform: translateX(-50%);
+    z-index: 9;
+  }
+
+  .add-player:hover .tooltip {
+    display: block;
+  }
+.result-album{
+  position:relative;
+  z-index:2;
+}
+  .result-wrapper {
+    width:88%;
+    
+    margin: 0 auto;
+    display: flex;
+    justify-content:space-between;
+    padding: 10px;
+    gap: 10px;
+  }
+  .result-wrapper :first-child{
+  
+    margin-left: -40px;
+  }
+  .result-wrapper :last-child{
+    margin-left: -40px;
+  }
+  .result-wrapper > p {
+    padding: 0px 10px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 20px;
+    min-width: 0;
+
+    color: white;
+    font-weight: 600;
+  }
   .track-box {
     height: 35vh;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: transform 0.2s, background-color 0.8s;
+    position: relative;
+  }
+  .toggle-wrapper{
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(224, 224, 224, 0.734);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 5px;
+  }
+`;
+
+const HoverableImage = styled.img`
+  position: relative;
+  width: 34px;
+  transition: transform 0.3s, filter 0.3s;
+
+  &:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+  }
+
+  img {
+    width: 100%;
   }
 `;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 3fr 4fr 0.7fr 0.7fr 0.7fr;
   padding: 10px 0px;
   color: #000;
+  grid-template-columns: 0.35fr 0.2fr 2fr 3fr 1.5fr 1fr;
+  color: #000;
+  gap: 10px;
+  overflow-x: auto;
+  .result-wrapper {
+    width: 92%;
+
+    text-align: left;
+    margin-left: -10px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0px;
+    gap: 10px;
+  }
+  .result-wrapper :first-child {
+    margin-left: -20px;
+  }
+  .result-wrapper > p {
+    padding: 0px 10px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 20px;
+    min-width: 0;
+
+    color: white;
+    font-weight: 600;
+  }
 `;
 const GridItem = styled.div`
   display: flex;
   align-items: center;
   padding: 0px 10px;
   font-size: 14px;
+
+  button {
+    color: white;
+  }
   /* &:nth-child(5),
   :nth-child(6) {
     justify-content: center;
   } */
 
+  // &:last-child {
+  //   padding-left: 30px;
+  // }
+
   img {
     width: 40px;
+    border-radius: 4px;
     margin-right: 10px;
   }
   & > div {
@@ -439,23 +603,44 @@ const GridItem = styled.div`
   }
   & > div > h1 {
     font-size: 16px;
+    height: 16px;
+    overflow: hidden;
     letter-spacing: -0.5px;
   }
   & > div > p {
     font-size: 14px;
+    font-size: 16px;
+    height: 16px;
     letter-spacing: -0.5px;
     color: #bdbdbd;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .PiPlayFill {
+    scale: 1.3;
+    cursor: pointer;
+    transition-duration: 0.3s;
+    &:hover {
+      color: #c30000;
+      transition: all 0.3s ease-in-out;
+      transform: scale(1.4);
+      rotate: 360deg;
+    }
   }
 `;
 
 const BodyGrid = styled(Grid)`
   padding: 10px 0px;
-  /* border-radius: 10px; */
+  border-radius: 8px;
   margin: 6px 0px;
-  background: #353535;
+  background: rgb(144, 144, 144);
   color: #fff;
+  transition: transform 0.2s, background-color 0.8s;
   &:hover {
-    background: #3f3f3f;
+    background: rgb(175, 175, 175);
+
+    transform: scale(1.008);
   }
   ${GridItem}:nth-child(4) {
     display: flex;
@@ -469,5 +654,10 @@ const BodyGrid = styled(Grid)`
       height: 24px;
       margin-right: 5px;
     }
+  }
+  ${GridItem}:nth-child(5) {
+    margin-left: 30px;
+    cursor: pointer;
+    padding: 0;
   }
 `;

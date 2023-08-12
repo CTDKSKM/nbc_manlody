@@ -69,10 +69,17 @@ const Header: React.FC = () => {
     };
   }, [search, accessToken]);
 
-  const searchInputRef = useRef(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+
   const handleWindowClick = (e: MouseEvent) => {
     if (e.target !== searchInputRef.current) setSearch('');
   };
+
+  useEffect(() => {
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, []);
 
   useEffect(() => {
     window.addEventListener('click', handleWindowClick);
@@ -89,28 +96,26 @@ const Header: React.FC = () => {
         </Tooltip>
       </Space>
       <form>
-        <label>
-          <SearchOutlined />
-        </label>
-        <input
-          ref={searchInputRef}
-          type="search"
-          placeholder="검색어를 입력해 주세요."
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              // 엔터 키가 눌렸을 때 검색 로직
-            }
-          }}
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-        <div className="search-result">
-          {searchResults?.map((track) => (
-            <TrackSearchResult setSearch={setSearch} track={track} key={track.track_uri} />
-          ))}
-        </div>
+        <InputContainer>
+          <SearchInput
+            ref={searchInputRef}
+            type="search"
+            placeholder="검색어를 입력해 주세요."
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+              }
+            }}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <div className="search-result">
+            {searchResults?.map((track) => (
+              <TrackSearchResult setSearch={setSearch} track={track} key={track.track_uri} />
+            ))}
+          </div>
+          <SearchIcon src="https://i.ibb.co/ZNzFRNv/icons8-search-50.png" alt="search icon" />
+        </InputContainer>
       </form>
-
       <div>
         <Profile />
       </div>
@@ -121,6 +126,7 @@ const Header: React.FC = () => {
 export default Header;
 
 const HeaderTag = styled.header`
+  z-index: 9;
   position: relative;
   width: 100%;
   display: flex;
@@ -128,10 +134,10 @@ const HeaderTag = styled.header`
   align-items: center;
 
   border: 1px dotted gray;
-  padding: 1.5rem 0;
 
   input {
     padding: 10px;
+    padding-left: 34px;
     width: 320px;
     border: none;
     border-radius: 8px;
@@ -151,4 +157,21 @@ const HeaderTag = styled.header`
     justify-content: center;
     align-items: center;
   }
+`;
+
+const InputContainer = styled.div`
+  position: relative;
+`;
+
+const SearchInput = styled.input`
+  padding-left: 20px;
+`;
+
+const SearchIcon = styled.img`
+  position: absolute;
+  width: 20px;
+  top: 50%;
+  left: 10px; /* Adjust the left position as needed */
+  transform: translate(0, -50%);
+  opacity: 0.7;
 `;
