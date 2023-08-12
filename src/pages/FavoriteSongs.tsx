@@ -1,11 +1,22 @@
 import React from 'react';
 import useLikes from '../hooks/useLikes';
 import { styled } from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { changePlaylist, addAlbum } from '../redux/modules/playUris';
+import { PiPlaylistBold, PiPlayFill } from 'react-icons/pi';
 
 const FavoriteSongs = () => {
   const { data, deleteMutation } = useLikes();
+  const dispatch = useDispatch();
   data?.sort((a, b) => a.likedAt - b.likedAt);
+ 
+  const playTrack = (item: any) => {
+    dispatch(changePlaylist([{ name: item.track.name, artists: item.track.artists[0].name, uri: item.track.uri }]));
+  };
 
+  const addPlayingNow = (item: any) => {
+    dispatch(addAlbum([{ name: item.track.name, artists: item.track.artists[0].name, uri: item.track.uri }]));
+  };
   return (
     <div>
       {
@@ -15,6 +26,8 @@ const FavoriteSongs = () => {
             <BodyGrid key={item.track.uri}>
               <GridItem>{index + 1}</GridItem>
               <GridItem>
+                <PiPlayFill className="play-track" onClick={() => playTrack(item)} />
+
                 <img src={item.trackImg} alt="" />
 
                 <div>
@@ -36,7 +49,13 @@ const FavoriteSongs = () => {
               //   setModalOpen(true);
               // }}
               >
-                Add playlist
+                <PiPlaylistBold
+                className="PiPlaylistBold"
+                  onClick={() => {
+                    addPlayingNow(item);
+                    // setModalOpen(true);
+                  }}
+                />
               </GridItem>
               <GridItem>{/* {timeData[index]} */}</GridItem>
             </BodyGrid>
@@ -76,6 +95,15 @@ const GridItem = styled.div`
     font-size: 14px;
     letter-spacing: -0.5px;
     color: #bdbdbd;
+  }
+  .play-track {
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .PiPlaylistBold {
+    font-size: 20px;
+    cursor: pointer;
   }
 `;
 const Grid = styled.div`

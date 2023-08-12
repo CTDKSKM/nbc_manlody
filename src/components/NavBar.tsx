@@ -24,6 +24,7 @@ const NavBar = () => {
       <div>
         <Link to="/playlist">🐱‍🏍PLAYLIST🎶</Link>
         {trackData.map((item: any, index: number) => {
+          console.log("Navbar name==>",item.title)
           return (
             <ul className="playListCtn">
               <li key={item.uri}>{item.title.length < 10 ? item.title : `${item.title.slice(0, 10)}...`} -</li>
