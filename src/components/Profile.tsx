@@ -8,6 +8,7 @@ import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 import { useParams } from 'react-router-dom';
 
 import { IoSettingsOutline } from 'react-icons/io5';
+import { BsCamera } from 'react-icons/bs';
 
 const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -129,34 +130,35 @@ const Profile = () => {
           <ModalWrap>
             <ModalOverlay onClick={closeModal}> </ModalOverlay>
             <Modal>
-              <ModalContent>
+              <ModalInner>
                 <h2>프로필 수정</h2>
-                <div>
+                <div className="modal_img">
                   <p>
-                    <img 
-                    src={modalUserImg} />
+                    <img src={modalUserImg} />
                   </p>
                   <div>
-                    <label htmlFor="imgUploader">이미지 변경</label>
-                    <input
-                      id="imgUploader"
-                      type="file"
-                      // accept="image/*"
-                      onChange={handleImageChange}
-                    />
+                    <label htmlFor="imgUploader">
+                      <BsCamera size={18} />
+                    </label>
+                    <input style={{ display: 'none' }} id="imgUploader" type="file" onChange={handleImageChange} />
                   </div>
                 </div>
+
                 <div>
                   {/* <label>User</label> */}
                   <input type="text" value={newUserName} onChange={handleNameChange} />
                 </div>
                 <ProfileBtnWrap>
-                  <button type="submit" onClick={handleSubmit}>
-                    저장
-                  </button>
-                  <button onClick={closeModal}>닫기</button>
+                  <div>
+                    <button type="submit" onClick={handleSubmit}>
+                      저장
+                    </button>
+                  </div>
+                  <div>
+                    <button onClick={closeModal}>닫기</button>
+                  </div>
                 </ProfileBtnWrap>
-              </ModalContent>
+              </ModalInner>
             </Modal>
           </ModalWrap>
         )}
@@ -178,9 +180,6 @@ const ModalOverlay = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(8px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 1;
 `;
 const Modal = styled.div`
@@ -188,15 +187,11 @@ const Modal = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 40%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: white;
-  // flex-direction:column;
+  width: 22%;
+  background-color: #4e4e4e;
   padding: 20px;
   border-radius: 10px;
-  text-align: center;
+  /* text-align: center; */
   z-index: 99;
 
   form {
@@ -204,14 +199,48 @@ const Modal = styled.div`
   }
   input {
     width: 60%;
-    background-color: red;
-    margin-left: 10px;
+    background-color: #fff;
+    margin-bottom: 20px;
   }
 `;
-const ModalContent = styled.div`
+const ModalInner = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  .modal_img {
+    margin: 20px auto;
+    position: relative;
+    left: 0;
+    top: 0;
+    p {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      overflow: hidden;
+      position: relative;
+      left: 0;
+      top: 0;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      right: 2px;
+      bottom: 2px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      cursor: pointer;
+    }
+  }
   img {
-    border-radius: 10px;
-    width: 140px;
+    /* border-radius: 10px; */
+    width: 100%;
+    height: auto;
+    /* margin-left: auto;
+    margin-right: auto; */
   }
   #imgUploader {
     width: 40%;
@@ -271,8 +300,9 @@ const UserDetailWrap = styled.div`
 
 const ProfileBtnWrap = styled.div`
   display: flex;
+  justify-content: center;
   gap: 5px;
-  > button {
+  >div> button {
     display: inline-block;
     padding: 8px 16px;
     background: #999;
