@@ -156,7 +156,6 @@ const DetailAlbum = ({ data }: any) => {
           </div>
         </div>
         <div></div>
-        <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
       </div>
       <div className="add-player">
         <HoverableImage
@@ -167,16 +166,17 @@ const DetailAlbum = ({ data }: any) => {
           onClick={playAlbum}
         />
         {tooltipVisible && <span className="tooltip">Add to player</span>}
+        <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
       </div>
       {openReview ? (
         <div className="result-album">
-          <section>
+          <div className="result-wrapper">
             <p>Track</p>
             <p>Track Infomation</p>
             <p>Album Infomation</p>
             <p>Love it</p>
             <p>Playing Time</p>
-          </section>
+          </div>
           <div className="track-box">
             {albumTracks.map((item: any, index: number) => {
               return (
@@ -224,7 +224,7 @@ const AlbumTag = styled.div`
     justify-content: space-between;
     align-items: end;
     margin-bottom: 15px;
-    position: relative; /* 이 부분을 추가하세요 */
+    position: relative;
     img {
       width: 180px;
     }
@@ -244,8 +244,8 @@ const AlbumTag = styled.div`
       font-size: 2rem;
       font-weight: 600;
       height: 32px;
-      overflow: hidden; /* 내용이 넘치면 숨기기 */
-      text-overflow: ellipsis; /* 텍스트가 넘칠 경우 ...으로 표시 */
+      overflow: hidden;
+      text-overflow: ellipsis;
       // min-width: 0;
     }
     p {
@@ -267,6 +267,8 @@ const AlbumTag = styled.div`
 
   .add-player {
     position: relative;
+    display:flex;
+    justify-content: space-between;
   }
 
   }
@@ -285,28 +287,30 @@ const AlbumTag = styled.div`
   .add-player:hover .tooltip {
     display: block;
   }
-
-  section {
-    display: grid;
-    // justify-content:space-between;
-    // grid-template-columns: 1fr 3fr 2.5fr 1.5fr 2.5fr;
+.result-album{
+  position:relative;
+  z-index:2;
+}
+  .result-wrapper {
+    width:92%;
+    
+    text-align:left;
+    margin-left:-10px;
+    margin: 0 auto;
+    display: flex;
+    justify-content:space-between;
     padding: 10px 0px;
-    color: #000;
     gap: 10px;
-    overflow-x: auto;
-    overflow-y: hidden;
   }
-  section :first-child,
-  section :last-child,
-  section :nth-child(4) {
-    text-align: center;
+  .result-wrapper :first-child{
+    margin-left: -20px;
   }
-  section > p {
+  .result-wrapper > p {
     padding: 0px 10px;
     font-size: 14px;
-    white-space: nowrap; /* 텍스트가 넘칠 경우 줄바꿈을 방지합니다 */
+    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* 넘치는 텍스트에 "..."을 추가합니다 */
+    text-overflow: ellipsis;
     height: 20px;
     min-width: 0;
 
@@ -318,7 +322,7 @@ const AlbumTag = styled.div`
     overflow-y: auto;
     overflow-x: hidden;
     transition: transform 0.2s, background-color 0.8s;
-    position: relative; /* 필요한 경우 스크롤바 컨테이너에 position:relative; 추가 */
+    position: relative;
   }
 
   ::-webkit-scrollbar {
@@ -356,10 +360,36 @@ const Grid = styled.div`
   display: grid;
   padding: 10px 0px;
   color: #000;
-  grid-template-columns: 1fr 3fr 3fr 1.5fr 2.5fr;
+  grid-template-columns: 1fr 3fr 1.1fr 3fr 1fr;
   color: #000;
   gap: 10px;
   overflow-x: auto;
+  .result-wrapper {
+    width: 92%;
+
+    text-align: left;
+    margin-left: -10px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0px;
+    gap: 10px;
+  }
+  .result-wrapper :first-child {
+    margin-left: -20px;
+  }
+  .result-wrapper > p {
+    padding: 0px 10px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 20px;
+    min-width: 0;
+
+    color: white;
+    font-weight: 600;
+  }
 `;
 const GridItem = styled.div`
   display: flex;
@@ -368,19 +398,18 @@ const GridItem = styled.div`
   font-size: 14px;
 
   height: 32px;
-  white-space: nowrap; /* 텍스트가 넘칠 경우 줄바꿈을 방지합니다 */
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* 넘치는 텍스트에 "..."을 추가합니다 */
+  text-overflow: ellipsis;
 
-  &:nth-child(1) {
-    text-align: center;
-    display: flex;
+  &:first-child {
+    margin-left: -20px;
     justify-content: center;
   }
-  &:nth-child(5),
-  :nth-child(6) {
-    justify-content: center;
-  }
+
+  // &:last-child {
+  //   padding-left: 30px;
+  // }
 
   img {
     width: 40px;
@@ -405,8 +434,8 @@ const GridItem = styled.div`
     height: 16px;
     letter-spacing: -0.5px;
     color: #bdbdbd;
-    overflow: hidden; /* 내용이 넘치면 숨기기 */
-    text-overflow: ellipsis; /* 텍스트가 넘칠 경우 ...으로 표시 */
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 

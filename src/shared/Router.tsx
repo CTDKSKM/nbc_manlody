@@ -8,6 +8,7 @@ import { auth } from '../firebase';
 import GetAccessToken from '../components/GetAccessToken/GetAccessToken';
 import TestPage from '../pages/TestPage';
 import { accessToken } from '../components/Header';
+import { styled } from 'styled-components';
 
 const Router = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Router = () => {
   return (
     <>
       <GlobalStyle />
+      <BackgroundImageContainer />
       <Routes>
         <Route path="/login" element={<SocialLogin />} />
         {/* <Route path="/auth" element={<GetAccessToken />} /> */}
@@ -34,3 +36,16 @@ const Router = () => {
 };
 
 export default Router;
+
+const BackgroundImageContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/test_wallpaper.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: -1;
+`;

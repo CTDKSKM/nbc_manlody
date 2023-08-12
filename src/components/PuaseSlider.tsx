@@ -15,7 +15,7 @@ function Pausearousel({ homeShowArtists }: Props) {
     // autoplaySpeed: 5000,
     // infinite: true,
     // speed: 500,
-    slidesToShow: 4.82,
+    slidesToShow: 5.6,
     slidesToScroll: 1,
     draggable: true,
     cssEase: 'linear',
@@ -23,17 +23,17 @@ function Pausearousel({ homeShowArtists }: Props) {
     responsive: [
       // 반응형 웹 구현 옵션
       {
-        breakpoint: 960, //화면 사이즈 960px일 때
+        breakpoint: 1600, //화면 사이즈 960px일 때
         settings: {
           //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-          slidesToShow: 3
+          slidesToShow: 4.5
         }
       },
       {
-        breakpoint: 768, //화면 사이즈 768px일 때
+        breakpoint: 1200,
         settings: {
           //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-          slidesToShow: 2
+          slidesToShow: 3.6
         }
       }
     ]
@@ -63,7 +63,7 @@ const CarouselWrapper = styled.section`
     height: 80%;
   }
   .slick-slider {
-    width: 62vw;
+    width: 58vw;
     height: 180px;
     margin: 0 auto;
   }
@@ -116,10 +116,7 @@ const CarouselWrapper = styled.section`
   }
   p {
   }
-  .slick-prev,
-  .slick-next {
-    /* margin-bottom{
-            10px;
-        } */
+  .slick-list {
+    margin-top: 18px;
   }
 `;

@@ -35,20 +35,20 @@ const Wrapper = styled.div`
   margin-top: 4.5rem;
   border-radius: 10px;
   position: relative;
-
-  //   background: linear-gradient(145deg, gray, lightgray, gray);
-
+  
   &::before {
     z-index: -0.5;
     content: '';
     position: absolute;
+    border-radius: 10px;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url('/123.jpg'); /* Adjust the path to your noise image */
-    opacity: 0.7; /* Adjust the opacity of the noise effect */
-    filter: blur(0.111px); /* Add the blur filter for the bokeh effect */
+    // background-image: url('/this.png');
+    background: linear-gradient(145deg, gray, lightgray, gray);
+    opacity: 0.7;
+    filter: blur(0.5px);/
     pointer-events: none;
   }
 `;

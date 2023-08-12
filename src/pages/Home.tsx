@@ -97,22 +97,23 @@ export default Home;
 const HomeWrapper = styled.div`
   width: 100%;
   height: 100%;
-
-  z-index: 10;
+  margin-bottom: 3.5rem;
+  z-index: 7;
   border: 1px dotted gray;
 
   .recommdentaionTag {
+    margin: 1rem 0;
     height: 30%;
   }
   h2 {
-    margin: 10px 0;
+    margin: 0.8rem 0 1.5rem;
     color: white;
     font-weight: bold;
   }
   ul {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px 20px;
+    gap: 20px;
   }
   li {
     padding: 6px 10px;
@@ -126,7 +127,9 @@ const HomeWrapper = styled.div`
       background-color: rgba(212, 212, 212, 0.863);
     }
   }
-
+  ul > li:nth-child(6) {
+    justify-content: flex-start;
+  }
   ul > li > img {
     border-radius: 8px;
     width: 60px;
@@ -160,7 +163,7 @@ const HomeWrapper = styled.div`
   }
 
   #hotAlbumTag {
-    margin-top: 14px;
-    height: 30%;
+    margin-top: 3rem;
+    // height: 30%;
   }
 `;

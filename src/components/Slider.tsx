@@ -19,16 +19,21 @@ function Carousel({ homeShowAlbums }: Props) {
     pauseOnHover: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 5.9,
+    slidesToShow: 8.6,
     slidesToScroll: 1,
     draggable: true,
     cssEase: 'linear',
-    gap: 10,
     responsive: [
+      {
+        breakpoint: 1600,
+        settings: {
+          slidesToShow: 6
+        }
+      },
       {
         breakpoint: 1200,
         settings: {
-          slidesToShow: 4
+          slidesToShow: 4.5
         }
       },
       {
@@ -67,7 +72,7 @@ const CarouselWrapper = styled.section`
   }
   .slick-slide {
     box-sizing: border-box;
-    margin: 0 18px;
+    margin: 0 30px;
     background-color: rgba(236, 236, 236, 0.61);
     border: 1px solid rgba(236, 236, 236, 0.678);
     border-radius: 8px;
@@ -114,13 +119,14 @@ const CarouselWrapper = styled.section`
     filter: brightness(1.2);
   }
   .slick-list {
+    margin-top: 18px;
     height: 160px;
   }
   .slick-track {
     height: 100%;
   }
   .slick-slider {
-    width: 60vw;
+    width: 58vw;
     height: 100%;
     margin: 0 auto;
   }

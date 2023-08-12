@@ -41,6 +41,7 @@ const TrackTag = styled.header`
 
   .search-list {
     background-color: rgba(163, 163, 163, 0.836);
+    box-shadow: 5px 10px 10px rgba(128, 128, 128, 0.359);
     border-radius: 10px;
 
     width: 100%;
