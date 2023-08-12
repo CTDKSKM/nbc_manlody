@@ -387,7 +387,7 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
   height: 80%;
   margin-bottom: 3rem;
   .album-gradient {
-    z-index:9;
+    z-index:7;
     position:relative;
     background: linear-gradient(to top left, ${({ rgba }) =>
       `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.7)`}, transparent);
@@ -400,7 +400,7 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
     display: flex;
     justify-content: space-between;
     align-items: end;
-    margin: 15px 0;
+    margin-bottom: 15px;
     position: relative;
     img {
       width: 180px;
@@ -634,12 +634,14 @@ const BodyGrid = styled(Grid)`
   padding: 10px 0px;
   border-radius: 8px;
   margin: 6px 0px;
-  background: rgb(144, 144, 144);
+  background: rgba(144, 144, 144, 0.53);
+
+  filter: blur(0.5px);
+  backdrop-filter: blur(8px);
   color: #fff;
   transition: transform 0.2s, background-color 0.8s;
   &:hover {
     background: rgb(175, 175, 175);
-
     transform: scale(1.008);
   }
   ${GridItem}:nth-child(4) {

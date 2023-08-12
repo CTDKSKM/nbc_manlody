@@ -117,7 +117,14 @@ const HomeWrapper = styled.div`
   }
   li {
     padding: 6px 10px;
-    background-color: rgba(163, 163, 163, 0.836);
+    // background-color: rgba(163, 163, 163, 0.836);
+
+    background: rgba(144, 144, 144, 0.53);
+
+    filter: blur(0.5px);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    transition: transform 0.2s, background-color 0.8s;
     border: 1px solid rgba(236, 236, 236, 0.678);
     border-radius: 8px;
     display: flex;

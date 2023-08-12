@@ -73,7 +73,14 @@ const CarouselWrapper = styled.section`
   .slick-slide {
     box-sizing: border-box;
     margin: 0 30px;
-    background-color: rgba(236, 236, 236, 0.61);
+    // background-color: rgba(236, 236, 236, 0.61);
+
+    background: rgba(193, 193, 193, 0.53);
+
+    filter: blur(0.5px);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    transition: transform 0.2s, background-color 0.8s;
     border: 1px solid rgba(236, 236, 236, 0.678);
     border-radius: 8px;
     transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;

@@ -52,14 +52,19 @@ const Nav = styled.div`
   #logoBody {
     position: relative;
     z-index: 9;
-    background-color: rgba(163, 163, 163, 0.856);
+    background: rgba(144, 144, 144, 0.53);
+
+    filter: blur(0.5px);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    transition: transform 0.2s, background-color 0.8s;
     border-radius: 8px;
     padding: 0.7rem;
     transition: background-color 0.8s, transform 0.2s;
   }
 
   #logoBody:hover {
-    background-color: rgba(214, 214, 214, 0.656);
+    background-color: rgba(177, 177, 177, 0.556);
     transform: scale(1.017);
   }
 
@@ -71,7 +76,7 @@ const Nav = styled.div`
     max-width: 80%;
     height: auto;
     cursor: pointer;
-    filter: grayscale(1);
+    filter: grayscale(0.6);
     transition: filter 0.8s;
   }
   img:hover {

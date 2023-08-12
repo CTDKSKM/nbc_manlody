@@ -254,12 +254,12 @@ const UserInfo = styled.h1`
 const UserSettingWrap = styled.div`
   display: flex;
   justify-content: space-between;
-  // z-index: 99;
   > button {
     margin: 0;
   }
 `;
 const UserDetailWrap = styled.div`
+  z-index: 999;
   position: absolute;
   right: 0;
   top: 72px;
