@@ -47,6 +47,7 @@ const Home = () => {
 
     spotifyApi.searchTracks(randomString1, { limit: 6 }).then((res) => {
       const homeShowTracks = res.body.tracks?.items;
+      console.log("homeShowTracks=>",homeShowTracks)
       setHomeShowTracks(homeShowTracks);
     });
     spotifyApi.searchArtists(randomString2, { limit: 6 }).then((res) => {

@@ -300,6 +300,8 @@ const DetailAlbum = ({ data }: any) => {
             </Grid>
             <div className="track-box">
               {albumTracks.map((item: any, index: number) => {
+                console.log("detail item===>", item)
+                const albumTrackWithAlbumData = {...item, albumImg : album.images[0]?.url, albumName : album.name }
                 return (
                   <BodyGrid key={item.uri}>
                     <GridItem>{index + 1}</GridItem>
@@ -318,7 +320,8 @@ const DetailAlbum = ({ data }: any) => {
                     </GridItem>
                     <GridItem
                       onClick={() => {
-                        setSelectedTrack(item);
+                        // setSelectedTrack(item);
+                        setSelectedTrack(albumTrackWithAlbumData);
                         setModalOpen(true);
                       }}
                     >
@@ -407,10 +410,10 @@ const GridItem = styled.div`
   align-items: center;
   padding: 0px 10px;
   font-size: 14px;
-  &:nth-child(5),
+  /* &:nth-child(5),
   :nth-child(6) {
     justify-content: center;
-  }
+  } */
 
   img {
     width: 40px;
