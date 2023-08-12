@@ -87,14 +87,14 @@ const Header: React.FC = () => {
 
   return (
     <HeaderTag>
-      <Space style={{ gap: '4px' }}>
+      <HoverableSpace>
         <Tooltip title="next">
           <Button shape="circle" icon={<StepBackwardOutlined />} />
         </Tooltip>
         <Tooltip title="forward">
           <Button shape="circle" icon={<StepForwardOutlined />} />
         </Tooltip>
-      </Space>
+      </HoverableSpace>
       <form>
         <InputContainer>
           <SearchInput
@@ -124,6 +124,17 @@ const Header: React.FC = () => {
 };
 
 export default Header;
+
+const HoverableSpace = styled(Space)`
+  gap: 4px;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+  buttion {
+    &:hover {
+      opacity: 1;
+    }
+  }
+`;
 
 const HeaderTag = styled.header`
   z-index: 9;

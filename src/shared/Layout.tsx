@@ -35,9 +35,8 @@ const Wrapper = styled.div`
   margin-top: 4.5rem;
   border-radius: 10px;
   position: relative;
-  
+
   &::before {
-    
     z-index: -0.5;
     content: '';
     position: absolute;
@@ -47,10 +46,13 @@ const Wrapper = styled.div`
     right: 0;
     bottom: 0;
     // background-image: url('/this.png');
-    background: linear-gradient(145deg, gray, lightgray, gray);
-    opacity: 0.7;
-    filter: blur(0.5px);/
+    // background: linear-gradient(145deg, gray, lightgray, gray);
+    // background:lightgray;
+    opacity: 1;
+    filter: blur(0.5px);
     pointer-events: none;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.46);
   }
 `;
 const BackgroundImage = styled.img`
