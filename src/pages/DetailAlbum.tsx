@@ -300,7 +300,6 @@ const DetailAlbum = ({ data }: any) => {
             </Grid>
             <div className="track-box">
               {albumTracks.map((item: any, index: number) => {
-                console.log("detail item===>", item)
                 const albumTrackWithAlbumData = {...item, albumImg : album.images[0]?.url, albumName : album.name }
                 return (
                   <BodyGrid key={item.uri}>

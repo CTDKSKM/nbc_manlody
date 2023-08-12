@@ -7,6 +7,7 @@ import useUser from '../hooks/useUser';
 import { useDispatch } from 'react-redux';
 import { changePlaylist, addAlbum } from '../redux/modules/playUris';
 import { PiPlaylistBold, PiPlayFill } from 'react-icons/pi';
+import CarouselFavorite from '../components/FavoriteSlider';
 
 interface Playlist {
   id: string;
@@ -17,7 +18,6 @@ interface Playlist {
 
 const Modal: React.FC<ModalProps> = ({ onClose, tracks }) => {
   const dispatch = useDispatch();
-  console.log('tracks Playlist==>', tracks);
   const newPlaylistSong = tracks.map((item: any) => ({ name: item.name, artists: item.artists, uri: item.uri }));
 
   const newPlaylist = () => {
@@ -56,7 +56,6 @@ const Modal: React.FC<ModalProps> = ({ onClose, tracks }) => {
         {/* ================================================================ */}
         <div className="track-box">
           {tracks.map((item: any, index: number) => {
-            console.log('item===>', item);
             return (
               <BodyGrid key={item.uri}>
                 <GridItem>{index + 1}</GridItem>
@@ -276,6 +275,7 @@ const PlayList = () => {
   return (
     <>
       <NewPlayList onAddPlaylist={handleAddPlaylist} />
+      <CarouselFavorite playlists={playlists}/>
       {playlists.map((item) => (
         <List key={item.id}>
           <div onClick={() => handleShowTracks(item.tracks)}>{item.name}</div>
