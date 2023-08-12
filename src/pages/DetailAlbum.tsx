@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { collection, query, where, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { styled } from 'styled-components';
 
-import { db, storage } from '../firebase';
+import { db } from '../firebase';
 import { accessToken } from '../components/Header';
 import useUser from '../hooks/useUser';
 
@@ -14,7 +14,6 @@ import ReviewBox from '../components/detail-album/review/ReviewBox';
 
 import { useDispatch } from 'react-redux';
 import { addAlbum } from '../redux/modules/playUris';
-import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 
 interface ImageProps {
   url: string;
@@ -119,7 +118,6 @@ const DetailAlbum = ({ data }: any) => {
   const [albumUris, setAlbumUris] = useState<string[]>([]);
   const [openReview, setOpenReview] = useState<boolean>(true);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [imgUrl, setImgUrl] = useState<string>('');
 
   const { userId } = useUser();
   const [likedTracks, setLikedTracks] = useState<string[]>([]);
@@ -137,8 +135,6 @@ const DetailAlbum = ({ data }: any) => {
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
         setAlbum(response.data);
         setAlbumTracks(response.data.tracks.items);
-
-        // const albumUris = response.data.tracks.items.map((item: any) => item.uri);
         const albumUris = response.data.tracks.items;
         setAlbumUris([...albumUris]);
       };
@@ -266,8 +262,6 @@ const DetailAlbum = ({ data }: any) => {
       console.error('Error adding track to playlist: ', error);
     }
   };
-  const [image, setImage] = useState<any>('');
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const extractRGBColors = () => {
     const image = imageRef.current as HTMLImageElement;
@@ -276,18 +270,12 @@ const DetailAlbum = ({ data }: any) => {
 
     canvas.width = image?.width;
     canvas.height = image?.height;
-
     ctx?.drawImage(image, 0, 0, canvas.width, canvas.height);
-
     const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
-
-    console.log('어디서 나냐?');
     const pixels = imageData?.data as Uint8ClampedArray;
-
     let redSum = 0;
     let greenSum = 0;
     let blueSum = 0;
-
     for (let i = 0; i < pixels?.length; i += 4) {
       redSum += pixels[i];
       greenSum += pixels[i + 1];
@@ -301,28 +289,10 @@ const DetailAlbum = ({ data }: any) => {
 
     console.log(`Average RGB: ${averageRed}, ${averageGreen}, ${averageBlue}`);
   };
-  const [imageUrl, setImageUrl] = useState<string>('');
-  const saveAlbumImage = async () => {
-    console.log('실행됐냐', album.images[0]?.url);
-    try {
-      console.log('세이브앨범실행');
-      const response = await fetch('https://i.scdn.co/image/ab67616d0000b27391ee4ab5782c9b197766ca02');
-      const imageBlob = await response.blob();
 
-      const storageRef = ref(storage, `albumImgs/${Date.now()}`);
-      await uploadBytes(storageRef, imageBlob);
-      const url = await getDownloadURL(storageRef);
-      console.log('url=>', url);
-      setImageUrl(url);
-    } catch (error) {
-      console.error('Error updating user profile:', error);
-    }
-  };
-  console.log('imageUrl!!', imageUrl);
   return (
     <>
       <AlbumTag>
-        <button onClick={saveAlbumImage}>이미지겟</button>
         <button onClick={playAlbum}>앨범플레이</button>
         <div className="album-info">
           <div className="info-data">

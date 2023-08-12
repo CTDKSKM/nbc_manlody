@@ -4,7 +4,6 @@ import { styled } from 'styled-components';
 
 const FavoriteSongs = () => {
   const { data } = useLikes();
-  console.log(data![0], 'favData!!!');
   return (
     <div>
       {data?.map((item, index) => {
