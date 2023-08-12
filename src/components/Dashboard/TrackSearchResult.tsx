@@ -16,7 +16,7 @@ const TrackSearchResult = ({ track }: TrackSearchProps) => {
       <div
         className="search-list"
         onClick={() => {
-          navigate(`detail/${track.albumId}`, { state: { track } });
+          navigate(`detail/${track.albumId}`);
         }}
       >
         <img src={track.albumUrl} alt="img" />

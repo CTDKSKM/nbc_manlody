@@ -37,6 +37,7 @@ const Wrapper = styled.div`
   position: relative;
   
   &::before {
+    
     z-index: -0.5;
     content: '';
     position: absolute;

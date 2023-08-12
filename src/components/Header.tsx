@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Profile from './Profile';
+import { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
-import { SearchOutlined, StepForwardOutlined, StepBackwardOutlined } from '@ant-design/icons';
+
 import { Button, Tooltip, Space } from 'antd';
-import { signOut } from 'firebase/auth';
-import { auth } from '../firebase';
+import { SearchOutlined, StepForwardOutlined, StepBackwardOutlined } from '@ant-design/icons';
 import SpotifyWebApi from 'spotify-web-api-node';
+
 import TrackSearchResult from './Dashboard/TrackSearchResult';
+import Profile from './Profile';
 
 export interface Track {
   albumUrl?: string;
@@ -68,9 +68,6 @@ const Header: React.FC = () => {
       cancel = true;
     };
   }, [search, accessToken]);
-  const handleSignOut = async () => {
-    await signOut(auth);
-  };
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -99,9 +96,6 @@ const Header: React.FC = () => {
         </Tooltip>
       </Space>
       <form>
-        {/* <label>
-          <img src="https://i.ibb.co/ZNzFRNv/icons8-search-50.png" alt="search icon" />
-        </label> */}
         <InputContainer>
           <SearchInput
             ref={searchInputRef}
@@ -122,7 +116,6 @@ const Header: React.FC = () => {
           <SearchIcon src="https://i.ibb.co/ZNzFRNv/icons8-search-50.png" alt="search icon" />
         </InputContainer>
       </form>
-
       <div>
         <Profile />
       </div>
@@ -136,8 +129,6 @@ const HeaderTag = styled.header`
   z-index: 9;
   position: relative;
   width: 100%;
-  // margin: 0 auto;
-  // margin-right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;

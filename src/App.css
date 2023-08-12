@@ -5,9 +5,11 @@
 }
 
 /* .albums-info{
-    color:transparent
+    color:transparent;
     font-weight: bolder;
     display: flex;
-    justify-content: space-between;
+    justify-content:first baseline;
     align-items: end;
+    
+    box-shadow: 10px 10px rgba(218, 218, 218, 0.7);
     } */

@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import { collection, query, where, getDocs, addDoc, deleteDoc, doc } from 'firebase/firestore';
-import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { useEffect, useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+import { collection, query, where, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { styled } from 'styled-components';
 
 import { db } from '../firebase';
@@ -12,8 +11,17 @@ import useUser from '../hooks/useUser';
 import AlbumReview from '../components/detail-album/review/AlbumReview';
 import ReviewBox from '../components/detail-album/review/ReviewBox';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addAlbum } from '../redux/modules/playUris';
+import useLikes from '../hooks/useLikes';
+import { setRGB } from '../redux/modules/rgb';
+import { PiPlaylistBold, PiPlayFill } from 'react-icons/pi';
+
+interface ImageProps {
+  url: string;
+  height: number;
+  width: number;
+}
 
 interface ImageProps {
   url: string;
@@ -35,7 +43,68 @@ interface Album {
   release_date: string;
 }
 
+interface PlaylistModalProps {
+  isOpen: boolean;
+  closeModal: () => void;
+  playlists: {}[];
+  selectedTrack: {} | null;
+  addTrackToPlaylist: (id: string) => void;
+}
+
+const PlaylistModal: React.FC<PlaylistModalProps> = ({ isOpen, closeModal, playlists, addTrackToPlaylist }) => {
+  if (!isOpen) return null;
+  return (
+    <ModalWrapper>
+      <ModalContent>
+        <h2>Select a playlist</h2>
+        <ul>
+          {playlists.map((playlist: any) => (
+            <li
+              key={playlist.id}
+              onClick={() => {
+                addTrackToPlaylist(playlist.id);
+              }}
+            >
+              {playlist.name}
+            </li>
+          ))}
+        </ul>
+        <button onClick={closeModal}>Close</button>
+      </ModalContent>
+    </ModalWrapper>
+  );
+};
+
+const ModalWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContent = styled.div`
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+`;
+
+interface Playlist {
+  id: string;
+  name: string;
+  userId: string;
+  tracks: string[];
+}
+
 const DetailAlbum = ({ data }: any) => {
+  //@ts-ignore
+  const rgba = useSelector((state) => state.rgbSliceReducer);
   const dispatch = useDispatch();
   const { album_id: albumId } = useParams<string>();
   const [tooltipVisible, setTooltipVisible] = useState(false);
@@ -54,23 +123,28 @@ const DetailAlbum = ({ data }: any) => {
   const [albumTracks, setAlbumTracks] = useState<any>([]);
   const [albumUris, setAlbumUris] = useState<string[]>([]);
   const [openReview, setOpenReview] = useState<boolean>(true);
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const { userId } = useUser();
+  const [likedTracks, setLikedTracks] = useState<string[]>([]);
+  const { toggleMutation } = useLikes();
+
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [selectedTrack, setSelectedTrack] = useState<{ id: string } | null>(null);
+
   const headers = {
     Authorization: `Bearer ${accessToken}`
   };
-  const [likedTracks, setLikedTracks] = useState<string[]>([]);
-  console.log('album==>', album);
+
   useEffect(() => {
     try {
       const getAlbum = async () => {
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
-        console.log('response.data=>', response.data);
-        console.log('response.data.tracks=>', response.data.tracks);
         setAlbum(response.data);
         setAlbumTracks(response.data.tracks.items);
 
-        const albumUris = response.data.tracks.items.map((item: any) => item.uri);
+        // const albumUris = response.data.tracks.items.map((item: any) => item.uri);
+        const albumUris = response.data.tracks.items;
         setAlbumUris([...albumUris]);
       };
 
@@ -79,7 +153,23 @@ const DetailAlbum = ({ data }: any) => {
       alert('앨범데이터 Get Fail' + error);
       return;
     }
-  }, []);
+  }, [albumId]);
+
+  useEffect(() => {
+    const fetchPlaylists = async () => {
+      if (userId) {
+        try {
+          const q = query(collection(db, 'playlists'), where('userId', '==', userId));
+          const querySnapshot = await getDocs(q);
+
+          setPlaylists(querySnapshot.docs.map((doc) => ({ id: doc.id, ...(doc.data() as Omit<Playlist, 'id'>) })));
+        } catch (error) {
+          console.error('Error fetching playlists: ', error);
+        }
+      }
+    };
+    fetchPlaylists();
+  }, [userId]);
 
   useEffect(() => {
     if (userId && albumTracks.length > 0) {
@@ -108,26 +198,9 @@ const DetailAlbum = ({ data }: any) => {
   const playAlbum = () => {
     dispatch(addAlbum(albumUris));
   };
-
-  const toggleLikeHandler = async (itemId: string) => {
-    const likesRef = collection(db, 'likes');
-    const q = query(likesRef, where('userId', '==', userId), where('trackId', '==', itemId));
-
-    const snapshot = await getDocs(q);
-
-    if (snapshot.empty) {
-      await addDoc(likesRef, {
-        userId: userId,
-        trackId: itemId
-      });
-      setLikedTracks([...likedTracks, itemId]);
-    } else {
-      for (const docSnapshot of snapshot.docs) {
-        const docRef = doc(db, 'likes', docSnapshot.id);
-        await deleteDoc(docRef);
-      }
-      setLikedTracks(likedTracks.filter((id) => id !== itemId));
-    }
+  const playTrack = (item: any) => {
+    const playTrack = [item];
+    dispatch(addAlbum(playTrack));
   };
 
   const timeData = albumTracks.map((item: any) => {
@@ -141,84 +214,188 @@ const DetailAlbum = ({ data }: any) => {
     return `${formattedMinutes}:${formattedRemainingSeconds}`;
   });
 
-  return (
-    <AlbumTag>
-      <div className="album-info">
-        <div className="info-data">
-          <img src={album.images[0]?.url} alt="image" />
-          <div>
-            <h1>{album.name}</h1>
-            <div>
-              <p>{album.album_type}</p>
-              <p>{album.release_date}</p>
-            </div>
-            <p className="artist-name">{album.artists[0]?.name}</p>
-          </div>
-        </div>
-        <div></div>
-      </div>
-      <div className="add-player">
-        <HoverableImage
-          src="/addToPlayer_Btn.png"
-          style={{ width: '34px' }}
-          onMouseEnter={() => setTooltipVisible(true)}
-          onMouseLeave={() => setTooltipVisible(false)}
-          onClick={playAlbum}
-        />
-        {tooltipVisible && <span className="tooltip">Add to player</span>}
-        <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
-      </div>
-      {openReview ? (
-        <div className="result-album">
-          <div className="result-wrapper">
-            <p>Track</p>
-            <p>Track Infomation</p>
-            <p>Album Infomation</p>
-            <p>Love it</p>
-            <p>Playing Time</p>
-          </div>
-          <div className="track-box">
-            {albumTracks.map((item: any, index: number) => {
-              return (
-                <BodyGrid key={item.uri}>
-                  <GridItem>{index + 1}</GridItem>
-                  <GridItem>
-                    <img src={album.images[0]?.url} alt="image" />
+  const addTrackToPlaylist = async (playlistId: string) => {
+    if (!selectedTrack) {
+      console.error('No track selected');
+      return;
+    }
 
-                    <div>
-                      <h1>{item.name}</h1>
-                      <p>{item.artists[0].name}</p>
-                    </div>
-                  </GridItem>
-                  <GridItem>{album.name}</GridItem>
-                  <GridItem
-                    onClick={() => {
-                      toggleLikeHandler(item.id);
-                    }}
-                  >
-                    {likedTracks.includes(item.id) ? '❤️' : '🤍'}
-                  </GridItem>
-                  <GridItem>{timeData[index]}</GridItem>
-                </BodyGrid>
-              );
-            })}
+    try {
+      const playlistRef = doc(db, 'playlists', playlistId);
+      const playlistSnapshot = await getDoc(playlistRef);
+
+      if (playlistSnapshot.exists()) {
+        const playlistData = playlistSnapshot.data() as Playlist;
+        if (playlistData.tracks.includes(selectedTrack.id)) {
+          console.warn('Track already exists in the playlist');
+          return;
+        }
+
+        const updatedTracks = [...playlistData.tracks, selectedTrack];
+        await updateDoc(playlistRef, {
+          tracks: updatedTracks
+        });
+      } else {
+        console.error('Playlist not found');
+      }
+    } catch (error) {
+      console.error('Error adding track to playlist: ', error);
+    }
+  };
+
+  const imageRef = useRef<HTMLImageElement>(null);
+  const extractRGBColors = () => {
+    const image = imageRef.current as HTMLImageElement;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas?.getContext('2d');
+
+    canvas.width = image?.width;
+    canvas.height = image?.height;
+    ctx?.drawImage(image, 0, 0, canvas.width, canvas.height);
+    const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = imageData?.data as Uint8ClampedArray;
+
+    let redSum = 0;
+    let greenSum = 0;
+    let blueSum = 0;
+
+    for (let i = 0; i < pixels?.length; i += 4) {
+      redSum += pixels[i];
+      greenSum += pixels[i + 1];
+      blueSum += pixels[i + 2];
+    }
+
+    const pixelCount = pixels.length / 4;
+    const averageRed = Math.round(redSum / pixelCount);
+    const averageGreen = Math.round(greenSum / pixelCount);
+    const averageBlue = Math.round(blueSum / pixelCount);
+
+    dispatch(setRGB([averageRed, averageGreen, averageBlue, 1]));
+    console.log(`Average RGB: ${averageRed}, ${averageGreen}, ${averageBlue}`);
+  };
+  const toggleLikeHandler = (item: any) => {
+    toggleMutation.mutate({ ...item, trackImg: album.images[0]?.url });
+    if (likedTracks.includes(item.id)) {
+      setLikedTracks(likedTracks.filter((id) => id !== item.id));
+    } else {
+      setLikedTracks([...likedTracks, item.id]);
+    }
+  };
+  return (
+    <>
+      <AlbumTag rgba={rgba}>
+        <div className="album-gradient">
+          {/* <button onClick={playAlbum}>앨범플레이</button> */}
+          <div className="album-info">
+            <div className="info-data">
+              <img crossOrigin="anonymous" ref={imageRef} onLoad={extractRGBColors} src={album.images[0]?.url} alt="" />
+              <div>
+                <h1>{album.name}</h1>
+                <div>
+                  <p>{album.album_type}</p>
+                  <p>{album.release_date}</p>
+                </div>
+                <p className="artist-name">{album.artists[0]?.name}</p>
+              </div>
+            </div>
           </div>
         </div>
-      ) : (
-        <>
-          <AlbumReview />
-          <ReviewBox data={data} />
-        </>
-      )}
-    </AlbumTag>
+        <div className="add-player">
+          <HoverableImage
+            src="/addToPlayer_Btn.png"
+            style={{ width: '34px' }}
+            onMouseEnter={() => setTooltipVisible(true)}
+            onMouseLeave={() => setTooltipVisible(false)}
+            onClick={playAlbum}
+          />
+          {tooltipVisible && <span className="tooltip">Add to player</span>}
+          <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
+        </div>
+        {openReview ? (
+          <div className="result-album">
+            <div className="result-wrapper">
+              <p>Track</p>
+              <p>Track Infomation</p>
+              <p>Album Infomation</p>
+              <p>Love it</p>
+              <p>Playing Time</p>
+            </div>
+            <div className="track-box">
+              {albumTracks.map((item: any, index: number) => {
+                const albumTrackWithAlbumData = { ...item, albumImg: album.images[0]?.url, albumName: album.name };
+                return (
+                  <BodyGrid key={item.uri}>
+                    <GridItem
+                      onClick={() => {
+                        // setSelectedTrack(item);
+                        setSelectedTrack(albumTrackWithAlbumData);
+                        setModalOpen(true);
+                      }}
+                    >
+                      <PiPlayFill className="PiPlayFill" />
+                    </GridItem>
+                    <GridItem>{index + 1}</GridItem>
+                    {/* <GridItem>
+                      <button onClick={() => playTrack(item)}>
+                        <PiPlaylistBold />
+                      </button>
+                    </GridItem> */}
+
+                    <GridItem>
+                      <button onClick={() => playTrack(item)}>
+                        <PiPlaylistBold style={{ fontSize: '20px', marginRight: '10px' }} />
+                      </button>
+                      <img src={album.images[0]?.url} alt="image" />
+                      <div>
+                        <h1>{item.name}</h1>
+                        <p>{item.artists[0].name}</p>
+                      </div>
+                    </GridItem>
+                    <GridItem>{album.name}</GridItem>
+                    <GridItem onClick={() => toggleLikeHandler(item)}>
+                      {likedTracks.includes(item.id) ? '❤️' : '🤍'}
+                    </GridItem>
+
+                    <GridItem>{timeData[index]}</GridItem>
+                  </BodyGrid>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          <div className="toggle-wrapper">
+            <AlbumReview />
+            <ReviewBox data={data} />
+          </div>
+        )}
+      </AlbumTag>
+      <PlaylistModal
+        isOpen={isModalOpen}
+        closeModal={() => setModalOpen(false)}
+        playlists={playlists}
+        addTrackToPlaylist={addTrackToPlaylist}
+        selectedTrack={selectedTrack}
+      />
+    </>
   );
 };
 
 export default DetailAlbum;
 
-const AlbumTag = styled.div`
+const AlbumTag = styled.div<{ rgba: number[] }>`
   width: 100%;
-
+  height: 80%;
+  margin-bottom: 3rem;
+  .album-gradient {
+    z-index:9;
+    position:relative;
+    background: linear-gradient(to top left, ${({ rgba }) =>
+      `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.7)`}, transparent);
+      backdrop-filter: blur(10px);
+    
+      padding-bottom: 0.1px;
+      margin-bottom: 10px;
+  }
   .album-info {
     display: flex;
     justify-content: space-between;
@@ -282,6 +459,7 @@ const AlbumTag = styled.div`
     top: -30px;
     left: 2%;
     transform: translateX(-50%);
+    z-index: 9;
   }
 
   .add-player:hover .tooltip {
@@ -292,18 +470,20 @@ const AlbumTag = styled.div`
   z-index:2;
 }
   .result-wrapper {
-    width:92%;
+    width:88%;
     
-    text-align:left;
-    margin-left:-10px;
     margin: 0 auto;
     display: flex;
     justify-content:space-between;
-    padding: 10px 0px;
+    padding: 10px;
     gap: 10px;
   }
   .result-wrapper :first-child{
-    margin-left: -20px;
+  
+    margin-left: -40px;
+  }
+  .result-wrapper :last-child{
+    margin-left: -40px;
   }
   .result-wrapper > p {
     padding: 0px 10px;
@@ -324,6 +504,8 @@ const AlbumTag = styled.div`
     transition: transform 0.2s, background-color 0.8s;
     position: relative;
   }
+  .toggle-wrapper{
+  }
 
   ::-webkit-scrollbar {
     width: 8px;
@@ -338,7 +520,6 @@ const AlbumTag = styled.div`
     background-color: transparent;
     border-radius: 5px;
   }
-
 `;
 
 const HoverableImage = styled.img`
@@ -360,7 +541,7 @@ const Grid = styled.div`
   display: grid;
   padding: 10px 0px;
   color: #000;
-  grid-template-columns: 1fr 3fr 1.1fr 3fr 1fr;
+  grid-template-columns: 0.35fr 0.2fr 2fr 3fr 1.5fr 1fr;
   color: #000;
   gap: 10px;
   overflow-x: auto;
@@ -397,15 +578,13 @@ const GridItem = styled.div`
   padding: 0px 10px;
   font-size: 14px;
 
-  height: 32px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  &:first-child {
-    margin-left: -20px;
-    justify-content: center;
+  button {
+    color: white;
   }
+  /* &:nth-child(5),
+  :nth-child(6) {
+    justify-content: center;
+  } */
 
   // &:last-child {
   //   padding-left: 30px;
@@ -437,6 +616,18 @@ const GridItem = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .PiPlayFill {
+    scale: 1.3;
+    cursor: pointer;
+    transition-duration: 0.3s;
+    &:hover {
+      color: #c30000;
+      transition: all 0.3s ease-in-out;
+      transform: scale(1.4);
+      rotate: 360deg;
+    }
+  }
 `;
 
 const BodyGrid = styled(Grid)`
@@ -463,5 +654,10 @@ const BodyGrid = styled(Grid)`
       height: 24px;
       margin-right: 5px;
     }
+  }
+  ${GridItem}:nth-child(5) {
+    margin-left: 30px;
+    cursor: pointer;
+    padding: 0;
   }
 `;

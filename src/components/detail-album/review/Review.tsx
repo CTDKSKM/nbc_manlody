@@ -65,7 +65,7 @@ const Review = ({ comment, userId, changeListener }: Props) => {
               onChange={(e) => {
                 setNewContent(e.target.value);
               }}
-            ></input>
+            />
             <button>수정</button>
             <button
               onClick={() => {
@@ -90,12 +90,8 @@ const Review = ({ comment, userId, changeListener }: Props) => {
                   setIsOptBoxShow(!isOptBoxShow);
                 }}
               >
-                <PlusSquareFilled
-                  onClick={() => {
-                    setIsInputBoxShow(false);
-                    setIsOptBoxShow(!isOptBoxShow);
-                  }}
-                />
+                ...
+                {/* <PlusSquareFilled/> */}
               </div>
               {isOptBoxShow && (
                 <div className="select-box">
@@ -113,7 +109,6 @@ const Review = ({ comment, userId, changeListener }: Props) => {
 
 export default Review;
 const StReview = styled.div`
-  width: 90%;
   margin: 0 auto;
 
   .comment-div {
@@ -126,7 +121,7 @@ const StReview = styled.div`
     margin: 10px auto;
     transition: background-color 0.7s;
     &: hover {
-      background-color: rgba(113, 113, 113, 0.7);
+      background-color: rgba(218, 218, 218, 0.7);
       opacity: 0.94;
 
       font-weight: 600;
@@ -137,6 +132,11 @@ const StReview = styled.div`
     .input-box {
       width: 50%;
     }
+    input {
+      border: none;
+      border-radius: 4px;
+      padding: 8px;
+    }
     .content {
       width: 50%;
       position: relative;
@@ -144,6 +144,9 @@ const StReview = styled.div`
     .date {
       width: 7%;
     }
+  }
+  button {
+    margin: 0 10px;
   }
 `;
 const StOptionBox = styled.div`
@@ -155,14 +158,27 @@ const StOptionBox = styled.div`
     top: 50%;
     width: 3%;
     cursor: pointer;
-    transform: translateY(-50%);
+    transform: translateY(-100%);
   }
   .select-box {
     position: absolute;
-    right: 0;
-    top: -50px;
+    right: -5px;
+    top: -58px;
     display: flex;
     flex-direction: column;
     row-gap: 10px;
+    background-color: white;
+    padding: 14px 10px 10px;
+    border-radius: 8px;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 98%; /* 말풍선이 박스 아래에 위치하도록 설정 */
+      right: 24px;
+      border-width: 8px; /* 삼각형의 크기 */
+      border-style: solid;
+      border-color: white transparent transparent transparent;
+    }
   }
+}
 `;

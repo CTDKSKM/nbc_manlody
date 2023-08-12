@@ -1,9 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
 import Carousel from '../components/Slider';
 import PauseCarousel from '../components/PuaseSlider';
 import { getReturnedParamsFromSpotifyAuth } from '../components/GetAccessToken/GetAccessToken';
-import axios from 'axios';
 import { spotifyApi } from '../components/Header';
 import { useNavigate } from 'react-router';
 
@@ -48,6 +47,7 @@ const Home = () => {
 
     spotifyApi.searchTracks(randomString1, { limit: 6 }).then((res) => {
       const homeShowTracks = res.body.tracks?.items;
+      console.log('homeShowTracks=>', homeShowTracks);
       setHomeShowTracks(homeShowTracks);
     });
     spotifyApi.searchArtists(randomString2, { limit: 6 }).then((res) => {
@@ -163,7 +163,7 @@ const HomeWrapper = styled.div`
   }
 
   #hotAlbumTag {
-    margin-top: 3rem;
+    margin-top: 1.5rem;
     // height: 30%;
   }
 `;

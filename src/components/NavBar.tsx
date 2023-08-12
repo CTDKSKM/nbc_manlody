@@ -1,71 +1,85 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { styled } from "styled-components";
+import { Link } from 'react-router-dom';
+import { styled } from 'styled-components';
+import useUser from '../hooks/useUser';
+import NavLiFavoriteSong from './NavLiFavoriteSong';
+import { useSelector } from 'react-redux';
 
 const NavBar = () => {
-    return (
-        <Nav>
-            <div id="logoBody">
-                <Link to="/">
-                    <img src="/logo_horizontal.png" alt="Logo" />
-                    {/* <h3>NavBar</h3> */}
-                </Link>
-            </div>
-            <ul>
-                <li>Settings</li>
-                <li>My favorite Song</li>
+  const { userId } = useUser();
+  //@ts-ignore
+  const track = useSelector((state) => state.albumTrackSliceReducer);
+  console.log("NavBarTrack==>",track)
+  const trackData = track.map((item: any) => ({ title: item.name, artist: item.artists[0].name }));
+  return (
+    <Nav>
+      <div id="logoBody">
+        <Link to="/">
+          <img src="/logo_horizontal.png" alt="Logo" />
+        </Link>
+      </div>
+      <ul>
+        <li>Settings</li>
+        {userId && <NavLiFavoriteSong />}
+      </ul>
+      <div>
+        <Link to="/playlist">🐱‍🏍PLAYLIST🎶</Link>
+        {trackData.map((item: any, index: number) => {
+          console.log("Navbar name==>",item.title)
+          return (
+            <ul className="playListCtn">
+              <li key={item.uri}>{item.title.length < 10 ? item.title : `${item.title.slice(0, 10)}...`} -</li>
+              <li key={index}>{item.artist}</li>
+              <button>🤢</button>
             </ul>
-            <div>
-                <h2>🐱‍🏍PLAYLIST🎶</h2>
-                <ul>
-                    <li>2: title - artist - playBtn</li>
-                    <li>2: title - artist - playBtn</li>
-                    <li>2: title - artist - playBtn</li>
-                    <li>2: title - artist - playBtn</li>
-                    <li>2: title - artist - playBtn</li>
-                </ul>
-            </div>
-        </Nav>
-    );
+          );
+        })}
+      </div>
+    </Nav>
+  );
 };
 
 export default NavBar;
 
 const Nav = styled.div`
-    width: 100%;
-    // hight: 100vh;
-    // background-color: rgba(75, 75, 75, 0.836);
-    border: 1px dotted gray;
+  width: 100%;
+  // hight: 100vh;
+  // background-color: rgba(75, 75, 75, 0.836);
+  border: 1px dotted gray;
 
-    padding: 0 0.5rem 0.5rem;
+  padding: 0 0.5rem 0.5rem;
 
-    #logoBody {
-        background-color: rgba(163, 163, 163, 0.856);
-        border-radius: 8px;
-        padding: 0.7rem;
-        transition: background-color 0.8s, transform 0.2s;
-    }
+  #logoBody {
+    background-color: rgba(163, 163, 163, 0.856);
+    border-radius: 8px;
+    padding: 0.7rem;
+    transition: background-color 0.8s, transform 0.2s;
+  }
 
-    #logoBody:hover {
-        background-color: rgba(214, 214, 214, 0.656);
-        transform: scale(1.017);
-    }
+  #logoBody:hover {
+    background-color: rgba(214, 214, 214, 0.656);
+    transform: scale(1.017);
+  }
 
-    img {
-        margin: 0 auto;
-        display:flex;
-        justify-content:center;
-        max-width: 80%;
-        height: auto;
-        cursor: pointer;
-        filter: grayscale(1);
-        transition: filter 0.8s;
-    }
-    img:hover {
-        filter: none;
-    }
+  img {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    max-width: 80%;
+    height: auto;
+    cursor: pointer;
+    filter: grayscale(1);
+    transition: filter 0.8s;
+  }
+  img:hover {
+    filter: none;
+  }
+  .playListCtn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
 
-    li {
-        margin: 40px 0;
-    }
+  li {
+    margin: 10px 0;
+  }
 `;

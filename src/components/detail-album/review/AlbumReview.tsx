@@ -59,7 +59,7 @@ const StAlbumReviewForm = styled.form`
   gap: 10px;
   > input {
     width: 93%;
-    padding: 10px 14px;
+    padding: 10px 10px;
     outline: none;
     border-radius: 7px;
     background: #eee;
@@ -70,6 +70,12 @@ const StAlbumReviewForm = styled.form`
     background: #eee;
     border: none;
     border-radius: 7px;
-    color: #111;
+
+    color: gray;
+    border: none;
+    &:hover {
+      // background-color: rgba(128, 128, 128, 0.6);
+      color: rgba(128, 128, 128, 0.6);
+    }
   }
 `;
