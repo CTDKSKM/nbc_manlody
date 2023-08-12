@@ -18,6 +18,7 @@ const Player = () => {
     }
   }, [trackUri]);
 
+  if (!accessToken) return null;
   return (
     <StPlayerCtn>
       <SpotifyPlayer
