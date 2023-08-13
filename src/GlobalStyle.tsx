@@ -7,6 +7,22 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    
+    ::-webkit-scrollbar {
+        width: 8px;
+      }
+    
+      ::-webkit-scrollbar-thumb {
+        background-color: rgba(224, 224, 224, 0.734);
+        border-radius: 5px;
+      }
+    
+      ::-webkit-scrollbar-track {
+        background-color: transparent;
+        border-radius: 5px;
+      }
+      
     }
     
     a{
@@ -18,10 +34,10 @@ const GlobalStyle = createGlobalStyle`
     html,
     body {
     font-family: "Libre Franklin", sans-serif;
-    min-height: 100vh; /* Set minimum height to full viewport height */
-    overflow: hidden; /* Prevent scrolling in body */
+    overflow: hidden;
     }
     body {
+        background-color:black;
         min-height: 1000px;
     }
 

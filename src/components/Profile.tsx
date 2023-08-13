@@ -254,7 +254,6 @@ const UserInfo = styled.h1`
 const UserSettingWrap = styled.div`
   display: flex;
   justify-content: space-between;
-  // z-index: 99;
   > button {
     margin: 0;
   }

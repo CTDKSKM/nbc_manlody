@@ -33,15 +33,18 @@ export default TrackSearchResult;
 
 const TrackTag = styled.header`
   width: 100%;
+  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2px;
-  padding: 0 1rem;
+  padding: 0 1rem 0.3rem;
 
   .search-list {
-    background-color: rgba(163, 163, 163, 0.836);
-    box-shadow: 5px 10px 10px rgba(128, 128, 128, 0.359);
+    background: rgba(193, 193, 193, 0.43);
+    filter: blur(0.5px);
+    backdrop-filter: blur(8px);
+    box-shadow: 5px 2px 10px rgba(128, 128, 128, 0.659);
     border-radius: 10px;
 
     width: 100%;

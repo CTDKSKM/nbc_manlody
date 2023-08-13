@@ -50,14 +50,18 @@ const LoginBody = styled.div`
   width: 100vw;
   height: 100vh;
   position: relative;
-background: #fffbd5; /* Old browsers */
-background: -moz-linear-gradient(left,  #FFF593 0%, #b20a2c 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(left,  #FFF593 0%,#b20a2c 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to right,  #FFF593 0%,#b20a2c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-
+  background: #fffbd5; /* Old browsers */
+  background: -moz-linear-gradient(left, #fff593 0%, #b20a2c 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, #fff593 0%, #b20a2c 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    to right,
+    #fff593 0%,
+    #b20a2c 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 `;
 
 const LoginWrap = styled.div`
+  margin-top: -4rem;
   background-color: rgba(255, 255, 255, 0.6);
   position: absolute;
   left: 50%;
@@ -65,15 +69,17 @@ const LoginWrap = styled.div`
   transform: translate(-50%, -50%);
   border-radius: 8px;
   transition: all 0.5s;
-  &:hover{
-    background-color: rgba(255,255,255,1);
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.86);
   }
 `;
 const LoginInner = styled.div`
+  margin-top: -1rem;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 40px 50px;
+  padding: 20px 50px;
   p {
     width: 400px;
     text-align: center;
@@ -82,7 +88,7 @@ const LoginInner = styled.div`
   img {
     width: 100%;
   }
-  button{
+  button {
     padding: 10px 60px;
     border: solid 1px #111;
     font-size: 15px;
