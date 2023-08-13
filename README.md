@@ -19,7 +19,7 @@
 
 ### 📍 사이트 주소
 
-<a href="https://gong-gong-play.vercel.app/">GONG GONG PLAY</a>
+<a href="https://gong-gong-play.vercel.app/">MANLODY</a>
 
 
 
