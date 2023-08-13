@@ -146,37 +146,33 @@
 
 ### 🎬 페이지 스크린샷
 
-#### 1. 메인화면
+#### 1. 로그인 화면
 
-![01 main](https://github.com/kimhwanhoon/20230724_team_project/assets/123552221/5ab477e2-534a-46ff-97c6-e4a09e8ffa23)
+![loginPage](https://github.com/CTDKSKM/nbc_manlody/assets/105066603/bb8a4bf9-413a-42e1-b213-fac4b0932711)
 
 <br />
 
-#### 2. 검색카테고리 필터링 구현
+#### 2. 메인화면
 
-![02 filtering](https://github.com/kimhwanhoon/20230724_team_project/assets/123552221/bea72f59-3c81-44df-b9ab-a82128948776)
+![mainPage](https://github.com/CTDKSKM/nbc_manlody/assets/105066603/eef458b9-d740-484b-9269-649991d276db)
 
 <br />
 
 #### 3. 검색기능 구현
 
-![03 searching](https://github.com/kimhwanhoon/20230724_team_project/assets/123552221/8154c0ca-01f0-4072-b211-298edcfcb9c5)
+![search](https://github.com/CTDKSKM/nbc_manlody/assets/105066603/b102add3-054c-4937-9fdd-dbe1edb7da69)
 
 <br />
 
-#### 4. 게시물 디테일 화면
+#### 4. 앨범 디테일 화면 - 플레이리스트 추가 기능
 
-![04 detail](https://github.com/kimhwanhoon/20230724_team_project/assets/123552221/7241e40f-147e-4690-a595-4281c9adae2a)
+![albumPage](https://github.com/CTDKSKM/nbc_manlody/assets/105066603/6edefa67-0141-470b-91e3-367cfd95babf)
 
-<br />	
- 
-#### 5. 게시물 디테일 -  댓글기능
+<br />
 
-![05 comment](https://github.com/kimhwanhoon/20230724_team_project/assets/123552221/2a0a4e0f-ce44-4032-95fa-72288c4d4933)
+#### 5. 앨범 디테일 화면 - 플레잉나우 추가 기능
 
-    1) 댓글 수정/삭제기능 구현
-
-2. 랜덤으로 프로필 사진 생성
+![playingNow](https://github.com/CTDKSKM/nbc_manlody/assets/105066603/21f04f24-6245-4ffe-86c1-ec92c17fe694)
 
 <br />
 
@@ -190,7 +186,7 @@
 
 - React.js
 <div align=“center”>
-<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black"> <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=TypeScript&logoColor=black">
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
 
 </div>
 
@@ -211,7 +207,7 @@
 <div align=“center”>
 <img src="https://img.shields.io/badge/styled components-e62744?style=for-the-badge&logo=styledcomponents&logoColor=white"> <img src="https://img.shields.io/badge/React Router DOM-ed7a40?style=for-the-badge&logo=reactrouter&logoColor=white"> <img src="https://img.shields.io/badge/Redux Toolkit-e0a538?style=for-the-badge&logo=redux&logoColor=white">
 	
-<img src="https://img.shields.io/badge/React Query-32b3bf?style=for-the-badge&logo=reactquery&logoColor=white"> <img src="https://img.shields.io/badge/Axios-3261bf?style=for-the-badge&logo=axios&logoColor=white">
+<img src="https://img.shields.io/badge/React Query-32b3bf?style=for-the-badge&logo=reactquery&logoColor=white"> <img src="https://img.shields.io/badge/React Naver Maps-03C75A?style=for-the-badge&logo=naver&logoColor=white"> <img src="https://img.shields.io/badge/Axios-3261bf?style=for-the-badge&logo=axios&logoColor=white"> <img src="https://img.shields.io/badge/Express-4a32bf?style=for-the-badge&logo=express&logoColor=white">
 </div>
 
 ### ⚙️ 버전 관리 시스템
