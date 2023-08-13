@@ -26,14 +26,32 @@ const NavBar = () => {
         </Link>
       </div>
 
-      <div className="nav-bar-menu-ctn">
+      {/* <div className="nav-bar-menu-ctn"> */}
       <ul>{userId && <NavLiFavoriteSong />}</ul>
-      <Link to="/playlist" style={{color: "white"}}>🎧PLAYLIST🎶</Link>
-      <h3 style={{cursor: "pointer", marginBottom: "8px"}}>Playing Now</h3>
-      </div>
-
-
-        
+      <div
+        style={{
+          marginTop: '1rem',
+          fontWeight: 'bold',
+          color: 'white'
+        }}
+      >
+        <Link
+          to="/playlist"
+          style={{
+            color: 'white'
+          }}
+        >
+          PLAYLIST🎶
+        </Link>
+        <h3
+          style={{
+            marginTop: '1rem',
+            color: 'white'
+          }}
+        >
+          Playing Now
+        </h3>
+        </div>
         <div className="playing-now-ctn">
           {trackData.map((item: any, index: number) => {
             console.log('Navbar name==>', item.title);
@@ -55,38 +73,35 @@ export default NavBar;
 
 const Nav = styled.div`
   width: 100%;
-  height: 100%;
-  /* height: 100vh; */
-  // background-color: rgba(75, 75, 75, 0.836);
-  border: 1px dotted gray;
   padding: 0 0.5rem 0.5rem;
   position: relative;
   z-index: 9;
 
   #logoBody {
     position: relative;
-    z-index: 9;
-    background-color: rgba(163, 163, 163, 0.856);
+    background: rgba(144, 144, 144, 0.33);
     border-radius: 8px;
-    padding: 0.7rem;
+    padding: 0.2rem;
     transition: background-color 0.8s, transform 0.2s;
   }
 
   #logoBody:hover {
-    background-color: rgba(214, 214, 214, 0.656);
     transform: scale(1.017);
+    background: rgba(144, 144, 144, 0.53);
   }
 
   img {
     margin: 0 auto;
     display: flex;
     justify-content: center;
-    width: 200px;
-    max-width: 80%;
+    // width: 240px;
+    max-width: 90%;
     height: auto;
     cursor: pointer;
-    filter: grayscale(1);
+    filter: grayscale(0.6);
     transition: filter 0.8s;
+    // z-index: 30;
+    // position: relative;
   }
   img:hover {
     filter: none;
@@ -102,9 +117,9 @@ const Nav = styled.div`
 
   .playing-now-ctn {
     padding: 0.1rem;
-    max-height: 62vh;
+    max-height: 65vh;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     /* Webkit 스크롤바 스타일 */
     &::-webkit-scrollbar {
@@ -112,7 +127,7 @@ const Nav = styled.div`
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: rgba(224, 224, 224, 0.734);
+      background-color: rgba(224, 224, 224, 0.234);
       border-radius: 5px;
     }
 
@@ -126,7 +141,7 @@ const Nav = styled.div`
     display: grid;
     border: 1px solid white;
     color: #fff;
-    background: rgb(255, 185, 81, 0.6);
+    background: rgb(255, 185, 81, 0.4);
     grid-template-columns: 1.5fr 1fr 0.35fr;
     justify-items: center;
     align-items: center;
@@ -135,11 +150,8 @@ const Nav = styled.div`
     font-size: 13px;
     font-weight: bold;
     margin: 5px 0;
-    cursor: pointer;
     &:hover {
       background: rgb(255, 185, 81, 1);
-      transition: all 0.3s ease-in-out;
-
       transform: scale(1.008);
     }
   }

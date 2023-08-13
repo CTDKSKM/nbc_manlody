@@ -35,11 +35,10 @@ const Player = ({ rgba }: Props) => {
         styles={{
           trackNameColor: 'red',
           altColor: 'blue',
-          bgColor: `linear-gradient(to top left,
-          rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.95), transparent)`,
+          bgColor: 'pink',
           loaderColor: 'purple',
           height: 80,
-          color: 'blue'
+          color: 'black'
         }}
         token={accessToken}
         uris={trackUri}
@@ -52,12 +51,17 @@ const Player = ({ rgba }: Props) => {
 export default Player;
 
 const StPlayerCtn = styled.div`
-  margin-top: 1rem;
+  z-index: 8;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.5rem;
   min-height: 80px;
-  width: 100vh;
+  width: 800px;
   border-radius: 15px;
   overflow: hidden;
-  position: absolute;
+  // position: absolute;
   bottom: 0px;
   z-index: 9;
 `;

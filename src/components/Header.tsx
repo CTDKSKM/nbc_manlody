@@ -144,7 +144,6 @@ const HeaderTag = styled.header`
   justify-content: space-between;
   align-items: center;
 
-  border: 1px dotted gray;
 
   input {
     padding: 10px;
@@ -161,13 +160,12 @@ const HeaderTag = styled.header`
 
     border-radius: 8px;
 
-    margin: 4px 0 0;
-    margin-left: 20px;
+    margin: 4px 0 20px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
+
 `;
 
 const InputContainer = styled.div`

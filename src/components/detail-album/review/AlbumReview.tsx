@@ -58,7 +58,7 @@ const StAlbumReviewForm = styled.form`
   justify-content: center;
   gap: 10px;
   > input {
-    width: 93%;
+    width: 87%;
     padding: 10px 10px;
     outline: none;
     border-radius: 7px;
