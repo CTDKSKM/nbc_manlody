@@ -1,7 +1,7 @@
-import React from "react";
-import { styled } from "styled-components";
-import useUser from "../../../hooks/useUser";
-import Review from "./Review";
+import React from 'react';
+import { styled } from 'styled-components';
+import useUser from '../../../hooks/useUser';
+import Review from './Review';
 
 type Props = {
   data: ReviewCommentData[] | undefined;
@@ -10,23 +10,26 @@ type Props = {
 const ReviewBox = ({ data }: Props) => {
   const { userId } = useUser();
   return (
-    <StReviewBox>
-      {data?.map((comment) => {
-        return (
-          <Review
-            key={comment.docId}
-            userId={userId}
-            comment={comment}
-            changeListener={data.length}
-          />
-        );
-      })}
-    </StReviewBox>
+    <ReviewWrapper>
+      <div id="comment-wrapper">
+        {data?.map((comment) => {
+          return <Review key={comment.docId} userId={userId} comment={comment} changeListener={data.length} />;
+        })}
+      </div>
+    </ReviewWrapper>
   );
 };
 
 export default ReviewBox;
 
-const StReviewBox = styled.div`
-  padding: 10px;
+const ReviewWrapper = styled.div`
+  height: 156px;
+
+  #comment-wrapper {
+    padding: 0 10px;
+    margin-top: 10px;
+    max-height: 330px;
+    width: 95%;
+    overflow-y: scroll;
+  }
 `;

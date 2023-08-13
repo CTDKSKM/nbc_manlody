@@ -42,6 +42,7 @@ const Player = () => {
 export default Player;
 
 const StPlayerCtn = styled.div`
+  margin-top: 1rem;
   min-height: 80px;
   width: 800px;
   border-radius: 15px;

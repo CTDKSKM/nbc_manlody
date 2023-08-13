@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
-import { styled } from "styled-components";
-import useReview from "../../../hooks/useReview";
-import "firebase/firestore";
-import CreatedTime from "./CreatedTime";
+import React, { useEffect, useRef, useState } from 'react';
+import { styled } from 'styled-components';
+import useReview from '../../../hooks/useReview';
+import 'firebase/firestore';
+import CreatedTime from './CreatedTime';
+import { PlusSquareFilled } from '@ant-design/icons';
 type Props = {
   userId: string;
   comment: ReviewCommentData;
@@ -16,8 +17,7 @@ const Review = ({ comment, userId, changeListener }: Props) => {
   const [newContent, setNewContent] = useState<string>(comment.content);
   const updateInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    if (updateInputRef.current && isInputBoxShow)
-      updateInputRef.current.focus();
+    if (updateInputRef.current && isInputBoxShow) updateInputRef.current.focus();
   }, []);
 
   const showUpdateInput = () => {
@@ -30,7 +30,7 @@ const Review = ({ comment, userId, changeListener }: Props) => {
     const newComment: ReviewCommentData = {
       ...comment,
       content: newContent,
-      isUpdated: !comment.isUpdated,
+      isUpdated: !comment.isUpdated
     };
     updateMutation.mutate(newComment);
 
@@ -43,7 +43,7 @@ const Review = ({ comment, userId, changeListener }: Props) => {
   };
 
   useEffect(() => {
-    window.addEventListener("click", handleWindowClick);
+    window.addEventListener('click', handleWindowClick);
   }, []);
 
   return (
@@ -65,7 +65,7 @@ const Review = ({ comment, userId, changeListener }: Props) => {
               onChange={(e) => {
                 setNewContent(e.target.value);
               }}
-            ></input>
+            />
             <button>수정</button>
             <button
               onClick={() => {
@@ -79,33 +79,29 @@ const Review = ({ comment, userId, changeListener }: Props) => {
           <span className="content">{comment.content}</span>
         )}
         <div className="date">
-          <CreatedTime
-            createdAt={comment.createdAt}
-            isUpdated={comment.isUpdated}
-            changeListener={changeListener}
-          />
+          <CreatedTime createdAt={comment.createdAt} isUpdated={comment.isUpdated} changeListener={changeListener} />
           {comment.userId === userId && (
-          <StOptionBox>
-            <div
-              ref={optBtnRef}
-              className="option-btn"
-              onClick={() => {
-                setIsInputBoxShow(false);
-                setIsOptBoxShow(!isOptBoxShow);
-              }}
-            >
-              ...
-            </div>
-            {isOptBoxShow && (
-              <div className="select-box">
-                <div onClick={showUpdateInput}>수정하기</div>
-                <div onClick={deleteComment}>삭제하기</div>
+            <StOptionBox>
+              <div
+                ref={optBtnRef}
+                className="option-btn"
+                onClick={() => {
+                  setIsInputBoxShow(false);
+                  setIsOptBoxShow(!isOptBoxShow);
+                }}
+              >
+                ...
+                {/* <PlusSquareFilled/> */}
               </div>
-            )}
-          </StOptionBox>
-        )}
+              {isOptBoxShow && (
+                <div className="select-box">
+                  <div onClick={showUpdateInput}>수정하기</div>
+                  <div onClick={deleteComment}>삭제하기</div>
+                </div>
+              )}
+            </StOptionBox>
+          )}
         </div>
-        
       </div>
     </StReview>
   );
@@ -113,20 +109,33 @@ const Review = ({ comment, userId, changeListener }: Props) => {
 
 export default Review;
 const StReview = styled.div`
+  margin: 0 auto;
+
   .comment-div {
-    border-bottom: solid 1px #eee;
-    padding: 20px 0px;
+    border-bottom: dotted 1px #eee;
+    border-radius: 8px;
+    padding: 20px 10px;
     display: flex;
     position: relative;
-    /* justify-content: space-between; */
     align-items: center;
     margin: 10px auto;
+    transition: background-color 0.7s;
+    &: hover {
+      background-color: rgba(218, 218, 218, 0.7);
+      opacity: 0.94;
 
+      font-weight: 600;
+    }
     .name {
       width: 15%;
     }
     .input-box {
       width: 50%;
+    }
+    input {
+      border: none;
+      border-radius: 4px;
+      padding: 8px;
     }
     .content {
       width: 50%;
@@ -136,21 +145,40 @@ const StReview = styled.div`
       width: 7%;
     }
   }
+  button {
+    margin: 0 10px;
+  }
 `;
 const StOptionBox = styled.div`
   .option-btn {
+    display: flex;
+    align-items: center;
     position: absolute;
     right: 0;
-    top: 0;
+    top: 50%;
     width: 3%;
     cursor: pointer;
+    transform: translateY(-100%);
   }
   .select-box {
     position: absolute;
-    right: 0;
-    top: -50px;
+    right: -5px;
+    top: -58px;
     display: flex;
     flex-direction: column;
     row-gap: 10px;
+    background-color: white;
+    padding: 14px 10px 10px;
+    border-radius: 8px;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 98%; /* 말풍선이 박스 아래에 위치하도록 설정 */
+      right: 24px;
+      border-width: 8px; /* 삼각형의 크기 */
+      border-style: solid;
+      border-color: white transparent transparent transparent;
+    }
   }
+}
 `;

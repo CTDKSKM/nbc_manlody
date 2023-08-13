@@ -15,7 +15,7 @@ function Pausearousel({ homeShowArtists }: Props) {
     // autoplaySpeed: 5000,
     // infinite: true,
     // speed: 500,
-    slidesToShow: 4.82,
+    slidesToShow: 5.6,
     slidesToScroll: 1,
     draggable: true,
     cssEase: 'linear',
@@ -23,17 +23,17 @@ function Pausearousel({ homeShowArtists }: Props) {
     responsive: [
       // 반응형 웹 구현 옵션
       {
-        breakpoint: 960, //화면 사이즈 960px일 때
+        breakpoint: 1600, //화면 사이즈 960px일 때
         settings: {
           //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-          slidesToShow: 3
+          slidesToShow: 4.5
         }
       },
       {
-        breakpoint: 768, //화면 사이즈 768px일 때
+        breakpoint: 1200,
         settings: {
           //위에 옵션이 디폴트 , 여기에 추가하면 그걸로 변경
-          slidesToShow: 2
+          slidesToShow: 3.6
         }
       }
     ]
@@ -57,66 +57,66 @@ function Pausearousel({ homeShowArtists }: Props) {
 export default Pausearousel;
 
 const CarouselWrapper = styled.section`
-  margin-top: 1.5rem;
   height: 100%;
 
   .slick-track {
     height: 80%;
   }
   .slick-slider {
-    width: 62vw;
+    width: 58vw;
     height: 180px;
     margin: 0 auto;
   }
   .slick-slide .box {
-    // width: 50%;
-    // margin: 0 auto;
     overflow: hidden;
   }
   .slick-slide {
     box-sizing: border-box;
-    width: 50%;
-    height: 180px;
     margin: 0 15px;
     background-color: rgba(201, 201, 201, 0.726);
+    border: 1px solid rgba(236, 236, 236, 0.678);
     border-radius: 8px;
     transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
   }
   .slick-slide:hover {
     transform: scale(1.008);
     filter: brightness(1.2);
+    transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out, color 1s ease-in-out;
+    h5,
+    p {
+      color: rgb(109, 109, 109);
+    }
   }
-
   .container {
     width: 90%;
   }
   img {
     margin: 0 auto;
-    margin-top: 20px;
+    margin-top: 14px;
     width: 100px;
+    height: 100px;
     border-radius: 4px;
-    object-fit: cover;
+    object-fit: contain;
     box-sizing: border-box;
     transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
   }
+  img:hover {
+    transform: scale(1.025);
+    filter: brightness(1.012);
+  }
   h5 {
-    margin-top: 10px;
+    margin-top: 14px;
+    font-size: 14px;
     font-weight: 600;
   }
   h5,
   p {
     text-align: center;
+    margin-bottom: 14px;
   }
   p {
   }
-  img:hover {
-    transform: scale(1.05);
-    filter: brightness(1.2);
-  }
-  .slick-prev,
-  .slick-next {
-    /* margin-bottom{
-            10px;
-        } */
+  .slick-list {
+    margin-top: 18px;
   }
 `;

@@ -47,7 +47,7 @@ const Home = () => {
 
     spotifyApi.searchTracks(randomString1, { limit: 6 }).then((res) => {
       const homeShowTracks = res.body.tracks?.items;
-      console.log("homeShowTracks=>",homeShowTracks)
+      console.log('homeShowTracks=>', homeShowTracks);
       setHomeShowTracks(homeShowTracks);
     });
     spotifyApi.searchArtists(randomString2, { limit: 6 }).then((res) => {
@@ -62,14 +62,16 @@ const Home = () => {
   return (
     <HomeWrapper>
       <div className="recommdentaionTag">
-        <h2>Today's recommended song</h2>
+        <h2>Today's Song</h2>
         <ul>
           {homeShowTracks?.map((item: any, index: number) => {
             return (
               <li key={index} onClick={() => navigate(`/detail/${item.album.id}`)}>
-                <img src={item.album.images[1].url} alt="이미지없음" />
-                <h3>{item.name}</h3>
-                <p>{item.artists[0].name}</p>
+                <img src={item.album.images[1].url} alt="no Album cover" />
+                <div className="info-wrapper">
+                  <h3>{item.name}</h3>
+                  <p>{item.artists[0].name}</p>
+                </div>
               </li>
             );
           })}
@@ -95,20 +97,20 @@ export default Home;
 const HomeWrapper = styled.div`
   width: 100%;
   height: 100%;
-
+  margin-bottom: 3.5rem;
+  z-index: 7;
   border: 1px dotted gray;
 
   .recommdentaionTag {
-    height: 25%;
+    margin: 1rem 0;
+    height: 30%;
   }
   h2 {
-    margin: 10px 0;
-    letter-spacing: -0.5px;
-    font-weight: 600;
+    margin: 0.8rem 0 1.5rem;
     color: white;
+    font-weight: bold;
   }
   ul {
-    margin-top: 1.5rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
@@ -125,14 +127,23 @@ const HomeWrapper = styled.div`
       background-color: rgba(212, 212, 212, 0.863);
     }
   }
-
+  ul > li:nth-child(6) {
+    justify-content: flex-start;
+  }
   ul > li > img {
     border-radius: 8px;
     width: 60px;
     height: auto;
     object-fit: cover;
   }
-
+  li > .info-wrapper {
+    margin-left: 8px;
+  }
+  .info-wrapper > h3 {
+    font-size: 15px;
+    height: 16px;
+    overflow: hidden;
+  }
   .album-info {
     height: 45px;
     flex-grow: 1;
@@ -146,13 +157,13 @@ const HomeWrapper = styled.div`
     font-weight: 600;
   }
   p {
-    margin-top: 2px;
-    padding: 4px;
+    margin: 4px 0;
+
     font-size: 10px;
   }
 
   #hotAlbumTag {
-    margin-top: 20px;
-    height: 30%;
+    margin-top: 1.5rem;
+    // height: 30%;
   }
 `;
