@@ -12,7 +12,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useNavigate } from 'react-router-dom';
-import { CgCloseO } from "react-icons/cg";
+import { CgCloseO } from 'react-icons/cg';
 
 interface Playlist {
   id: string;
@@ -37,7 +37,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, tracks }) => {
   };
 
   const addPlayingNow = (item: any) => {
-    console.log("item",item)
+    console.log('item', item);
     dispatch(addAlbum([{ name: item.name, artists: item.artists, uri: item.uri }]));
   };
 
@@ -80,11 +80,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, tracks }) => {
 
                 <GridItem>
                   <div className="tooltip-ctn">
-                    {showTooltip[index] && (
-                      
-                        <span className="tooltip">재생목록 추가</span>
-                     
-                    )}
+                    {showTooltip[index] && <span className="tooltip">재생목록 추가</span>}
                     <PiPlaylistBold
                       className="PiPlaylistBold"
                       onMouseEnter={() => {
@@ -309,12 +305,14 @@ const PlayList = () => {
     dots: false,
     arrows: true,
     autoplay: true,
-    autoplaySpeed: 2500,
+    autoplaySpeed: 1500,
     pauseOnHover: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 4.7,
-    slidesToScroll: 1,
+    centerMode: true,
+    centerPadding: '0px',
+    slidesToShow: playlists.length > 4 ? 4 : playlists.length,
+    slidesToScroll: Math.ceil(playlists.length / 2),
     draggable: true,
     cssEase: 'linear',
     gap: 10,
@@ -338,7 +336,7 @@ const PlayList = () => {
   };
 
   //============================================================
-  
+
   const handleShowTracks = (tracks: {}[]) => {
     setCurrentTracks(tracks);
     setModalOpen(true);
@@ -411,23 +409,19 @@ const CarouselWrapper = styled.section`
   margin-top: 1.5rem;
   height: 160px;
   .slick-slide .box {
-    width: 50%;
-    min-height: 500%;
-    margin: 0 auto;
-    padding: 20% 0;
     overflow: hidden;
   }
   .slick-slide {
     box-sizing: border-box;
-    width: 50%;
+    min-width: 300px;
+    max-width: 80%;
     margin: 0 15px;
     background-color: rgba(236, 236, 236, 0.61);
     border-radius: 8px;
     transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
   }
   .slick-slide:hover {
-    /* transform: scale(1.008); */
-    transform: scale(1.05);
+    transform: scale(1.02);
     filter: brightness(1.2);
   }
 
@@ -445,7 +439,7 @@ const CarouselWrapper = styled.section`
   p {
   }
   img {
-    margin: 0 auto;
+    /* margin: 0 auto; */
     margin-top: 18px;
     width: 80px;
     border-radius: 50%;
@@ -467,16 +461,18 @@ const CarouselWrapper = styled.section`
   }
   .slick-track {
     height: 90%;
+    display: flex;
+    justify-content: center;
   }
   .slick-slider {
     width: 60vw;
     height: 100%;
-    margin: 0 auto;
+    /* margin: 0 auto; */
   }
   .CgCloseO {
     position: absolute;
     scale: 1.5;
-    top:0;
+    top: 0;
   }
 `;
 
