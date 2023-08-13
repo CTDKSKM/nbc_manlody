@@ -44,7 +44,7 @@ function Pausearousel({ homeShowArtists }: Props) {
         {homeShowArtists.map((item: any, index: number) => {
           return (
             <div className="box" key={index}>
-              <img src={item.images[0]?.url} alt="No Image" />
+              <img src={item.images[0]?.url} alt="No Cover" />
               <h5>{item.name}</h5>
             </div>
           );
@@ -60,11 +60,11 @@ const CarouselWrapper = styled.section`
   height: 100%;
 
   .slick-track {
-    height: 80%;
+    // height: 60%;
   }
   .slick-slider {
     width: 58vw;
-    height: 180px;
+    height:160px;
     margin: 0 auto;
   }
   .slick-slide .box {
@@ -73,7 +73,9 @@ const CarouselWrapper = styled.section`
   .slick-slide {
     box-sizing: border-box;
     margin: 0 15px;
-    background-color: rgba(201, 201, 201, 0.726);
+    background: rgba(193, 193, 193, 0.23);
+    filter: blur(0.5px);
+    backdrop-filter: blur(8px);
     border: 1px solid rgba(236, 236, 236, 0.678);
     border-radius: 8px;
     transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
@@ -118,5 +120,6 @@ const CarouselWrapper = styled.section`
   }
   .slick-list {
     margin-top: 18px;
+    height:160px:
   }
 `;

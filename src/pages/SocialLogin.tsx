@@ -103,5 +103,4 @@ const LoginInner = styled.div`
 `;
 const LogoImage = styled.img`
   width: 100%;
-  filter: none;
 `

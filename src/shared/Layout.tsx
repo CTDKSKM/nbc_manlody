@@ -4,8 +4,11 @@ import NavBar from '../components/NavBar';
 import Header from '../components/Header';
 import { styled } from 'styled-components';
 import Player from '../components/Dashboard/Player';
+import { useSelector } from 'react-redux';
 
 const Layout = () => {
+  //@ts-ignore
+  const rgba = useSelector((state) => state.rgbSliceReducer);
   return (
     <>
       <Wrapper>
@@ -15,7 +18,7 @@ const Layout = () => {
         <ContentWrapper>
           <Header />
           <Outlet />
-          <Player />
+          <Player rgba={rgba} />
         </ContentWrapper>
       </Wrapper>
     </>
@@ -34,7 +37,7 @@ const Wrapper = styled.div`
 
   margin-top: 4.5rem;
   border-radius: 10px;
-  position: relative;
+  position: relative !important;
 
   &::before {
     z-index: -0.5;
@@ -45,9 +48,6 @@ const Wrapper = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    // background-image: url('/this.png');
-    // background: linear-gradient(145deg, gray, lightgray, gray);
-    // background:lightgray;
     opacity: 1;
     filter: blur(0.5px);
     pointer-events: none;
@@ -55,27 +55,16 @@ const Wrapper = styled.div`
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.46);
   }
 `;
-const BackgroundImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: blur(4px); /* Apply blur effect to the image */
-`;
 const NavBarWrapper = styled.div`
   flex: 0.65;
   padding: 1rem;
-  // height: 100vh;
   overflow: hidden;
-
-  // border: 1px dotted gray;
-  // background-color: lightgray; // 네비게이션 바 배경색
 `;
 
 const ContentWrapper = styled.div`
   flex: 3;
   margin: 0 auto;
-  // background-color: white; // 컨텐츠 배경색
-  padding: 1rem;
+  padding: 1rem 1rem 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
