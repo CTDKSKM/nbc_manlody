@@ -185,6 +185,7 @@ const GridItem = styled.div`
     scale: 1.3;
     cursor: pointer;
     transition-duration: 0.3s;
+    margin-right: 2rem;
     &:hover {
       color: #c30000;
       transition: all 0.3s ease-in-out;
@@ -193,7 +194,7 @@ const GridItem = styled.div`
     }
   }
   .PiPlaylistBold {
-    scale: 1.3;
+    scale: 1.2;
     cursor: pointer;
     transition-duration: 0.3s;
     &:hover {
@@ -225,7 +226,7 @@ const GridItem = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 4fr 4fr 0.7fr 0.7fr 0.7fr;
+  grid-template-columns: 1fr 0.7fr 3fr 1fr 1fr;
   padding: 10px 0px;
   color: #000;
 `;

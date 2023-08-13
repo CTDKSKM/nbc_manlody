@@ -13,6 +13,7 @@ const Player = ({ rgba }: Props) => {
   const track = useSelector((state) => state.albumTrackSliceReducer);
   const trackUri = track.map((item: any) => item.uri);
   const playerRef = useRef(null);
+  console.log("trackUri=>",trackUri)
   useEffect(() => {
     if (playerRef.current && trackUri.length > 0) {
       //@ts-ignore
@@ -49,7 +50,7 @@ export default Player;
 const StPlayerCtn = styled.div`
   margin-top: 1rem;
   min-height: 80px;
-  width: 800px;
+  width: 100vh;
   border-radius: 15px;
   overflow: hidden;
   position: absolute;
