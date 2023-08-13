@@ -72,11 +72,12 @@ const Modal: React.FC<ModalProps> = ({ onClose, tracks }) => {
                 <BodyGrid key={item.uri}>
                   <GridItem style={{ justifyContent: 'center', alignItems: 'center' }}>{index + 1}</GridItem>
                   <GridItem>
+
                     <PiPlayFill className="PiPlayFill" onClick={() => playTrack(item)} />
-                    <img src={item.albumImg} alt="No Image" />
-                    <div className="name-ctn">
-                      <h1>{item?.name < 10 ? item.name : `${item.name.slice(0, 10)}...`}</h1>
-                      <p>{item.artists[0].name}</p>
+                      <img src={item.albumImg} alt="No Image" />
+                      <div className="name-ctn">
+                        <h1>{item?.name < 10 ? item.name : `${item.name.slice(0, 10)}...`}</h1>
+                        <p>{item.artists[0].name}</p>
                     </div>
                   </GridItem>
                   <GridItem>{item.albumName}</GridItem>
@@ -182,6 +183,10 @@ const GridItem = styled.div`
   padding: 0px 10px;
   font-size: 14px;
 
+  .name-ctn{
+    width: 60px;
+    overflow: hidden;
+  }
   button {
     color: white;
   }
@@ -213,10 +218,11 @@ const GridItem = styled.div`
     text-overflow: ellipsis;
   }
   .PiPlayFill {
-    scale: 2;
-    cursor: pointer;
-    transition-duration: 0.3s;
-    margin-right: 4rem;
+     scale: 1.5;
+     cursor: pointer;
+     transition-duration: 0.3s;
+     margin-right: 4rem;
+     overflow:hidden;
     &:hover {
       color: #c30000;
       transition: all 0.3s ease-in-out;
@@ -224,6 +230,7 @@ const GridItem = styled.div`
       rotate: 360deg;
     }
   }
+
   .PiPlaylistBold {
     scale: 1.2;
     cursor: pointer;
@@ -233,19 +240,21 @@ const GridItem = styled.div`
       rotate: 20deg;
     }
   }
+
   .tooltip-ctn {
     position: relative;
     min-width: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+  
   }
   .tooltip {
     position: absolute;
     white-space: nowrap;
     min-width: 20px;
     top: -15px;
-    left: 10px;
+    left: -20px;
     background-color: #fff;
     color: #333;
     padding: 5px;
