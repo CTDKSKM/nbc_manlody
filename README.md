@@ -12,8 +12,7 @@
 ## 🖥️ 프로젝트 개요
 
 - React.js TypeScript
-- Sopotify Web Api를 사용하여 다양한 앨범 & 아티스트의 곡들을 불러와서 플레이하는 페이지 구현.
-- Web played STK 
+- Spotify Web API & Web Playback SDK를 사용하여 다양한 앨범 & 아티스트의 곡 등을 요청하여 음악을 플레이하는 페이지 구현
 
 <br />
 
@@ -32,6 +31,7 @@
 ### 🖼 와이어프레임
 
 <details>
+	
 <summary><a href="https://www.figma.com/community/file/1264539931329446342">Figma</a> | 펼칠 시 스크린샷</summary>
 <br />
 ![123](https://github.com/CTDKSKM/nbc_manlody/assets/109304556/391c68c1-1b22-4d3d-8ce1-440defa77f7d)
