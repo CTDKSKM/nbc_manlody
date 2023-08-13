@@ -53,7 +53,7 @@ const GlobalStyle = createGlobalStyle`
             // background-color: rgba(128, 128, 128, 0.1);
             color: rgba(128, 128, 128, 0.6);
         }
-
+    }
     input{
         border: none;
     }

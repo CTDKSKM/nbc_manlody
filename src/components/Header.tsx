@@ -144,7 +144,6 @@ const HeaderTag = styled.header`
   justify-content: space-between;
   align-items: center;
 
-  // border: 1px dotted gray;
 
   input {
     padding: 10px;

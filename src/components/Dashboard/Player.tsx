@@ -4,11 +4,16 @@ import { accessToken } from '../Header';
 import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 
-const Player = () => {
+type Props = {
+  rgba: number[];
+};
+const Player = ({ rgba }: Props) => {
+  console.log('player rgba=>', rgba);
   //@ts-ignore
   const track = useSelector((state) => state.albumTrackSliceReducer);
   const trackUri = track.map((item: any) => item.uri);
   const playerRef = useRef(null);
+  console.log('trackUri=>', trackUri);
   useEffect(() => {
     if (playerRef.current && trackUri.length > 0) {
       //@ts-ignore
@@ -24,10 +29,10 @@ const Player = () => {
       <SpotifyPlayer
         hideAttribution={true}
         styles={{
-          trackNameColor: 'black',
-          altColor: 'black',
-          bgColor: 'white',
-          loaderColor: 'orange',
+          trackNameColor: 'red',
+          altColor: 'blue',
+          bgColor: 'pink',
+          loaderColor: 'purple',
           height: 80,
           color: 'black'
         }}
@@ -49,9 +54,10 @@ const StPlayerCtn = styled.div`
   align-items: center;
   margin-top: 0.5rem;
   min-height: 80px;
-  width: 90%;
-  border-radius: 8px;
+  width: 800px;
+  border-radius: 15px;
   overflow: hidden;
   // position: absolute;
   bottom: 0px;
+  z-index: 9;
 `;
