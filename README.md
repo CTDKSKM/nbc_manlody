@@ -5,18 +5,14 @@
 <img src="https://capsule-render.vercel.app/api?type=wave&color=auto&height=300&section=header&text=⚾🏸GongGong%20Play⚽🏐&fontSize=60" />
 
 ### 실행법
+> 1. `yarn start`로 클라이언트 실행
 
-> 1. `yarn`으로 패키지 설치
-> 2. `json-server --watch db.json --port 4000` 으로 JSON server 실행 \*(mac ver - `yarn json-server --watch db.json --port 4000`)
-> 3. `node server.js`로 express 서버 실행
-> 4. `yarn start`로 클라이언트 실행
-
-# GongGongPlay ⚽️🎾🏀
+# MANLODY 🎵🎶
 
 ## 🖥️ 프로젝트 개요
 
-- React.js로 빌드한 서울시 공공서비스 체육시설 조회 및 예약안내 사이트입니다
-- naver map api, 서울시 공공 체육시설 api, open weather map api, youtube data api를 활용하여 다채로운 페이지 구성을 하였습니다
+- React.js
+- naver map api, 
 
 <br />
 
