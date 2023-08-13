@@ -36,6 +36,8 @@
 <br />
 ![manlody-wireframe](https://github.com/CTDKSKM/nbc_manlody/assets/109304556/391c68c1-1b22-4d3d-8ce1-440defa77f7d)
 <!-- ![manlody-wireframe](https://github.com/CTDKSKM/nbc_manlody/assets/109304556/391c68c1-1b22-4d3d-8ce1-440defa77f7d) -->
+
+![01 main](https://github.com/kimhwanhoon/20230724_team_project/assets/123552221/5ab477e2-534a-46ff-97c6-e4a09e8ffa23)
 <br />
 
 </details>
