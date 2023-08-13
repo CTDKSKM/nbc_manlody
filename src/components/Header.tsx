@@ -100,7 +100,7 @@ const Header: React.FC = () => {
           <SearchInput
             ref={searchInputRef}
             type="search"
-            placeholder="검색어를 입력해 주세요."
+            placeholder="Please enter a search term"
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
               }

@@ -30,13 +30,13 @@ const NavBar = () => {
         style={{
           marginTop: '1rem',
           fontWeight: 'bold',
-          color: 'gray'
+          color: 'white'
         }}
       >
         <Link
           to="/playlist"
           style={{
-            color: 'gray'
+            color: 'white'
           }}
         >
           PLAYLIST🎶
@@ -44,7 +44,7 @@ const NavBar = () => {
         <h3
           style={{
             marginTop: '1rem',
-            color: 'gray'
+            color: 'white'
           }}
         >
           Playing Now
