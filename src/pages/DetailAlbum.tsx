@@ -85,6 +85,7 @@ const ModalWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 12;
 `;
 
 const ModalContent = styled.div`
@@ -142,6 +143,7 @@ const DetailAlbum = ({ data }: any) => {
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
         setAlbum(response.data);
         setAlbumTracks(response.data.tracks.items);
+        console.log("response==>",response)
 
         // const albumUris = response.data.tracks.items.map((item: any) => item.uri);
         const albumUris = response.data.tracks.items;
@@ -325,24 +327,18 @@ const DetailAlbum = ({ data }: any) => {
                 const albumTrackWithAlbumData = { ...item, albumImg: album.images[0]?.url, albumName: album.name };
                 return (
                   <BodyGrid key={item.uri}>
-                    <GridItem
-                      onClick={() => {
-                        // setSelectedTrack(item);
-                        setSelectedTrack(albumTrackWithAlbumData);
-                        setModalOpen(true);
-                      }}
-                    >
+                    <GridItem onClick={() => playTrack(item)}>
                       <PiPlayFill className="PiPlayFill" />
                     </GridItem>
                     <GridItem>{index + 1}</GridItem>
-                    {/* <GridItem>
-                      <button onClick={() => playTrack(item)}>
-                        <PiPlaylistBold />
-                      </button>
-                    </GridItem> */}
-
+ 
                     <GridItem>
-                      <button onClick={() => playTrack(item)}>
+                      <button onClick={() => {
+                        setModalOpen(true)
+                        setSelectedTrack(albumTrackWithAlbumData)
+                      }
+                      }
+                         >
                         <PiPlaylistBold style={{ fontSize: '20px', marginRight: '10px' }} />
                       </button>
                       <img src={album.images[0]?.url} alt="image" />

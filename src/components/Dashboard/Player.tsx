@@ -9,6 +9,7 @@ const Player = () => {
   const track = useSelector((state) => state.albumTrackSliceReducer);
   const trackUri = track.map((item: any) => item.uri);
   const playerRef = useRef(null);
+  console.log("trackUri=>",trackUri)
   useEffect(() => {
     if (playerRef.current && trackUri.length > 0) {
       //@ts-ignore
@@ -49,4 +50,5 @@ const StPlayerCtn = styled.div`
   overflow: hidden;
   position: absolute;
   bottom: 0px;
+  z-index: 9;
 `;

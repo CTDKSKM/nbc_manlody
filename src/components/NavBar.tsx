@@ -2,14 +2,22 @@ import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import useUser from '../hooks/useUser';
 import NavLiFavoriteSong from './NavLiFavoriteSong';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { PiPlaylistBold, PiPlayFill } from 'react-icons/pi';
+import { addAlbum } from '../redux/modules/playUris';
+
 
 const NavBar = () => {
   const { userId } = useUser();
+  const dispatch = useDispatch();
   //@ts-ignore
   const track = useSelector((state) => state.albumTrackSliceReducer);
-  console.log('NavBarTrack==>', track);
   const trackData = track.map((item: any) => ({ title: item.name, artist: item.artists[0].name }));
+
+  const playTrack = (item: any) => {
+    const playTrack = [item];
+    dispatch(addAlbum(playTrack));
+  };
   return (
     <Nav>
       <div id="logoBody">
@@ -29,7 +37,8 @@ const NavBar = () => {
             <ul className="playListCtn">
               <li key={item.uri}>{item.title.length < 10 ? item.title : `${item.title.slice(0, 10)}...`} -</li>
               <li key={index}>{item.artist}</li>
-              <button>🤢</button>
+              <PiPlayFill className="PiPlayFill" 
+              onClick={() => playTrack(item)}/>
             </ul>
           );
         })}
