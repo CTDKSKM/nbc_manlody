@@ -172,7 +172,7 @@
 
 #### 4. 앨범 디테일 화면 - 플레이리스트 추가 기능
 
-![addPlayList](https://github.com/CTDKSKM/nbc_manlody/assets/105066603/3d3c699c-ed07-49e7-ae93-7178075be802)
+![addPlayList](https://github.com/CTDKSKM/nbc_manlody/assets/105066603/83936bcc-38fb-4486-a5f2-17423bce1755)
 
 <br />
 
