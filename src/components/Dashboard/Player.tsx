@@ -68,5 +68,5 @@ const StPlayerCtn = styled.div`
   overflow: hidden;
   // position: absolute;
   bottom: 0px;
-  z-index: 9;
+  z-index: 5;
 `;
