@@ -33,12 +33,17 @@ const Player = ({ rgba }: Props) => {
       <SpotifyPlayer
         hideAttribution={true}
         styles={{
-          trackNameColor: 'red',
-          altColor: 'blue',
-          bgColor: 'pink',
-          loaderColor: 'purple',
+          trackNameColor: 'white',
+          trackArtistColor: 'white',
+          sliderHandleColor: 'white',
+          sliderColor: 'white',
+          loaderColor: '#fff',
+          activeColor: '#fff',
+          color: 'white',
+          bgColor: `linear-gradient(to top left,
+            rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.95), transparent)`,
           height: 80,
-          color: 'black'
+
         }}
         token={accessToken}
         uris={trackUri}
