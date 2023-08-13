@@ -34,7 +34,7 @@ const Wrapper = styled.div`
 
   margin-top: 4.5rem;
   border-radius: 10px;
-  position: relative;
+  position: relative !important;
 
   &::before {
     z-index: -0.5;
@@ -64,8 +64,7 @@ const BackgroundImage = styled.img`
 const NavBarWrapper = styled.div`
   flex: 0.65;
   padding: 1rem;
-  // height: 100vh;
-  overflow: hidden;
+  height: 80vh;
 
   // border: 1px dotted gray;
   // background-color: lightgray; // 네비게이션 바 배경색

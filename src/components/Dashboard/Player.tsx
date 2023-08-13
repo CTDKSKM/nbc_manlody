@@ -24,14 +24,6 @@ const Player = () => {
     <StPlayerCtn>
       <SpotifyPlayer
         hideAttribution={true}
-        styles={{
-          trackNameColor: 'red',
-          altColor: 'blue',
-          bgColor: 'pink',
-          loaderColor: 'purple',
-          height: 80,
-          color: 'blue'
-        }}
         token={accessToken}
         uris={trackUri}
         initialVolume={0.2}
@@ -45,7 +37,7 @@ export default Player;
 const StPlayerCtn = styled.div`
   margin-top: 1rem;
   min-height: 80px;
-  width: 800px;
+  width: 100vh;
   border-radius: 15px;
   overflow: hidden;
   position: absolute;
