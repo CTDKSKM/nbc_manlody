@@ -36,9 +36,11 @@
 <br />
 ![manlody-wireframe](https://github.com/CTDKSKM/nbc_manlody/assets/109304556/391c68c1-1b22-4d3d-8ce1-440defa77f7d)
 <!-- ![manlody-wireframe](https://github.com/CTDKSKM/nbc_manlody/assets/109304556/391c68c1-1b22-4d3d-8ce1-440defa77f7d) -->
+<br />
 ![manlody-wireframe](https://github.com/CTDKSKM/nbc_manlody/assets/109304556/84a1edee-8050-4f45-a490-ca7e5096774c)
+<br />
 ![manlody-wireframe](https://github.com/CTDKSKM/nbc_manlody/assets/109304556/89f38527-ef63-4dcf-8780-a1fb59085413)
-
+<br />
 ![01 main](https://github.com/kimhwanhoon/20230724_team_project/assets/123552221/5ab477e2-534a-46ff-97c6-e4a09e8ffa23)
 <br />
 
