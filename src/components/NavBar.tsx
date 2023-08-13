@@ -25,18 +25,20 @@ const NavBar = () => {
           <img src="/logo_horizontal.png" alt="Logo" />
         </Link>
       </div>
+
+      {/* <div className="nav-bar-menu-ctn"> */}
       <ul>{userId && <NavLiFavoriteSong />}</ul>
       <div
         style={{
           marginTop: '1rem',
           fontWeight: 'bold',
-          color: 'gray'
+          color: 'white'
         }}
       >
         <Link
           to="/playlist"
           style={{
-            color: 'gray'
+            color: 'white'
           }}
         >
           PLAYLIST🎶
@@ -44,11 +46,12 @@ const NavBar = () => {
         <h3
           style={{
             marginTop: '1rem',
-            color: 'gray'
+            color: 'white'
           }}
         >
           Playing Now
         </h3>
+        </div>
         <div className="playing-now-ctn">
           {trackData.map((item: any, index: number) => {
             console.log('Navbar name==>', item.title);
@@ -61,7 +64,7 @@ const NavBar = () => {
             );
           })}
         </div>
-      </div>
+
     </Nav>
   );
 };
@@ -103,11 +106,18 @@ const Nav = styled.div`
   img:hover {
     filter: none;
   }
+  .nav-bar-menu-ctn {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    border-radius: 8px;
+  }
 
   .playing-now-ctn {
-    margin-top: 0.5rem;
-    padding: 0.2rem;
-    max-height: 55vh;
+    padding: 0.1rem;
+    max-height: 65vh;
     overflow-x: hidden;
     overflow-y: auto;
 
@@ -139,8 +149,7 @@ const Nav = styled.div`
     padding: 0 0.5rem;
     font-size: 13px;
     font-weight: bold;
-    margin: 10px 0;
-    transition: all 0.3s ease-in-out;
+    margin: 5px 0;
     &:hover {
       background: rgb(255, 185, 81, 1);
       transform: scale(1.008);

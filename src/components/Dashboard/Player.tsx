@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SpotifyPlayer from 'react-spotify-web-playback';
 import { accessToken } from '../Header';
 import { useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ const Player = ({ rgba }: Props) => {
   const track = useSelector((state) => state.albumTrackSliceReducer);
   const trackUri = track.map((item: any) => item.uri);
   const playerRef = useRef(null);
-  console.log('trackUri=>', trackUri);
+  const [render, setRender] = useState(false);
   useEffect(() => {
     if (playerRef.current && trackUri.length > 0) {
       //@ts-ignore
@@ -23,18 +23,27 @@ const Player = ({ rgba }: Props) => {
     }
   }, [trackUri]);
 
+  useEffect(() => {
+    setRender(!render);
+  }, [rgba]);
+
   if (!accessToken) return null;
   return (
     <StPlayerCtn>
       <SpotifyPlayer
         hideAttribution={true}
         styles={{
-          trackNameColor: 'red',
-          altColor: 'blue',
-          bgColor: 'pink',
-          loaderColor: 'purple',
+          trackNameColor: 'white',
+          trackArtistColor: 'white',
+          sliderHandleColor: 'white',
+          sliderColor: 'white',
+          loaderColor: '#fff',
+          activeColor: '#fff',
+          color: 'white',
+          bgColor: `linear-gradient(to top left,
+            rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.95), transparent)`,
           height: 80,
-          color: 'black'
+
         }}
         token={accessToken}
         uris={trackUri}
@@ -59,5 +68,5 @@ const StPlayerCtn = styled.div`
   overflow: hidden;
   // position: absolute;
   bottom: 0px;
-  z-index: 9;
+  z-index: 5;
 `;

@@ -144,7 +144,7 @@ const DetailAlbum = ({ data }: any) => {
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
         setAlbum(response.data);
         setAlbumTracks(response.data.tracks.items);
-        console.log("response==>",response)
+        console.log('response==>', response);
 
         // const albumUris = response.data.tracks.items.map((item: any) => item.uri);
         const albumUris = response.data.tracks.items;
@@ -334,14 +334,14 @@ const DetailAlbum = ({ data }: any) => {
                       <PiPlayFill className="PiPlayFill" />
                     </GridItem>
                     <GridItem>{index + 1}</GridItem>
- 
+
                     <GridItem>
-                      <button onClick={() => {
-                        setModalOpen(true)
-                        setSelectedTrack(albumTrackWithAlbumData)
-                      }
-                      }
-                         >
+                      <button
+                        onClick={() => {
+                          setModalOpen(true);
+                          setSelectedTrack(albumTrackWithAlbumData);
+                        }}
+                      >
                         <PiPlaylistBold style={{ fontSize: '20px', marginRight: '10px' }} />
                       </button>
                       <img src={album.images[0]?.url} alt="image" />
@@ -386,16 +386,19 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
   height: 80%;
   margin: 1rem 0 0.5rem;
   .album-gradient {
-    z-index:7;
-    position:relative;
-    background: linear-gradient(to bottom, ${({ rgba }) =>
-      `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 1)`} 0%, transparent 100%);
-      // backdrop-filter: blur(10px);
-      // box-shadow: inset  0px 8px 30px rgba(252, 252, 252, 0.422);
-      // box-shadow: 0px 8px 20px rgba(252, 252, 252, 0.422);
-      filter:brightness(1.2);
-      padding-bottom: 0.1px;
-      margin-bottom: 10px;
+    z-index: 7;
+    position: relative;
+    background: linear-gradient(
+      to bottom,
+      ${({ rgba }) => `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 1)`} 0%,
+      transparent 100%
+    );
+    // backdrop-filter: blur(10px);
+    // box-shadow: inset  0px 8px 30px rgba(252, 252, 252, 0.422);
+    // box-shadow: 0px 8px 20px rgba(252, 252, 252, 0.422);
+    filter: brightness(1.2);
+    padding-bottom: 0.1px;
+    margin-bottom: 10px;
   }
   .album-info {
     margin-bottom: 15px;
@@ -440,7 +443,7 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
 
   .add-player {
     position: relative;
-    display:flex;
+    display: flex;
     justify-content: space-between;
   }
 
@@ -460,23 +463,23 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
   .add-player:hover .tooltip {
     display: block;
   }
-.result-album{
-  position:relative;
-  z-index:2;
-}
+  .result-album {
+    position: relative;
+    z-index: 2;
+  }
   .result-wrapper {
-    width:88%;
-    
+    width: 88%;
+
     margin: 0 auto;
     display: flex;
-    justify-content:space-between;
+    justify-content: space-between;
     padding: 10px;
     gap: 10px;
   }
-  .result-wrapper :first-child{
+  .result-wrapper :first-child {
     margin-left: -25px;
   }
-  .result-wrapper :last-child{
+  .result-wrapper :last-child {
     margin-left: -40px;
   }
   .result-wrapper > p {
@@ -493,46 +496,45 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
   }
   .track-box {
     height: 35vh;
-    padding:0 12px;
+    padding: 0 12px;
     overflow-y: auto;
     overflow-x: hidden;
     transition: transform 0.2s, background-color 0.8s;
     position: relative;
-
   }
-  .name-toggle-wrapper{
+  .name-toggle-wrapper {
     display: flex;
-    justify-content:space-between;
-    align-items:center;
-  
-    button{
-      z-index:9;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+      z-index: 9;
       background-color: white;
       padding: 8px 12px;
       border-radius: 4px;
-      margin-top:20px;
-      color:black;
-    &:hover{
-    color:rgb(64, 64, 64);
-    background-color: rgba(218, 218, 218, 0.7);
+      margin-top: 20px;
+      color: black;
+      &:hover {
+        color: rgb(64, 64, 64);
+        background-color: rgba(218, 218, 218, 0.7);
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(224, 224, 224, 0.734);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: transparent;
+      border-radius: 5px;
     }
   }
-
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: rgba(224, 224, 224, 0.734);
-    border-radius: 5px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: transparent;
-    border-radius: 5px;
-  }
-}
-`
+`;
 
 const HoverableImage = styled.img`
   position: relative;
