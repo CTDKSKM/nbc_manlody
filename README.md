@@ -2,7 +2,7 @@
 
 사용기술 : firebase react-router-dom styled-components axios react-query @reduxjs/toolkit react-redux shortid Typescript antd @ant-design/icons react-slick @types/react-slick slick-carousel react-icons/ai spotify-web-api-node react-spotify-web-playback
 
-<img src="https://capsule-render.vercel.app/api?type=wave&color=auto&height=300&section=header&text=MANLODY%20Play&fontSize=60" />
+<img src="https://capsule-render.vercel.app/api?type=wave&color=auto&height=300&section=header&text=🎶MANLODY🎵&fontSize=60" />
 
 ### 실행법
 > 1. `yarn start`로 클라이언트 실행
