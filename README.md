@@ -35,17 +35,7 @@
 <summary><a href="https://www.figma.com/community/file/1264539931329446342">Figma</a> | 펼칠 시 스크린샷</summary>
 <br />
 
-
-#### 1. 메인화면
-
-![01 main](https://github.com/kimhwanhoon/20230724_team_project/assets/123552221/5ab477e2-534a-46ff-97c6-e4a09e8ffa23)
-
-<br />
-
 ![manlody-wireframe](https://github.com/CTDKSKM/nbc_manlody/assets/109304556/89f38527-ef63-4dcf-8780-a1fb59085413)
-
-![01 main](https://github.com/kimhwanhoon/20230724_team_project/assets/123552221/5ab477e2-534a-46ff-97c6-e4a09e8ffa23)
-<br />
 
 </details>
 
