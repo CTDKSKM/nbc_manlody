@@ -34,8 +34,8 @@
 	
 <summary><a href="https://www.figma.com/community/file/1264539931329446342">Figma</a> | 펼칠 시 스크린샷</summary>
 <br />
-![123](https://github.com/CTDKSKM/nbc_manlody/assets/109304556/391c68c1-1b22-4d3d-8ce1-440defa77f7d)
 ![manlody-wireframe](https://github.com/CTDKSKM/nbc_manlody/assets/109304556/391c68c1-1b22-4d3d-8ce1-440defa77f7d)
+<!-- ![manlody-wireframe](https://github.com/CTDKSKM/nbc_manlody/assets/109304556/391c68c1-1b22-4d3d-8ce1-440defa77f7d) -->
 <br />
 
 </details>
