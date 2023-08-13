@@ -122,7 +122,6 @@ const StReview = styled.div`
     transition: background-color 0.7s;
     &: hover {
       background-color: rgba(218, 218, 218, 0.5);
-      // background: rgba(193, 193, 193, 0.23);
       filter: blur(0.5px);
       backdrop-filter: blur(8px);
       opacity: 0.94;

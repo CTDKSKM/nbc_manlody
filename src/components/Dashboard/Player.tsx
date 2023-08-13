@@ -24,12 +24,12 @@ const Player = () => {
       <SpotifyPlayer
         hideAttribution={true}
         styles={{
-          trackNameColor: 'red',
-          altColor: 'blue',
-          bgColor: 'pink',
-          loaderColor: 'purple',
+          trackNameColor: 'black',
+          altColor: 'black',
+          bgColor: 'white',
+          loaderColor: 'orange',
           height: 80,
-          color: 'blue'
+          color: 'black'
         }}
         token={accessToken}
         uris={trackUri}
@@ -42,11 +42,16 @@ const Player = () => {
 export default Player;
 
 const StPlayerCtn = styled.div`
-  margin-top: 1rem;
+  z-index: 8;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.5rem;
   min-height: 80px;
-  width: 800px;
-  border-radius: 15px;
+  width: 90%;
+  border-radius: 8px;
   overflow: hidden;
-  position: absolute;
+  // position: absolute;
   bottom: 0px;
 `;

@@ -61,7 +61,7 @@ const NavBarWrapper = styled.div`
 const ContentWrapper = styled.div`
   flex: 3;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 1rem 1rem 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

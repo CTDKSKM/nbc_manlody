@@ -76,6 +76,7 @@ const PlaylistModal: React.FC<PlaylistModalProps> = ({ isOpen, closeModal, playl
 };
 
 const ModalWrapper = styled.div`
+  z-index: 12;
   position: fixed;
   top: 0;
   left: 0;
@@ -289,27 +290,29 @@ const DetailAlbum = ({ data }: any) => {
           <div className="album-info">
             <div className="info-data">
               <img crossOrigin="anonymous" ref={imageRef} onLoad={extractRGBColors} src={album.images[0]?.url} alt="" />
-              <div>
+              <div style={{ width: '80%' }}>
+                <div className="add-player">
+                  <HoverableImage
+                    src="/addToPlayer_Btn.png"
+                    style={{ width: '34px' }}
+                    onMouseEnter={() => setTooltipVisible(true)}
+                    onMouseLeave={() => setTooltipVisible(false)}
+                    onClick={playAlbum}
+                  />
+                  {tooltipVisible && <span className="tooltip">Add to player</span>}
+                </div>
                 <h1>{album.name}</h1>
                 <div>
                   <p>{album.album_type}</p>
                   <p>{album.release_date}</p>
                 </div>
-                <p className="artist-name">{album.artists[0]?.name}</p>
+                <div className="name-toggle-wrapper">
+                  <p className="artist-name">{album.artists[0]?.name}</p>
+                  <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="add-player">
-          <HoverableImage
-            src="/addToPlayer_Btn.png"
-            style={{ width: '34px' }}
-            onMouseEnter={() => setTooltipVisible(true)}
-            onMouseLeave={() => setTooltipVisible(false)}
-            onClick={playAlbum}
-          />
-          {tooltipVisible && <span className="tooltip">Add to player</span>}
-          <button onClick={() => setOpenReview(!openReview)}>{openReview ? 'Review' : 'Album Track'} </button>
         </div>
         {openReview ? (
           <div className="result-album">
@@ -385,21 +388,20 @@ export default DetailAlbum;
 const AlbumTag = styled.div<{ rgba: number[] }>`
   width: 100%;
   height: 80%;
-  margin-bottom: 3rem;
+  margin: 1rem 0 0.5rem;
   .album-gradient {
     z-index:7;
     position:relative;
-    background: linear-gradient(to top left, ${({ rgba }) =>
-      `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.7)`}, transparent);
-      backdrop-filter: blur(10px);
-    
+    background: linear-gradient(to bottom, ${({ rgba }) =>
+      `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 1)`} 0%, transparent 100%);
+      // backdrop-filter: blur(10px);
+      // box-shadow: inset  0px 8px 30px rgba(252, 252, 252, 0.422);
+      // box-shadow: 0px 8px 20px rgba(252, 252, 252, 0.422);
+      filter:brightness(1.2);
       padding-bottom: 0.1px;
       margin-bottom: 10px;
   }
   .album-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
     margin-bottom: 15px;
     position: relative;
     img {
@@ -413,7 +415,6 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
     align-items: end;
     margin-left: 10px;
     margin-bottom: 0;
-    bottom: 0;
     img {
       margin-right: 10px;
     }
@@ -423,7 +424,6 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
       height: 32px;
       overflow: hidden;
       text-overflow: ellipsis;
-      // min-width: 0;
     }
     p {
       font-size: 18px;
@@ -479,8 +479,7 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
     gap: 10px;
   }
   .result-wrapper :first-child{
-  
-    margin-left: -40px;
+    margin-left: -25px;
   }
   .result-wrapper :last-child{
     margin-left: -40px;
@@ -499,12 +498,29 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
   }
   .track-box {
     height: 35vh;
+    padding:0 12px;
     overflow-y: auto;
     overflow-x: hidden;
     transition: transform 0.2s, background-color 0.8s;
     position: relative;
+
   }
-  .toggle-wrapper{
+  .name-toggle-wrapper{
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+    
+    button{
+      z-index:9;
+      background-color: white;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-top:20px;
+      color:black;
+    &:hover{
+    color:rgb(64, 64, 64);
+    background-color: rgba(218, 218, 218, 0.7);
+    }
   }
 
   ::-webkit-scrollbar {
@@ -525,13 +541,13 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
 const HoverableImage = styled.img`
   position: relative;
   width: 34px;
+  margin-bottom: 10px;
   transition: transform 0.3s, filter 0.3s;
 
   &:hover {
     transform: scale(1.1);
     filter: brightness(1.2);
   }
-
   img {
     width: 100%;
   }
@@ -641,7 +657,7 @@ const BodyGrid = styled(Grid)`
   color: #fff;
   transition: transform 0.2s, background-color 0.8s;
   &:hover {
-    background: rgb(175, 175, 175);
+    background: rgba(107, 107, 107, 0.8);
     transform: scale(1.008);
   }
   ${GridItem}:nth-child(4) {

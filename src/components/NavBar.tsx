@@ -42,42 +42,35 @@ export default NavBar;
 
 const Nav = styled.div`
   width: 100%;
-  // hight: 100vh;
-  // background-color: rgba(75, 75, 75, 0.836);
-  border: 1px dotted gray;
   padding: 0 0.5rem 0.5rem;
   position: relative;
   z-index: 9;
 
   #logoBody {
     position: relative;
-    z-index: 9;
-    background: rgba(144, 144, 144, 0.53);
-
-    filter: blur(0.5px);
-    backdrop-filter: blur(8px);
-    color: #fff;
-    transition: transform 0.2s, background-color 0.8s;
+    background: rgba(144, 144, 144, 0.33);
     border-radius: 8px;
-    padding: 0.7rem;
+    padding: 0.2rem;
     transition: background-color 0.8s, transform 0.2s;
   }
 
   #logoBody:hover {
-    background-color: rgba(177, 177, 177, 0.556);
     transform: scale(1.017);
+    background: rgba(144, 144, 144, 0.53);
   }
 
   img {
     margin: 0 auto;
     display: flex;
     justify-content: center;
-    width: 200px;
-    max-width: 80%;
+    // width: 240px;
+    max-width: 90%;
     height: auto;
     cursor: pointer;
     filter: grayscale(0.6);
     transition: filter 0.8s;
+    // z-index: 30;
+    // position: relative;
   }
   img:hover {
     filter: none;

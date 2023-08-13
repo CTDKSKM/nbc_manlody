@@ -259,7 +259,6 @@ const UserSettingWrap = styled.div`
   }
 `;
 const UserDetailWrap = styled.div`
-  z-index: 999;
   position: absolute;
   right: 0;
   top: 72px;

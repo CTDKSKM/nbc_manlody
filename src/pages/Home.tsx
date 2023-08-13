@@ -97,10 +97,8 @@ export default Home;
 const HomeWrapper = styled.div`
   width: 100%;
   height: 100%;
-  margin-bottom: 3.5rem;
+  margin-bottom: 1.5rem;
   z-index: 7;
-  border: 1px dotted gray;
-
   .recommdentaionTag {
     margin: 1rem 0;
     height: 30%;
