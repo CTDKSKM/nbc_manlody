@@ -67,7 +67,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, tracks }) => {
           {tracks.map((item: any, index: number) => {
             return (
               <BodyGrid key={item.uri}>
-                <GridItem>{index + 1}</GridItem>
+                <GridItem style={{ justifyContent: 'center', alignItems: 'center' }}>{index + 1}</GridItem>
                 <GridItem>
                   <PiPlayFill className="PiPlayFill" onClick={() => playTrack(item)} />
                   <img src={item.albumImg} alt="No Image" />
@@ -127,15 +127,31 @@ const ModalWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
 `;
 
 const ModalContent = styled.div`
-  background-color: #fff;
+  background-color: rgba(236, 236, 236, 0.61);
   padding: 20px;
   border-radius: 10px;
   height: 70%;
   width: 60%;
   max-width: 600px;
+  overflow-y: scroll;
+  z-index: 2;
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(224, 224, 224, 0.734);
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 5px;
+  }
 
   .button-ctn {
     display: flex;
@@ -150,46 +166,48 @@ const ModalContent = styled.div`
 const GridItem = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
   padding: 0px 10px;
   font-size: 14px;
-  &:nth-child(5),
-  :nth-child(6) {
-    justify-content: center;
+
+  button {
+    color: white;
   }
 
   img {
     width: 40px;
+    border-radius: 4px;
     margin-right: 10px;
   }
   & > div {
     height: 100%;
     display: flex;
-    /* justify-content: space-between; */
+    justify-content: space-between;
     flex-direction: column;
   }
   & > div > h1 {
     font-size: 16px;
+    height: 16px;
+    overflow: hidden;
     letter-spacing: -0.5px;
   }
   & > div > p {
     font-size: 14px;
+    font-size: 16px;
+    height: 16px;
     letter-spacing: -0.5px;
     color: #bdbdbd;
-  }
-  .name-ctn {
-    display: flex;
-    justify-content: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .PiPlayFill {
-    scale: 1.3;
+    scale: 2;
     cursor: pointer;
     transition-duration: 0.3s;
-    margin-right: 2rem;
+    margin-right: 4rem;
     &:hover {
       color: #c30000;
       transition: all 0.3s ease-in-out;
-      transform: scale(1.4);
+      transform: scale(1.5);
       rotate: 360deg;
     }
   }
@@ -226,7 +244,7 @@ const GridItem = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 0.7fr 3fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr 1fr;
   padding: 10px 0px;
   color: #000;
 `;
@@ -285,7 +303,7 @@ const NewPlayList = ({ onAddPlaylist }: { onAddPlaylist: (playlist: Playlist) =>
   };
 
   return (
-    <form onSubmit={submitHandler}>
+    <form onSubmit={submitHandler} style={{ zIndex: 1 }}>
       <label>플레이리스트 이름</label>
       <input type="text" value={playlistName} onChange={changePlaylistNameHandler} />
       <button>생성</button>
@@ -386,9 +404,10 @@ const PlayList = () => {
       <CarouselWrapper>
         <Slider {...settings}>
           {playlists?.map((item: any, index: number) => {
+            console.log('item==>', item ? item : '없음');
             return (
               <div className="box" key={item.id} onClick={() => handleShowTracks(item.tracks)}>
-                {/* <img src={item.images[0].url} alt="No Image" /> */}
+                <img src={item.tracks[0]?.albumImg} alt="No Image" />
                 <h5>{item?.name}</h5>
                 <CgCloseO className="CgCloseO" onClick={(e) => handleDeletePlaylist(e, item.id)}></CgCloseO>
                 {/* <p>{item.artists[0].name}</p> */}
@@ -411,6 +430,7 @@ const CarouselWrapper = styled.section`
   height: 160px;
   .slick-slide .box {
     overflow: hidden;
+    cursor: pointer;
   }
   .slick-slide {
     box-sizing: border-box;
@@ -441,9 +461,9 @@ const CarouselWrapper = styled.section`
   }
   img {
     /* margin: 0 auto; */
-    margin-top: 18px;
-    width: 80px;
-    border-radius: 50%;
+    margin: 18px auto 0;
+    width: 70%;
+    border-radius: 8px;
     object-fit: cover;
     box-sizing: border-box;
     transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;

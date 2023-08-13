@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SpotifyPlayer from 'react-spotify-web-playback';
 import { accessToken } from '../Header';
 import { useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ const Player = ({ rgba }: Props) => {
   const track = useSelector((state) => state.albumTrackSliceReducer);
   const trackUri = track.map((item: any) => item.uri);
   const playerRef = useRef(null);
-  console.log("trackUri=>",trackUri)
+  const [render, setRender] = useState(false);
   useEffect(() => {
     if (playerRef.current && trackUri.length > 0) {
       //@ts-ignore
@@ -22,6 +22,10 @@ const Player = ({ rgba }: Props) => {
       });
     }
   }, [trackUri]);
+
+  useEffect(() => {
+    setRender(!render);
+  }, [rgba]);
 
   if (!accessToken) return null;
   return (

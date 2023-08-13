@@ -25,10 +25,15 @@ const NavBar = () => {
           <img src="/logo_horizontal.png" alt="Logo" />
         </Link>
       </div>
+
+      <div className="nav-bar-menu-ctn">
       <ul>{userId && <NavLiFavoriteSong />}</ul>
-      <div>
-        <Link to="/playlist">🐱‍🏍PLAYLIST🎶</Link>
-        <h3>Playing Now</h3>
+      <Link to="/playlist" style={{color: "white"}}>🎧PLAYLIST🎶</Link>
+      <h3 style={{cursor: "pointer", marginBottom: "8px"}}>Playing Now</h3>
+      </div>
+
+
+        
         <div className="playing-now-ctn">
           {trackData.map((item: any, index: number) => {
             console.log('Navbar name==>', item.title);
@@ -36,12 +41,12 @@ const NavBar = () => {
               <ul className="playListCtn">
                 <li key={item.uri}>{item.title.length < 10 ? item.title : `${item.title.slice(0, 10)}...`}</li>
                 <li key={index}>{item.artist}</li>
-                <FaRegPlayCircle className="FaRegPlayCircle"/>
+                <FaRegPlayCircle className="FaRegPlayCircle" />
               </ul>
             );
           })}
         </div>
-      </div>
+
     </Nav>
   );
 };
@@ -86,10 +91,18 @@ const Nav = styled.div`
   img:hover {
     filter: none;
   }
+  .nav-bar-menu-ctn {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    border-radius: 8px;
+  }
 
   .playing-now-ctn {
     padding: 0.1rem;
-    max-height: 65vh;
+    max-height: 62vh;
     overflow-x: hidden;
     overflow-y: scroll;
 
@@ -122,6 +135,7 @@ const Nav = styled.div`
     font-size: 13px;
     font-weight: bold;
     margin: 5px 0;
+    cursor: pointer;
     &:hover {
       background: rgb(255, 185, 81, 1);
       transition: all 0.3s ease-in-out;
