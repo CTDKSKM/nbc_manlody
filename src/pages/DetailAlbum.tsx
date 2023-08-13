@@ -504,7 +504,7 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
     display: flex;
     justify-content:space-between;
     align-items:center;
-    
+  
     button{
       z-index:9;
       background-color: white;
@@ -531,6 +531,7 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
     background-color: transparent;
     border-radius: 5px;
   }
+}
 `
 
 const HoverableImage = styled.img`
