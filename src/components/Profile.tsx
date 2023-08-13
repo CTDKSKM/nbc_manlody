@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { styled } from 'styled-components';
+import { styled,keyframes } from 'styled-components';
 import { signOut } from 'firebase/auth';
 import { auth, storage } from '../firebase';
 import { TbLogout2 } from 'react-icons/tb';
@@ -52,6 +52,13 @@ const Profile = () => {
         imageUrl = await getDownloadURL(storageRef);
         setModalUserImg(imageUrl);
       }
+      if(newUserName.trim()===''){
+        alert("변경할 이름을 입력해주세요.")
+        return
+      }else if(newUserName.length > 7){
+        alert("6자 이내로 입력 해주세요.")
+        return
+      }
       setUserProfile(newUserName, imageUrl);
       closeModal();
     } catch (error) {
@@ -62,7 +69,7 @@ const Profile = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     saveUserChanges();
-    //closeModal();
+   
   };
 
   const userToggleButton = () => {
@@ -110,7 +117,7 @@ const Profile = () => {
                   <span>
                     <TbLogout2 size={18} />
                   </span>
-                  <p>LogOut</p>
+                  LogOut
                 </div>
               </UserSettingWrap>
             </div>
@@ -170,26 +177,31 @@ const ModalOverlay = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(8px);
-  z-index: 1;
+  z-index: 99;
 `;
+
 const Modal = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 22%;
-  background-color: #4e4e4e;
-  padding: 20px;
+  width: 340px;
+  padding: 30px;
+  background-color: #777;
   border-radius: 10px;
-  z-index: 99;
-
+  z-index: 999;
+  h2{
+    margin-bottom: 10px;
+  }
   form {
     display: flex;
   }
   input {
-    width: 60%;
-    background-color: #fff;
-    margin-bottom: 20px;
+    width: 240px !important;
+    background-color: #eee;
+    margin-bottom: 14px;
+    padding-left: 10px !important;
+    outline: none;
   }
 `;
 const ModalInner = styled.div`
@@ -213,6 +225,7 @@ const ModalInner = styled.div`
     }
     label {
       display: flex;
+      justify-content: center;
       align-items: center;
       position: absolute;
       right: 2px;
@@ -225,11 +238,8 @@ const ModalInner = styled.div`
     }
   }
   img {
-    /* border-radius: 10px; */
     width: 100%;
     height: auto;
-    /* margin-left: auto;
-    margin-right: auto; */
   }
   #imgUploader {
     width: 40%;
@@ -254,20 +264,37 @@ const UserInfo = styled.h1`
 const UserSettingWrap = styled.div`
   display: flex;
   justify-content: space-between;
-  // z-index: 99;
+  z-index: 9999;
   > button {
+    cursor: pointer;
     margin: 0;
+    color: #eee;
+    &:hover{
+      color: #fff;
+    }
+  }
+  >div{
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    color: #eee;
+    font-size: 15px;
+    cursor: pointer;
+    &:hover{
+      color: #fff;
+    }
   }
 `;
 const UserDetailWrap = styled.div`
   position: absolute;
   right: 0;
   top: 72px;
-  padding: 18px 22px;
-  background: #6e6e6e;
+  padding: 25px 30px 14px 30px;
+  background: #444;
   border-radius: 6px;
   z-index: 99;
   > div > h1 {
+    font-size: 15px;
     margin-bottom: 6px;
   }
   > div > h1:last-child {
@@ -284,7 +311,7 @@ const UserDetailWrap = styled.div`
     top: -6px;
     width: 14px;
     height: 14px;
-    background-color: #6e6e6e;
+    background-color: #444;
     transform: rotate(45deg);
   }
 `;
@@ -295,8 +322,10 @@ const ProfileBtnWrap = styled.div`
   gap: 5px;
   > div > button {
     display: inline-block;
-    padding: 8px 16px;
-    background: #999;
+    padding: 8px 20px;
+    background: #868686;
     border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
   }
 `;

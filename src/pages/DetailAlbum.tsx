@@ -448,7 +448,6 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
     justify-content: space-between;
   }
 
-  }
   .tooltip {
     position: absolute;
     display: none;

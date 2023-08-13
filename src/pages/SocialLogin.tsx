@@ -5,7 +5,7 @@ import { FirebaseError } from 'firebase/app';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from 'react-query';
 import { handleSpotifyLogin } from '../api/accesstoken';
-import { styled } from 'styled-components';
+import { styled, keyframes } from 'styled-components';
 
 const SocialLogin: React.FC = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const SocialLogin: React.FC = () => {
       <LoginWrap>
         <LoginInner>
           <p>
-            <img src="/logo_horizontal.png" alt="Logo" />
+            <LogoImage src="/logo_horizontal.png" alt="Logo" />
           </p>
           <button
             onClick={() => {
@@ -46,15 +46,28 @@ const SocialLogin: React.FC = () => {
 
 export default SocialLogin;
 
+const gradient = keyframes`
+    0% {
+        -webkit-filter: hue-rotate(0deg);
+        filter: hue-rotate(0deg);
+    }
+
+    100% {
+        -webkit-filter: hue-rotate(360deg);
+        filter: hue-rotate(360deg);
+    }
+`;
+
 const LoginBody = styled.div`
   width: 100vw;
   height: 100vh;
   position: relative;
-background: #fffbd5; /* Old browsers */
-background: -moz-linear-gradient(left,  #FFF593 0%, #b20a2c 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(left,  #FFF593 0%,#b20a2c 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to right,  #FFF593 0%,#b20a2c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  /* background: linear-gradient(to right,  #FFF593 0%,#b20a2c 100%); */
 
+  background: linear-gradient(40deg, rgb(199, 121, 208), rgb(75, 192, 200), #2b3074);
+  -webkit-animation: ${gradient} 5s infinite alternate;
+  animation: ${gradient} 5s infinite alternate;
+  animation: ${gradient} 8s ease infinite;
 `;
 
 const LoginWrap = styled.div`
@@ -65,27 +78,30 @@ const LoginWrap = styled.div`
   transform: translate(-50%, -50%);
   border-radius: 8px;
   transition: all 0.5s;
-  &:hover{
-    background-color: rgba(255,255,255,1);
+  &:hover {
+    background-color: rgba(255, 255, 255, 1);
   }
 `;
 const LoginInner = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 40px 50px;
+  padding: 50px 60px;
   p {
     width: 400px;
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
-  img {
-    width: 100%;
-  }
-  button{
+  button {
     padding: 10px 60px;
     border: solid 1px #111;
     font-size: 15px;
     border-radius: 4px;
+    color: #111;
+    cursor: pointer;
   }
 `;
+const LogoImage = styled.img`
+  width: 100%;
+  filter: none;
+`
