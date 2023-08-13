@@ -4,8 +4,11 @@ import NavBar from '../components/NavBar';
 import Header from '../components/Header';
 import { styled } from 'styled-components';
 import Player from '../components/Dashboard/Player';
+import { useSelector } from 'react-redux';
 
 const Layout = () => {
+  //@ts-ignore
+  const rgba = useSelector((state) => state.rgbSliceReducer);
   return (
     <>
       <Wrapper>
@@ -15,7 +18,7 @@ const Layout = () => {
         <ContentWrapper>
           <Header />
           <Outlet />
-          <Player />
+          <Player rgba={rgba} />
         </ContentWrapper>
       </Wrapper>
     </>

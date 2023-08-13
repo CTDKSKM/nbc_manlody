@@ -4,7 +4,11 @@ import { accessToken } from '../Header';
 import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 
-const Player = () => {
+type Props = {
+  rgba: number[];
+};
+const Player = ({ rgba }: Props) => {
+  console.log('player rgba=>', rgba);
   //@ts-ignore
   const track = useSelector((state) => state.albumTrackSliceReducer);
   const trackUri = track.map((item: any) => item.uri);
@@ -24,6 +28,15 @@ const Player = () => {
     <StPlayerCtn>
       <SpotifyPlayer
         hideAttribution={true}
+        styles={{
+          trackNameColor: 'red',
+          altColor: 'blue',
+          bgColor: `linear-gradient(to top left,
+          rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 0.95), transparent)`,
+          loaderColor: 'purple',
+          height: 80,
+          color: 'blue'
+        }}
         token={accessToken}
         uris={trackUri}
         initialVolume={0.2}
