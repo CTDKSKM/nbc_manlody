@@ -90,11 +90,37 @@ const ModalWrapper = styled.div`
 `;
 
 const ModalContent = styled.div`
-  background-color: #ffffff;
+  background-color: rgba(236, 236, 236, 0.61);
   padding: 20px;
   border-radius: 10px;
   max-width: 400px;
   width: 100%;
+
+  ul{
+    margin: 14px 0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap : 10px;
+  }
+  ul > li {
+    padding: 6px 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    &:hover{
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+  }
+  button{
+    float : right;
+    color: white;
+    cursor: pointer;
+    &:hover{
+      scale: 1.1;
+    }
+  }
 `;
 
 interface Playlist {

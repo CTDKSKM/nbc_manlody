@@ -27,7 +27,11 @@ const NavBar = () => {
       </div>
 
       {/* <div className="nav-bar-menu-ctn"> */}
-      <ul>{userId && <NavLiFavoriteSong />}</ul>
+      <ul style={{
+          marginTop: '1rem',
+          fontWeight: 'bold',
+          color: 'white'
+        }}>{userId && <NavLiFavoriteSong />}</ul>
       <div
         style={{
           marginTop: '1rem',
@@ -117,7 +121,7 @@ const Nav = styled.div`
 
   .playing-now-ctn {
     padding: 0.1rem;
-    max-height: 65vh;
+    max-height: 50vh;
     overflow-x: hidden;
     overflow-y: auto;
 

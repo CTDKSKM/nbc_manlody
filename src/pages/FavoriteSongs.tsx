@@ -17,6 +17,7 @@ const FavoriteSongs = () => {
   const addPlayingNow = (item: any) => {
     dispatch(addAlbum([{ name: item.track.name, artists: item.track.artists, uri: item.track.uri }]));
   };
+
   return (
     <FavoriteWrapper>
       {
@@ -67,9 +68,9 @@ const FavoriteSongs = () => {
 export default FavoriteSongs;
 
 const FavoriteWrapper = styled.div`
-  margin: auto;
+  margin: 2rem 0;
   width: 100%;
-  height: 60vh;
+  height: 59vh;
   z-index: 7;
   overflow: hidden;
   overflow-y: scroll;
@@ -107,7 +108,7 @@ const GridItem = styled.div`
     font-size: 16px;
     height: 16px;
     letter-spacing: -0.5px;
-    color: #bdbdbd;
+    color: white;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -159,19 +160,17 @@ const GridItem = styled.div`
     display: block;
   }
 `;
-
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr 4fr 1fr 1fr;
   padding: 10px 0px;
   color: #000;
 `;
-
 const BodyGrid = styled(Grid)`
   padding: 10px 0px;
   border-radius: 8px;
   margin: 6px 0px;
-  background: rgb(144, 144, 144);
+  background: rgb(255, 200, 140, 0.7);
   color: #fff;
   transition: transform 0.2s, background-color 0.8s;
 `;
