@@ -448,7 +448,6 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
     justify-content: space-between;
   }
 
-  }
   .tooltip {
     position: absolute;
     display: none;
@@ -520,7 +519,7 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
     background-color: transparent;
     border-radius: 5px;
   }
-`;
+`
 
 const HoverableImage = styled.img`
   position: relative;
