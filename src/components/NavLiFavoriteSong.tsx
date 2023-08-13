@@ -22,8 +22,8 @@ const NavLiFavoriteSong = (props: Props) => {
             navigate('/favorites');
           }}
         >
-          My favorite Song
-          {data!.length}
+          My favorite Song &nbsp;
+          {`(${data!.length})`}
         </StLiFavoriteSong>
       )}
     </>

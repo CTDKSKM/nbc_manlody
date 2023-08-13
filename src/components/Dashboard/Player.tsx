@@ -63,7 +63,7 @@ const StPlayerCtn = styled.div`
   align-items: center;
   margin-top: 0.5rem;
   min-height: 80px;
-  width: 800px;
+  width: 72%;
   border-radius: 15px;
   overflow: hidden;
   // position: absolute;
