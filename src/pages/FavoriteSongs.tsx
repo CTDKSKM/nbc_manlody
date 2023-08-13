@@ -11,11 +11,11 @@ const FavoriteSongs = () => {
   data?.sort((a, b) => a.likedAt - b.likedAt);
  
   const playTrack = (item: any) => {
-    dispatch(changePlaylist([{ name: item.track.name, artists: item.track.artists[0].name, uri: item.track.uri }]));
+    dispatch(changePlaylist([{ name: item.track.name, artists: item.track.artists, uri: item.track.uri }]));
   };
 
   const addPlayingNow = (item: any) => {
-    dispatch(addAlbum([{ name: item.track.name, artists: item.track.artists[0].name, uri: item.track.uri }]));
+    dispatch(addAlbum([{ name: item.track.name, artists: item.track.artists, uri: item.track.uri }]));
   };
   return (
     <div>
