@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Track, accessToken } from '../Header';
+import { accessToken } from '../Header';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';

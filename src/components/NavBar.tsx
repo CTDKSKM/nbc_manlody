@@ -3,7 +3,6 @@ import { styled } from 'styled-components';
 import useUser from '../hooks/useUser';
 import NavLiFavoriteSong from './NavLiFavoriteSong';
 import { useSelector, useDispatch } from 'react-redux';
-import { PiPlaylistBold, PiPlayFill } from 'react-icons/pi';
 import { FaRegPlayCircle } from 'react-icons/fa';
 import { addAlbum } from '../redux/modules/playUris';
 
@@ -13,11 +12,6 @@ const NavBar = () => {
   //@ts-ignore
   const track = useSelector((state) => state.albumTrackSliceReducer);
   const trackData = track.map((item: any) => ({ title: item.name, artist: item.artists[0].name }));
-
-  const playTrack = (item: any) => {
-    const playTrack = [item];
-    dispatch(addAlbum(playTrack));
-  };
   return (
     <Nav>
       <div id="logoBody">
@@ -25,13 +19,15 @@ const NavBar = () => {
           <img src="/logo_horizontal.png" alt="Logo" />
         </Link>
       </div>
-
-      {/* <div className="nav-bar-menu-ctn"> */}
-      <ul style={{
+      <ul
+        style={{
           marginTop: '1rem',
           fontWeight: 'bold',
           color: 'white'
-        }}>{userId && <NavLiFavoriteSong />}</ul>
+        }}
+      >
+        {userId && <NavLiFavoriteSong />}
+      </ul>
       <div
         style={{
           marginTop: '1rem',
@@ -55,20 +51,18 @@ const NavBar = () => {
         >
           Playing Now
         </h3>
-        </div>
-        <div className="playing-now-ctn">
-          {trackData.map((item: any, index: number) => {
-            console.log('Navbar name==>', item.title);
-            return (
-              <ul className="playListCtn">
-                <li key={item.uri}>{item.title.length < 10 ? item.title : `${item.title.slice(0, 10)}...`}</li>
-                <li key={index}>{item.artist}</li>
-                <FaRegPlayCircle className="FaRegPlayCircle" />
-              </ul>
-            );
-          })}
-        </div>
-
+      </div>
+      <div className="playing-now-ctn">
+        {trackData.map((item: any, index: number) => {
+          return (
+            <ul className="playListCtn">
+              <li key={item.uri}>{item.title.length < 10 ? item.title : `${item.title.slice(0, 10)}...`}</li>
+              <li key={index}>{item.artist}</li>
+              <FaRegPlayCircle className="FaRegPlayCircle" />
+            </ul>
+          );
+        })}
+      </div>
     </Nav>
   );
 };

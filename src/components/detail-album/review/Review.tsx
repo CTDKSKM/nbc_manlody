@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import useReview from '../../../hooks/useReview';
 import 'firebase/firestore';
 import CreatedTime from './CreatedTime';
-import { PlusSquareFilled } from '@ant-design/icons';
+
 type Props = {
   userId: string;
   comment: ReviewCommentData;
@@ -120,7 +120,7 @@ const StReview = styled.div`
     align-items: center;
     margin: 10px auto;
     transition: background-color 0.7s;
-    &: hover {
+    &:hover {
       background-color: rgba(218, 218, 218, 0.5);
       filter: blur(0.5px);
       backdrop-filter: blur(8px);
@@ -182,5 +182,4 @@ const StOptionBox = styled.div`
       border-color: white transparent transparent transparent;
     }
   }
-}
 `;

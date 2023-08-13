@@ -73,10 +73,7 @@ const CarouselWrapper = styled.section`
   .slick-slide {
     box-sizing: border-box;
     margin: 0 30px;
-    // background-color: rgba(236, 236, 236, 0.61);
-
     background: rgba(193, 193, 193, 0.53);
-
     filter: blur(0.5px);
     backdrop-filter: blur(8px);
     color: #fff;
@@ -94,7 +91,6 @@ const CarouselWrapper = styled.section`
       color: rgb(109, 109, 109);
     }
   }
-
   .container {
     width: 90%;
   }

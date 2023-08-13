@@ -31,14 +31,11 @@ const Wrapper = styled.div`
   width: 80vw;
   margin: 0 auto;
   padding: 2rem;
-
   display: flex;
   justify-content: center;
-
   margin-top: 4.5rem;
   border-radius: 10px;
   position: relative !important;
-
   &::before {
     z-index: -0.5;
     content: '';

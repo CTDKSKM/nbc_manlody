@@ -1,24 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
-
 import { Button, Tooltip, Space } from 'antd';
-import { SearchOutlined, StepForwardOutlined, StepBackwardOutlined } from '@ant-design/icons';
+import { StepForwardOutlined, StepBackwardOutlined } from '@ant-design/icons';
 import SpotifyWebApi from 'spotify-web-api-node';
-
 import TrackSearchResult from './Dashboard/TrackSearchResult';
 import Profile from './Profile';
-
-export interface Track {
-  albumUrl?: string;
-  artist?: string;
-  name?: string;
-  title?: string;
-  track_uri?: string;
-  albumId?: string | number;
-  album_type?: string;
-  release_date?: string;
-  album_uri?: string;
-}
 
 export const spotifyApi = new SpotifyWebApi({
   clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID
@@ -144,7 +130,6 @@ const HeaderTag = styled.header`
   justify-content: space-between;
   align-items: center;
 
-
   input {
     padding: 10px;
     padding-left: 34px;
@@ -165,7 +150,7 @@ const HeaderTag = styled.header`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+  }
 `;
 
 const InputContainer = styled.div`

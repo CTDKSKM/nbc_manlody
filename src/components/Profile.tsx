@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { styled,keyframes } from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import { styled } from 'styled-components';
 import { signOut } from 'firebase/auth';
 import { auth, storage } from '../firebase';
 import { TbLogout2 } from 'react-icons/tb';
 import useUser from '../hooks/useUser';
-import axios from 'axios';
 import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
 import { useParams } from 'react-router-dom';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -13,7 +12,6 @@ import { BsCamera } from 'react-icons/bs';
 const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [newUserName, setNewUserName] = useState<string>('');
-  const [newUserImg, setNewUserImg] = useState<string>('');
   const [isToggle, setIsToggle] = useState<boolean>(false);
   const [selectefFile, setselectefFile] = useState<any>('');
 
@@ -32,7 +30,6 @@ const Profile = () => {
   const openModal = () => {
     setIsModalOpen(true);
     setNewUserName(userName);
-    setNewUserImg(userImg);
   };
 
   const closeModal = () => {
@@ -52,12 +49,12 @@ const Profile = () => {
         imageUrl = await getDownloadURL(storageRef);
         setModalUserImg(imageUrl);
       }
-      if(newUserName.trim()===''){
-        alert("변경할 이름을 입력해주세요.")
-        return
-      }else if(newUserName.length > 7){
-        alert("6자 이내로 입력 해주세요.")
-        return
+      if (newUserName.trim() === '') {
+        alert('변경할 이름을 입력해주세요.');
+        return;
+      } else if (newUserName.length > 7) {
+        alert('6자 이내로 입력 해주세요.');
+        return;
       }
       setUserProfile(newUserName, imageUrl);
       closeModal();
@@ -69,7 +66,6 @@ const Profile = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     saveUserChanges();
-   
   };
 
   const userToggleButton = () => {
@@ -142,7 +138,6 @@ const Profile = () => {
                 </div>
 
                 <div>
-                  {/* <label>User</label> */}
                   <input type="text" value={newUserName} onChange={handleNameChange} />
                 </div>
                 <ProfileBtnWrap>
@@ -190,7 +185,7 @@ const Modal = styled.div`
   background-color: #777;
   border-radius: 10px;
   z-index: 999;
-  h2{
+  h2 {
     margin-bottom: 10px;
   }
   form {
@@ -268,18 +263,18 @@ const UserSettingWrap = styled.div`
     cursor: pointer;
     margin: 0;
     color: #eee;
-    &:hover{
+    &:hover {
       color: #fff;
     }
   }
-  >div{
+  > div {
     display: flex;
     align-items: center;
     gap: 3px;
     color: #eee;
     font-size: 15px;
     cursor: pointer;
-    &:hover{
+    &:hover {
       color: #fff;
     }
   }

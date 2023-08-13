@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import useLikes from '../hooks/useLikes';
 import { styled } from 'styled-components';
 import { useDispatch } from 'react-redux';
@@ -43,20 +43,14 @@ const FavoriteSongs = () => {
                 ❤️
               </GridItem>
               <GridItem
-              // onClick={() => {
-              //   setSelectedTrack(item);
-              //   setModalOpen(true);
-              // }}
               >
                 <PiPlaylistBold
                   className="PiPlaylistBold"
                   onClick={() => {
                     addPlayingNow(item);
-                    // setModalOpen(true);
                   }}
                 />
               </GridItem>
-              <GridItem>{/* {timeData[index]} */}</GridItem>
             </BodyGrid>
           );
         })
@@ -122,7 +116,6 @@ const GridItem = styled.div`
       transition: all 0.3s ease-in-out;
       transform: scale(1.4);
       rotate: 360deg;
-      
     }
   }
   .PiPlaylistBold {
@@ -137,7 +130,6 @@ const GridItem = styled.div`
   .temp {
     width: 100px;
     overflow: hidden;
-    
   }
   .tooltip-ctn {
     position: relative;
@@ -174,5 +166,3 @@ const BodyGrid = styled(Grid)`
   color: #fff;
   transition: transform 0.2s, background-color 0.8s;
 `;
-
-
