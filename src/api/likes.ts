@@ -5,12 +5,8 @@ export const getLikes = async () => {
   const userId = auth.currentUser?.uid;
   try {
     const q = query(collection(db, 'likes'), where('userId', '==', userId));
-
     const snapshot = await getDocs(q);
     const likedTracks = snapshot.docs.map((doc: any) => doc.data());
-
-    console.log('likesUserId', userId);
-    console.log('likesTrack', likedTracks);
     return likedTracks.length ? likedTracks : [];
   } catch (error) {
     console.error('Error fetching liked tracks: ', error);

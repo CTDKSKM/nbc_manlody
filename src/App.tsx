@@ -35,9 +35,4 @@ function App() {
     </QueryClientProvider>
   );
 }
-
 export default App;
-
-window.addEventListener('click', (e) => {
-  // console.log('mouseClick', e.target);
-});

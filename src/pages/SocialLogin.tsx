@@ -62,8 +62,6 @@ const LoginBody = styled.div`
   width: 100vw;
   height: 100vh;
   position: relative;
-  /* background: linear-gradient(to right,  #FFF593 0%,#b20a2c 100%); */
-
   background: linear-gradient(40deg, rgb(199, 121, 208), rgb(75, 192, 200), #2b3074);
   -webkit-animation: ${gradient} 5s infinite alternate;
   animation: ${gradient} 5s infinite alternate;

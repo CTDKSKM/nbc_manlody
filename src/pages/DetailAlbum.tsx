@@ -96,12 +96,12 @@ const ModalContent = styled.div`
   max-width: 400px;
   width: 100%;
 
-  ul{
+  ul {
     margin: 14px 0;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    gap : 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
   }
   ul > li {
     padding: 6px 10px;
@@ -109,15 +109,15 @@ const ModalContent = styled.div`
     display: flex;
     justify-content: center;
     background-color: rgba(255, 255, 255, 0.5);
-    &:hover{
+    &:hover {
       background-color: rgba(255, 255, 255, 0.8);
     }
   }
-  button{
-    float : right;
+  button {
+    float: right;
     color: white;
     cursor: pointer;
-    &:hover{
+    &:hover {
       scale: 1.1;
     }
   }
@@ -170,9 +170,6 @@ const DetailAlbum = ({ data }: any) => {
         const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}`, { headers });
         setAlbum(response.data);
         setAlbumTracks(response.data.tracks.items);
-        console.log('response==>', response);
-
-        // const albumUris = response.data.tracks.items.map((item: any) => item.uri);
         const albumUris = response.data.tracks.items;
         setAlbumUris([...albumUris]);
       };
@@ -300,7 +297,6 @@ const DetailAlbum = ({ data }: any) => {
     const averageBlue = Math.round(blueSum / pixelCount);
 
     dispatch(setRGB([averageRed, averageGreen, averageBlue, 1]));
-    console.log(`Average RGB: ${averageRed}, ${averageGreen}, ${averageBlue}`);
   };
   const toggleLikeHandler = (item: any) => {
     toggleMutation.mutate({ ...item, trackImg: album.images[0]?.url });
@@ -419,9 +415,6 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
       ${({ rgba }) => `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, 1)`} 0%,
       transparent 100%
     );
-    // backdrop-filter: blur(10px);
-    // box-shadow: inset  0px 8px 30px rgba(252, 252, 252, 0.422);
-    // box-shadow: 0px 8px 20px rgba(252, 252, 252, 0.422);
     filter: brightness(1.2);
     padding-bottom: 0.1px;
     margin-bottom: 10px;
@@ -433,7 +426,6 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
       width: 180px;
     }
   }
-
   .info-data {
     padding-top: 1rem;
     display: flex;
@@ -485,7 +477,6 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
     transform: translateX(-50%);
     z-index: 9;
   }
-
   .add-player:hover .tooltip {
     display: block;
   }
@@ -516,7 +507,6 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
     text-overflow: ellipsis;
     height: 20px;
     min-width: 0;
-
     color: white;
     font-weight: 600;
   }
@@ -621,15 +611,7 @@ const GridItem = styled.div`
   button {
     color: white;
   }
-  /* &:nth-child(5),
-  :nth-child(6) {
-    justify-content: center;
-  } */
-
-  // &:last-child {
-  //   padding-left: 30px;
-  // }
-
+  
   img {
     width: 40px;
     border-radius: 4px;

@@ -8,7 +8,6 @@ type Props = {
   rgba: number[];
 };
 const Player = ({ rgba }: Props) => {
-  console.log('player rgba=>', rgba);
   //@ts-ignore
   const track = useSelector((state) => state.albumTrackSliceReducer);
   const trackUri = track.map((item: any) => item.uri);

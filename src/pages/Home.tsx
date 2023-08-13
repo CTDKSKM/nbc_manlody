@@ -2,13 +2,12 @@ import { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
 import Carousel from '../components/Slider';
 import PauseCarousel from '../components/PuaseSlider';
-import { getReturnedParamsFromSpotifyAuth } from '../components/GetAccessToken/GetAccessToken';
 import { spotifyApi } from '../components/Header';
 import { useNavigate } from 'react-router';
+import { getReturnedParamsFromSpotifyAuth } from '../api/accesstoken';
 
 const Home = () => {
   const navigate = useNavigate();
-  const [accessToken, setAccessToken] = useState<any>('');
   const [homeShowTracks, setHomeShowTracks] = useState<any>([]);
   const [homeShowArtists, setHomeShowArtists] = useState<any>([]);
   const [homeShowAlbums, setHomeShowAlbums] = useState<any>([]);
@@ -17,19 +16,15 @@ const Home = () => {
     //윈도우 브라우저 현재 주소에 해쉬가 존재하면
     if (window.location.hash) {
       //잘라버리는 작업을 수행합니다.
-      const { access_token, token_type, expires_in } = getReturnedParamsFromSpotifyAuth(window.location.hash);
-      setAccessToken(access_token);
+      const { access_token } = getReturnedParamsFromSpotifyAuth(window.location.hash);
       sessionStorage.setItem('access_token', access_token);
       const newUrl = window.location.pathname; //현재 페이지의 경로부분을 newUrl에 할당
       // 페이지 url 변경. pushState() 인자로 받는 것은 1. state: null 또는 {}로 지정 2.document.title: 현재 문서의 타이틀 3.url: 변경하고자 하는 경로
       window.history.pushState({}, document.title, newUrl);
       window.location.reload();
     }
-    const sessionToken = sessionStorage.getItem('access_token');
-    setAccessToken(sessionToken);
-    const headers = {
-      Authorization: `Bearer ${accessToken}`
-    };
+    // const sessionToken = sessionStorage.getItem('access_token');
+    // setAccessToken(sessionToken);
 
     const generateRandomString = (length: number): string => {
       const characters = 'abcdefghijklmnopqrstuvwxyz';
@@ -47,7 +42,6 @@ const Home = () => {
 
     spotifyApi.searchTracks(randomString1, { limit: 6 }).then((res) => {
       const homeShowTracks = res.body.tracks?.items;
-      console.log('homeShowTracks=>', homeShowTracks);
       setHomeShowTracks(homeShowTracks);
     });
     spotifyApi.searchArtists(randomString2, { limit: 6 }).then((res) => {
@@ -115,10 +109,7 @@ const HomeWrapper = styled.div`
   }
   li {
     padding: 6px 10px;
-    // background-color: rgba(163, 163, 163, 0.836);
-
     background: rgba(144, 144, 144, 0.53);
-
     filter: blur(0.5px);
     backdrop-filter: blur(8px);
     color: #fff;
@@ -163,12 +154,10 @@ const HomeWrapper = styled.div`
   }
   p {
     margin: 4px 0;
-
     font-size: 10px;
   }
 
   #hotAlbumTag {
     margin-top: 1.5rem;
-    // height: 30%;
   }
 `;

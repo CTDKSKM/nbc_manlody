@@ -10,11 +10,6 @@ function Pausearousel({ homeShowArtists }: Props) {
   const pauseSettings = {
     slide: 'div',
     dots: false,
-    // arrows: true,
-    // autoplay: true,
-    // autoplaySpeed: 5000,
-    // infinite: true,
-    // speed: 500,
     slidesToShow: 5.6,
     slidesToScroll: 1,
     draggable: true,
@@ -116,10 +111,8 @@ const CarouselWrapper = styled.section`
     text-align: center;
     margin-bottom: 14px;
   }
-  p {
-  }
   .slick-list {
     margin-top: 18px;
-    height:160px:
+    height:160px;
   }
 `;

@@ -9,3 +9,15 @@ interface ReviewCommentData {
   isUpdated: boolean;
   docId?: string;
 }
+
+interface Track {
+  albumUrl?: string;
+  artist?: string;
+  name?: string;
+  title?: string;
+  track_uri?: string;
+  albumId?: string | number;
+  album_type?: string;
+  release_date?: string;
+  album_uri?: string;
+}

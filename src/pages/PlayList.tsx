@@ -11,7 +11,6 @@ import { PiPlaylistBold, PiPlayFill } from 'react-icons/pi';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useNavigate } from 'react-router-dom';
 import { CgCloseO } from 'react-icons/cg';
 
 interface Playlist {
@@ -37,7 +36,6 @@ const Modal: React.FC<ModalProps> = ({ onClose, tracks }) => {
   };
 
   const addPlayingNow = (item: any) => {
-    console.log('item', item);
     dispatch(addAlbum([{ name: item.name, artists: item.artists, uri: item.uri }]));
   };
 
@@ -48,7 +46,6 @@ const Modal: React.FC<ModalProps> = ({ onClose, tracks }) => {
   const handleModalContentClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
-  console.log('showTooltip==>', showTooltip);
   return (
     <ModalWrapper onClick={handleWrapperClick}>
       <ModalContent onClick={handleModalContentClick}>
@@ -59,25 +56,17 @@ const Modal: React.FC<ModalProps> = ({ onClose, tracks }) => {
             </button>
             <button onClick={onClose}>❎</button>
           </div>
-          {/* {tracks.map((track: any, index) => (
-            <p key={track.id}>
-              {track.name} - {track.artists[0].name}
-            </p>
-          ))} */}
-
-          {/* ================================================================ */}
           <div className="track-box">
             {tracks.map((item: any, index: number) => {
               return (
                 <BodyGrid key={item.uri}>
                   <GridItem style={{ justifyContent: 'center', alignItems: 'center' }}>{index + 1}</GridItem>
                   <GridItem>
-
                     <PiPlayFill className="PiPlayFill" onClick={() => playTrack(item)} />
-                      <img src={item.albumImg} alt="No Image" />
-                      <div className="name-ctn">
-                        <h1>{item?.name < 10 ? item.name : `${item.name.slice(0, 10)}...`}</h1>
-                        <p>{item.artists[0].name}</p>
+                    <img src={item.albumImg} alt="No Image" />
+                    <div className="name-ctn">
+                      <h1>{item?.name < 10 ? item.name : `${item.name.slice(0, 10)}...`}</h1>
+                      <p>{item.artists[0].name}</p>
                     </div>
                   </GridItem>
                   <GridItem>{item.albumName}</GridItem>
@@ -99,18 +88,15 @@ const Modal: React.FC<ModalProps> = ({ onClose, tracks }) => {
                         }}
                         onClick={() => {
                           addPlayingNow(item);
-                          // setModalOpen(true);
                         }}
                       />
                     </div>
                   </GridItem>
-                  {/* <GridItem>{timeData[index]}</GridItem> */}
                 </BodyGrid>
               );
             })}
           </div>
         </div>
-        {/* ============================================================== */}
       </ModalContent>
     </ModalWrapper>
   );
@@ -183,7 +169,7 @@ const GridItem = styled.div`
   padding: 0px 10px;
   font-size: 14px;
 
-  .name-ctn{
+  .name-ctn {
     width: 60px;
     overflow: hidden;
   }
@@ -218,11 +204,11 @@ const GridItem = styled.div`
     text-overflow: ellipsis;
   }
   .PiPlayFill {
-     scale: 1.5;
-     cursor: pointer;
-     transition-duration: 0.3s;
-     margin-right: 4rem;
-     overflow:hidden;
+    scale: 1.5;
+    cursor: pointer;
+    transition-duration: 0.3s;
+    margin-right: 4rem;
+    overflow: hidden;
     &:hover {
       color: #c30000;
       transition: all 0.3s ease-in-out;
@@ -247,7 +233,6 @@ const GridItem = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-  
   }
   .tooltip {
     position: absolute;
@@ -295,8 +280,6 @@ const BodyGrid = styled(Grid)`
   }
 `;
 
-// ================================================
-
 const NewPlayList = ({ onAddPlaylist }: { onAddPlaylist: (playlist: Playlist) => void }) => {
   const [playlistName, setPlaylistName] = useState('');
   const { userId } = useUser();
@@ -339,29 +322,29 @@ const PlayListTag = styled.div`
   height: 10%;
   margin-top: 10px;
   z-index: 2;
-  
-form{
-  margin-left:-40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap : 6px;
-  label{
-    font-weight:600;
-    color:white;
-  }
-}
 
-  input{
-    border-radius: 4px;
-    padding : 6px 0px;
-    width: 50%
+  form {
+    margin-left: -40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    label {
+      font-weight: 600;
+      color: white;
+    }
   }
-  button{
+
+  input {
+    border-radius: 4px;
+    padding: 6px 0px;
+    width: 50%;
+  }
+  button {
     width: 60px;
-   background : rgba(255, 255, 255, 0.5);
-   padding : 6px 10px;
-   border-radius : 4px;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 6px 10px;
+    border-radius: 4px;
   }
 `;
 
@@ -371,8 +354,6 @@ const PlayList = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [currentTracks, setCurrentTracks] = useState<{}[]>([]);
 
-  //============================================================
-  const navigate = useNavigate();
   const settings = {
     slide: 'div',
     dots: false,
@@ -407,8 +388,6 @@ const PlayList = () => {
       }
     ]
   };
-
-  //============================================================
 
   const handleShowTracks = (tracks: {}[]) => {
     setCurrentTracks(tracks);
@@ -454,18 +433,16 @@ const PlayList = () => {
   return (
     <>
       <CarouselWrapper>
-      <NewPlayList onAddPlaylist={handleAddPlaylist} />
+        <NewPlayList onAddPlaylist={handleAddPlaylist} />
         <div>
-          <PlayListTag/>
+          <PlayListTag />
           <Slider {...settings}>
-            {playlists?.map((item: any, index: number) => {
-              console.log('item==>', item ? item : '없음');
+            {playlists?.map((item: any) => {
               return (
                 <div className="box" key={item.id} onClick={() => handleShowTracks(item.tracks)}>
                   <img src={item.tracks[0]?.albumImg} alt="No Image" />
                   <h5>{item?.name}</h5>
                   <CgCloseO className="CgCloseO" onClick={(e) => handleDeletePlaylist(e, item.id)}></CgCloseO>
-                  {/* <p>{item.artists[0].name}</p> */}
                 </div>
               );
             })}
@@ -480,8 +457,6 @@ const PlayList = () => {
 
 export default PlayList;
 
-// ================Carousel================
-
 const CarouselWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -490,7 +465,7 @@ const CarouselWrapper = styled.div`
 
   margin: auto;
   height: 65vh;
-  
+
   .slick-slide .box {
     overflow: hidden;
     cursor: pointer;
@@ -523,7 +498,6 @@ const CarouselWrapper = styled.div`
   p {
   }
   img {
-    /* margin: 0 auto; */
     margin: 18px auto 0;
     width: 70%;
     border-radius: 8px;
@@ -558,5 +532,3 @@ const CarouselWrapper = styled.div`
     top: 0;
   }
 `;
-
-// ================================
