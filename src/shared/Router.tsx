@@ -9,10 +9,10 @@ import { styled } from 'styled-components';
 import LoginLoading from '../components/LoginLoading';
 
 const images: string[] = [
-  '/test_wallpaper_1.jpg',
-  '/test_wallpaper_2.jpg',
-  '/test_wallpaper_3.jpg',
-  '/test_wallpaper_4.jpg'
+  '/assets/No1_wallpaper.jpg',
+  '/assets/No2_wallpaper.jpg',
+  '/assets/No3_wallpaper.jpg',
+  '/assets/No4_wallpaper.jpg'
 ];
 interface BackgroundImageProps {
   image: string;

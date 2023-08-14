@@ -19,22 +19,18 @@ const queryClient = new QueryClient({
 
 function App() {
   const navigate = useNavigate();
-  const [render, setRender] = useState(false);
   const accessToken = sessionStorage.getItem('access_token');
   useEffect(() => {
     if (window.location.hash) {
-      console.log('해시자르기실행');
       //잘라버리는 작업을 수행합니다.
       const { access_token } = getReturnedParamsFromSpotifyAuth(window.location.hash);
       sessionStorage.setItem('access_token', access_token);
-      
       navigate('/');
       window.location.reload();
     }
     onAuthStateChanged(auth, (user) => {
       // if (!user) navigate('/login');
       if (!user || !accessToken) navigate('/login');
-      setRender(true);
     });
   }, []);
 

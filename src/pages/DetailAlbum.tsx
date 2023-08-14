@@ -317,7 +317,7 @@ const DetailAlbum = ({ data }: any) => {
               <div style={{ width: '80%' }}>
                 <div className="add-player">
                   <HoverableImage
-                    src="/addToPlayer_Btn.png"
+                    src="/assets/addToPlayer_Btn.png"
                     style={{ width: '34px' }}
                     onMouseEnter={() => setTooltipVisible(true)}
                     onMouseLeave={() => setTooltipVisible(false)}
@@ -611,7 +611,7 @@ const GridItem = styled.div`
   button {
     color: white;
   }
-  
+
   img {
     width: 40px;
     border-radius: 4px;

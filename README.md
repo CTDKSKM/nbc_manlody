@@ -121,10 +121,10 @@
 | 역할 | 이름   | 담당 구현 기능                                 | GitHub                                                                     |
 | ---- | ------ | ---------------------------------------------- | --------------------------------------------------------------------------- |
 | 팀장 | 서경모 | 앨범리뷰CRUD, 로그인 기능 | <a href="https://github.com/CTDKSKM">https://github.com/CTDKSKM</a> |
-| 팀원 | 김우리 | 날씨API, 유튜브 API                            | <a href="https://github.com/wooriki">https://github.com/wooriki</a>         |
-| 팀원 | 이동준 | Spotify Web API 인증, Playback 재생, 검색 및 데이터 호출                    | <a href="https://github.com/podoDJ">https://github.com/podoDJ</a>           |
-| 팀원 | 조진명 | 좋아요 기능, 플레이리스트 추가기능     | <a href="https://github.com/nbcnvc">https://github.com/nbcnvc</a>           |
-| 팀원 | 황대성 | 공공API 데이터 검색 및 필터 기능               | <a href="https://github.com/hwangdae">https://github.com/hwangdae</a>     |
+| 팀원 | 김우리 | 모달, css 스타일링 | <a href="https://github.com/wooriki">https://github.com/wooriki</a> |
+| 팀원 | 이동준 | Spotify Web API 인증, Playback 재생, 검색 및 데이터 호출 | <a href="https://github.com/podoDJ">https://github.com/podoDJ</a>|
+| 팀원 | 조진명 | 좋아요 기능, 플레이리스트 추가기능 | <a href="https://github.com/nbcnvc">https://github.com/nbcnvc</a> |
+| 팀원 | 황대성 | 유저정보 수정 기능  | <a href="https://github.com/hwangdae">https://github.com/hwangdae</a>  |
 
 <br />
 
@@ -132,14 +132,13 @@
 
 ### Sopotify Web Api
 
-- 
-- 
+- 커스텀 음악플레이어 구성
+- 나만의 음악리스트 생성
 
-### 공공데이터API
+### SPOTIFY API
 
-- `react query`, `axios` 활용하여 서울시 공공API 데이터 GET 요청한다
+- `react query`, `axios` 활용하여 SPOTIFY API 데이터 GET 요청한다
 - 검색창 필터링으로 공공데이터 필터기능을 구현한다
-- 필터링 된 API 데이터를 `pagination` 기능으로 `painting`
   
 <br />
 <br />
@@ -208,12 +207,12 @@
 - react-spotify-web-playback
 - react-bootstrap
 - slick-carousel
-- react-color-extractor
+  
 
 <div align=“center”>
 <img src="https://img.shields.io/badge/styled components-e62744?style=for-the-badge&logo=styledcomponents&logoColor=white"> <img src="https://img.shields.io/badge/React Router DOM-ed7a40?style=for-the-badge&logo=reactrouter&logoColor=white"> <img src="https://img.shields.io/badge/Redux Toolkit-e0a538?style=for-the-badge&logo=redux&logoColor=white">
 	
-<img src="https://img.shields.io/badge/React Query-32b3bf?style=for-the-badge&logo=reactquery&logoColor=white"> <img src="https://img.shields.io/badge/Axios-3261bf?style=for-the-badge&logo=axios&logoColor=white"> <img src="https://img.shields.io/badge/Express-4a32bf?style=for-the-badge&logo=express&logoColor=white">
+<img src="https://img.shields.io/badge/React Query-32b3bf?style=for-the-badge&logo=reactquery&logoColor=white"> <img src="https://img.shields.io/badge/Axios-3261bf?style=for-the-badge&logo=axios&logoColor=white"> <img src="https://img.shields.io/badge/Express-4a32bf?style=for-the-badge&logo=express&logoColor=white"> <img src="https://img.shields.io/badge/spotify-1DB954?style=for-the-badge&logo=spotify&logoColor=white"> <img src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=Bootstrap&logoColor=white">
 </div>
 
 ### ⚙️ 버전 관리 시스템

@@ -16,7 +16,7 @@ const NavBar = () => {
     <Nav>
       <div id="logoBody">
         <Link to="/">
-          <img src="/logo_horizontal.png" alt="Logo" />
+          <img src="/assets/logo_horizontal.png" alt="Logo" />
         </Link>
       </div>
       <ul
@@ -46,6 +46,7 @@ const NavBar = () => {
         <h3
           style={{
             marginTop: '1rem',
+            marginBottom: '1rem',
             color: 'white'
           }}
         >
@@ -92,14 +93,11 @@ const Nav = styled.div`
     margin: 0 auto;
     display: flex;
     justify-content: center;
-    // width: 240px;
     max-width: 90%;
     height: auto;
     cursor: pointer;
     filter: grayscale(0.6);
     transition: filter 0.8s;
-    // z-index: 30;
-    // position: relative;
   }
   img:hover {
     filter: none;
@@ -119,7 +117,6 @@ const Nav = styled.div`
     overflow-x: hidden;
     overflow-y: auto;
 
-    /* Webkit 스크롤바 스타일 */
     &::-webkit-scrollbar {
       width: 8px;
     }

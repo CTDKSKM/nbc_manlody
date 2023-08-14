@@ -63,13 +63,13 @@ const LoadingContainer = styled.div`
     position: absolute;
     width: 100%;
     height: 100%;
-    // background-color: black;
     filter: blur(20px);
   }
 
   h2 {
     margin-top: 20px;
     color: orange;
+    font-size: 24px;
     text-align: center;
     animation: ${waveAnimation} 1s infinite;
   }

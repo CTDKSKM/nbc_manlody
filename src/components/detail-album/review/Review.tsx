@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 import useReview from '../../../hooks/useReview';
 import 'firebase/firestore';
 import CreatedTime from './CreatedTime';
+import { PlusSquareFilled } from '@ant-design/icons';
 
 type Props = {
   userId: string;
@@ -91,7 +92,6 @@ const Review = ({ comment, userId, changeListener }: Props) => {
                 }}
               >
                 ...
-                {/* <PlusSquareFilled/> */}
               </div>
               {isOptBoxShow && (
                 <div className="select-box">
@@ -164,22 +164,14 @@ const StOptionBox = styled.div`
   }
   .select-box {
     position: absolute;
-    right: -5px;
-    top: -58px;
+    right: 30px;
+    top: -10px;
     display: flex;
     flex-direction: column;
     row-gap: 10px;
     background-color: white;
-    padding: 14px 10px 10px;
-    border-radius: 8px;
-    &::before {
-      content: '';
-      position: absolute;
-      top: 98%; /* 말풍선이 박스 아래에 위치하도록 설정 */
-      right: 24px;
-      border-width: 8px; /* 삼각형의 크기 */
-      border-style: solid;
-      border-color: white transparent transparent transparent;
-    }
+    padding: 10px 30px 10px 10px;
+    border-radius: 14px 50% 50% 14px;
+    clip-path: polygon(0 0, 81% 0, 81% 38%, 100% 48%, 81% 55%, 81% 100%, 0 100%);
   }
 `;
