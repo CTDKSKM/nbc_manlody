@@ -122,7 +122,7 @@
 | ---- | ------ | ---------------------------------------------- | --------------------------------------------------------------------------- |
 | 팀장 | 서경모 | 지도 API, express 서버, 컴포넌트간 데이터 연결 | <a href="https://github.com/CTDKSKM">https://github.com/CTDKSKM</a> |
 | 팀원 | 김우리 | 날씨API, 유튜브 API                            | <a href="https://github.com/wooriki">https://github.com/wooriki</a>         |
-| 팀원 | 이동준 | 공공API 데이터 페이지네이션                    | <a href="https://github.com/podoDJ">https://github.com/podoDJ</a>           |
+| 팀원 | 이동준 | Spotify Web API 인증, Playback 재생, 검색 및 데이터 호출                    | <a href="https://github.com/podoDJ">https://github.com/podoDJ</a>           |
 | 팀원 | 조진명 | 날씨API, 상세 페이지, 댓글 기능, 검색 기능     | <a href="https://github.com/nbcnvc">https://github.com/nbcnvc</a>           |
 | 팀원 | 황대성 | 공공API 데이터 검색 및 필터 기능               | <a href="https://github.com/hwangdae">https://github.com/hwangdae</a>     |
 
@@ -213,7 +213,7 @@
 <div align=“center”>
 <img src="https://img.shields.io/badge/styled components-e62744?style=for-the-badge&logo=styledcomponents&logoColor=white"> <img src="https://img.shields.io/badge/React Router DOM-ed7a40?style=for-the-badge&logo=reactrouter&logoColor=white"> <img src="https://img.shields.io/badge/Redux Toolkit-e0a538?style=for-the-badge&logo=redux&logoColor=white">
 	
-<img src="https://img.shields.io/badge/React Query-32b3bf?style=for-the-badge&logo=reactquery&logoColor=white"> <img src="https://img.shields.io/badge/React Naver Maps-03C75A?style=for-the-badge&logo=naver&logoColor=white"> <img src="https://img.shields.io/badge/Axios-3261bf?style=for-the-badge&logo=axios&logoColor=white"> <img src="https://img.shields.io/badge/Express-4a32bf?style=for-the-badge&logo=express&logoColor=white">
+<img src="https://img.shields.io/badge/React Query-32b3bf?style=for-the-badge&logo=reactquery&logoColor=white"> <img src="https://img.shields.io/badge/Axios-3261bf?style=for-the-badge&logo=axios&logoColor=white"> <img src="https://img.shields.io/badge/Express-4a32bf?style=for-the-badge&logo=express&logoColor=white">
 </div>
 
 ### ⚙️ 버전 관리 시스템
