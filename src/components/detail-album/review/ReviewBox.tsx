@@ -27,7 +27,7 @@ const ReviewWrapper = styled.div`
 
   #comment-wrapper {
     position: relative;
-    z-index: 9;
+    z-index: 8;
     padding: 0 10px;
     margin-top: 10px;
     max-height: 330px;
