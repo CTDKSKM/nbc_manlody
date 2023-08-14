@@ -132,14 +132,13 @@
 
 ### Sopotify Web Api
 
-- 
-- 
+- 커스텀 음악플레이어 구성
+- 나만의 음악리스트 생성
 
-### 공공데이터API
+### SPOTIFY API
 
-- `react query`, `axios` 활용하여 서울시 공공API 데이터 GET 요청한다
+- `react query`, `axios` 활용하여 SPOTIFY API 데이터 GET 요청한다
 - 검색창 필터링으로 공공데이터 필터기능을 구현한다
-- 필터링 된 API 데이터를 `pagination` 기능으로 `painting`
   
 <br />
 <br />
