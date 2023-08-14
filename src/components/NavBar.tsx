@@ -2,13 +2,11 @@ import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import useUser from '../hooks/useUser';
 import NavLiFavoriteSong from './NavLiFavoriteSong';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { FaRegPlayCircle } from 'react-icons/fa';
-import { addAlbum } from '../redux/modules/playUris';
 
 const NavBar = () => {
   const { userId } = useUser();
-  const dispatch = useDispatch();
   //@ts-ignore
   const track = useSelector((state) => state.albumTrackSliceReducer);
   const trackData = track.map((item: any) => ({ title: item.name, artist: item.artists[0].name }));
@@ -116,7 +114,7 @@ const Nav = styled.div`
     max-height: 50vh;
     overflow-x: hidden;
     overflow-y: auto;
-
+    // ::-webkit : 화면에서 보이는 모든 브라우저를 보여주게 한다.
     &::-webkit-scrollbar {
       width: 8px;
     }

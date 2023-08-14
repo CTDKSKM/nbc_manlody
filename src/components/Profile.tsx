@@ -13,7 +13,7 @@ const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [newUserName, setNewUserName] = useState<string>('');
   const [isToggle, setIsToggle] = useState<boolean>(false);
-  const [selectefFile, setselectefFile] = useState<any>('');
+  const [selectedFile, setselectedFile] = useState<any>('');
 
   const { userName, userEmail, userImg, setUserProfile } = useUser();
   const [modalUserImg, setModalUserImg] = useState<any>(userImg);
@@ -44,16 +44,18 @@ const Profile = () => {
   const saveUserChanges = async () => {
     try {
       let imageUrl = userImg;
-      if (selectefFile) {
-        const storageRef = ref(storage, `profile/${selectefFile.name}`);
-        await uploadBytes(storageRef, selectefFile);
+      if (selectedFile) {
+        // 사진을 저장할 이름을 `profile/${new Date().getTime()}`으로 처리함. 왜냐하면 그냥 이름으로 지정할 경우,
+        //다른 사람이 같은 이름의 사진을 업로드했을 때 내 사진이 덮어씌워질 수 있기 때문.
+        const storageRef = ref(storage, `profile/${selectedFile.name}`);
+        await uploadBytes(storageRef, selectedFile);
         imageUrl = await getDownloadURL(storageRef);
         setModalUserImg(imageUrl);
       }
       if (newUserName.trim() === '') {
         alert('변경할 이름을 입력해주세요.');
         return;
-      } else if (newUserName.length > 7) {
+      } else if (newUserName.length >7)  {
         alert('6자 이내로 입력 해주세요.');
         return;
       }
@@ -76,7 +78,8 @@ const Profile = () => {
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
-    setselectefFile(selectedFile);
+    setselectedFile(selectedFile);
+
     if (selectedFile) {
       const reader = new FileReader();
       reader.onload = function (e) {

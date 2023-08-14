@@ -11,12 +11,15 @@ const SocialLogin: React.FC = () => {
   const googleLogin = async () => {
     try {
       const provider = new GoogleAuthProvider(); // provider 구글 설정
+      // 추후에 authProvider로 받아온 토큰을 로컬스토리지에 저장하고, (이후 refreshToken을 대조하는 로직 스터디가 필요.)
       await signInWithPopup(auth, provider);
-
+      
       handleSpotifyLogin();
 
       // navigate('/');
     } catch (error) {
+      // 에러가 나올 때 콘솔에 에러메시지를 보여주고 싶었음. 근데 TS에는 error의 타입도 정해줘야하기 때문에,
+      // 이 에러가 FirebaseError의 instance이다를 보여줘서 TS에러를 방지.
       if (error instanceof FirebaseError) {
         console.log(error.message);
       }

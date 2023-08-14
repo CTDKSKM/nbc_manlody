@@ -44,7 +44,7 @@ const Router = () => {
     setTimeout(() => {
       setShowLoading(false);
     }, 4000);
-
+    //배경 darkened 시간 지정
     const interval = setInterval(() => {
       setDarkened(true);
       setTimeout(() => {
@@ -62,6 +62,7 @@ const Router = () => {
     <>
       <GlobalStyle />
       <BackgroundImageContainer image={images[currentImageIndex]} darkened={darkened} />
+      {/* showLoading 상태에 따라서 로딩컴포넌트 vs login 이후 화면*/}
       {showLoading ? (
         <LoginLoading />
       ) : (

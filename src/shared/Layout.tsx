@@ -46,6 +46,7 @@ const Wrapper = styled.div`
     right: 0;
     bottom: 0;
     opacity: 1;
+    /* 유리질감효과 메인 코드 */
     filter: blur(0.5px);
     pointer-events: none;
     backdrop-filter: blur(8px);

@@ -8,7 +8,9 @@ import useReview from '../../../hooks/useReview';
 import Error from '../../Error';
 
 const AlbumReview = () => {
+  //어떤 앨범인지 구분
   const { album_id: albumId } = useParams();
+  //어떤 유저인지 구분
   const { userId, userName } = useUser();
   const [content, setContent] = useState<string>('');
   const { isLoading, isError, data, commentMutation } = useReview(albumId!);

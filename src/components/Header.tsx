@@ -26,7 +26,7 @@ const Header: React.FC = () => {
       setSearchResults([]);
       return;
     }
-
+    
     if (!accessToken) return;
 
     let cancel = false;

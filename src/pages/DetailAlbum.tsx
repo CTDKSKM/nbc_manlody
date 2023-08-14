@@ -16,6 +16,7 @@ import { addAlbum } from '../redux/modules/playUris';
 import useLikes from '../hooks/useLikes';
 import { setRGB } from '../redux/modules/rgb';
 import { PiPlaylistBold, PiPlayFill } from 'react-icons/pi';
+import { colorExtractor } from '../components/common/colorExtractor';
 
 interface ImageProps {
   url: string;
@@ -270,34 +271,10 @@ const DetailAlbum = ({ data }: any) => {
   };
 
   const imageRef = useRef<HTMLImageElement>(null);
-  const extractRGBColors = () => {
-    const image = imageRef.current as HTMLImageElement;
-    const canvas = document.createElement('canvas');
-    const ctx = canvas?.getContext('2d');
-
-    canvas.width = image?.width;
-    canvas.height = image?.height;
-    ctx?.drawImage(image, 0, 0, canvas.width, canvas.height);
-    const imageData = ctx?.getImageData(0, 0, canvas.width, canvas.height);
-    const pixels = imageData?.data as Uint8ClampedArray;
-
-    let redSum = 0;
-    let greenSum = 0;
-    let blueSum = 0;
-
-    for (let i = 0; i < pixels?.length; i += 4) {
-      redSum += pixels[i];
-      greenSum += pixels[i + 1];
-      blueSum += pixels[i + 2];
-    }
-
-    const pixelCount = pixels.length / 4;
-    const averageRed = Math.round(redSum / pixelCount);
-    const averageGreen = Math.round(greenSum / pixelCount);
-    const averageBlue = Math.round(blueSum / pixelCount);
-
-    dispatch(setRGB([averageRed, averageGreen, averageBlue, 1]));
-  };
+  const extractRGBColors = (imageRef: HTMLImageElement) => {
+      const rgb = colorExtractor(imageRef)
+    dispatch(setRGB(rgb))
+  }
   const toggleLikeHandler = (item: any) => {
     toggleMutation.mutate({ ...item, trackImg: album.images[0]?.url });
     if (likedTracks.includes(item.id)) {
@@ -313,7 +290,7 @@ const DetailAlbum = ({ data }: any) => {
           {/* <button onClick={playAlbum}>앨범플레이</button> */}
           <div className="album-info">
             <div className="info-data">
-              <img crossOrigin="anonymous" ref={imageRef} onLoad={extractRGBColors} src={album.images[0]?.url} alt="" />
+              <img crossOrigin="anonymous" ref={imageRef} onLoad={()=>{extractRGBColors(imageRef.current!)}} src={album.images[0]?.url} alt="" />
               <div style={{ width: '80%' }}>
                 <div className="add-player">
                   <HoverableImage
@@ -342,8 +319,8 @@ const DetailAlbum = ({ data }: any) => {
           <div className="result-album">
             <div className="result-wrapper">
               <p>Track</p>
-              <p>Track Infomation</p>
-              <p>Album Infomation</p>
+              <p>Track Information</p>
+              <p>Album Information</p>
               <p>Love it</p>
               <p>Playing Time</p>
             </div>
@@ -535,7 +512,7 @@ const AlbumTag = styled.div<{ rgba: number[] }>`
         background-color: rgba(218, 218, 218, 0.7);
       }
     }
-
+    // ::-webkit : 화면에서 보이는 모든 브라우저를 보여주게 한다.
     ::-webkit-scrollbar {
       width: 8px;
     }
