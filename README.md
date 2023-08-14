@@ -207,7 +207,7 @@
 - react-spotify-web-playback
 - react-bootstrap
 - slick-carousel
-- react-color-extractor
+  
 
 <div align=“center”>
 <img src="https://img.shields.io/badge/styled components-e62744?style=for-the-badge&logo=styledcomponents&logoColor=white"> <img src="https://img.shields.io/badge/React Router DOM-ed7a40?style=for-the-badge&logo=reactrouter&logoColor=white"> <img src="https://img.shields.io/badge/Redux Toolkit-e0a538?style=for-the-badge&logo=redux&logoColor=white">
