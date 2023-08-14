@@ -6,6 +6,7 @@ import Router from './shared/Router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 import { useNavigate } from 'react-router-dom';
+import { getReturnedParamsFromSpotifyAuth } from './api/accesstoken';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,12 +19,17 @@ const queryClient = new QueryClient({
 
 function App() {
   const navigate = useNavigate();
-  const [render, setRender] = useState(false);
   const accessToken = sessionStorage.getItem('access_token');
   useEffect(() => {
+    if (window.location.hash) {
+      //잘라버리는 작업을 수행합니다.
+      const { access_token } = getReturnedParamsFromSpotifyAuth(window.location.hash);
+      sessionStorage.setItem('access_token', access_token);
+      navigate('/');
+      window.location.reload();
+    }
     onAuthStateChanged(auth, (user) => {
       if (!user || !accessToken) navigate('/login');
-      setRender(true);
     });
   }, []);
 
