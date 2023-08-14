@@ -22,7 +22,7 @@ function App() {
   const accessToken = sessionStorage.getItem('access_token');
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if (!user || !accessToken) navigate('/login');
+      if (!user) navigate('/login');
       setRender(true);
     });
   }, []);
