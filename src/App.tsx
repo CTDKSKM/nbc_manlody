@@ -6,7 +6,6 @@ import Router from './shared/Router';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 import { useNavigate } from 'react-router-dom';
-import { accessToken } from './components/Header';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,7 +19,7 @@ const queryClient = new QueryClient({
 function App() {
   const navigate = useNavigate();
   const [render, setRender] = useState(false);
-
+  const accessToken = sessionStorage.getItem('access_token');
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (!user || !accessToken) navigate('/login');

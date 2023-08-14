@@ -1,10 +1,9 @@
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { auth } from '../firebase';
 import { FirebaseError } from 'firebase/app';
 import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from 'react-query';
-import { handleSpotifyLogin } from '../api/accesstoken';
+import { getReturnedParamsFromSpotifyAuth, handleSpotifyLogin } from '../api/accesstoken';
 import { styled, keyframes } from 'styled-components';
 
 const SocialLogin: React.FC = () => {
@@ -16,13 +15,24 @@ const SocialLogin: React.FC = () => {
 
       handleSpotifyLogin();
 
-      navigate('/');
+      // navigate('/');
     } catch (error) {
       if (error instanceof FirebaseError) {
         console.log(error.message);
       }
     }
   };
+
+  useEffect(() => {
+    //윈도우 브라우저 현재 주소에 해쉬가 존재하면
+    if (window.location.hash) {
+      //잘라버리는 작업을 수행합니다.
+      const { access_token } = getReturnedParamsFromSpotifyAuth(window.location.hash);
+      sessionStorage.setItem('access_token', access_token);
+
+      navigate('/');
+    }
+  }, []);
 
   return (
     <LoginBody>
@@ -101,4 +111,4 @@ const LoginInner = styled.div`
 `;
 const LogoImage = styled.img`
   width: 100%;
-`
+`;
