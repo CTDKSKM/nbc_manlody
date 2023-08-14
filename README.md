@@ -18,7 +18,7 @@
 
 ### 📍 사이트 주소
 
-<a href="https://gong-gong-play.vercel.app/">MANLODY</a>
+<a href="https://nbc-manlody.vercel.app/">MANLODY</a>
 
 
 
