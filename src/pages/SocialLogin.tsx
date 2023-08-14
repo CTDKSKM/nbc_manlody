@@ -39,7 +39,7 @@ const SocialLogin: React.FC = () => {
       <LoginWrap>
         <LoginInner>
           <p>
-            <LogoImage src="/logo_horizontal.png" alt="Logo" />
+            <LogoImage src="/assets/logo_horizontal.png" alt="Logo" />
           </p>
           <button
             onClick={() => {

@@ -294,7 +294,7 @@ const UserSettingWrap = styled.div`
 const UserDetailWrap = styled.div`
   position: absolute;
   right: 0;
-  top: 72px;
+  top: 64px;
   padding: 25px 30px 12px 30px;
   background: rgba(42, 42, 42, 0.814);
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
@@ -328,7 +328,7 @@ const UserDetailWrap = styled.div`
     right: 24px;
     border-width: 8px;
     border-style: solid;
-    border-color: rgba(42, 42, 42, 0.814) transparent transparent transparent;
+    border-color: rgba(42, 42, 42, 0.614) transparent transparent transparent;
   }
 
   // content: '';

@@ -16,7 +16,7 @@ const NavBar = () => {
     <Nav>
       <div id="logoBody">
         <Link to="/">
-          <img src="/logo_horizontal.png" alt="Logo" />
+          <img src="/assets/logo_horizontal.png" alt="Logo" />
         </Link>
       </div>
       <ul
