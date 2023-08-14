@@ -22,17 +22,23 @@ const SocialLogin: React.FC = () => {
       }
     }
   };
-
+  const user = auth.currentUser;
   useEffect(() => {
-    //윈도우 브라우저 현재 주소에 해쉬가 존재하면
-    if (window.location.hash) {
-      //잘라버리는 작업을 수행합니다.
-      const { access_token } = getReturnedParamsFromSpotifyAuth(window.location.hash);
-      sessionStorage.setItem('access_token', access_token);
+    const isToken = sessionStorage.getItem('access_token');
+    
+    if (user && isToken) navigate('/');
+    }, []);
 
-      navigate('/');
-    }
-  }, []);
+  // useEffect(() => {
+  //   //윈도우 브라우저 현재 주소에 해쉬가 존재하면
+  //   if (window.location.hash) {
+  //     //잘라버리는 작업을 수행합니다.
+  //     const { access_token } = getReturnedParamsFromSpotifyAuth(window.location.hash);
+  //     sessionStorage.setItem('access_token', access_token);
+  //     console.log('소셜로그인 access_token', access_token);
+  //     // navigate('/');
+  //   }
+  // }, []);
 
   return (
     <LoginBody>

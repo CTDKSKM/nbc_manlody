@@ -25,6 +25,7 @@ const Profile = () => {
 
   const handleSignOut = async () => {
     await signOut(auth);
+    sessionStorage.removeItem('access_token')
   };
 
   const openModal = () => {
