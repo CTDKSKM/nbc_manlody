@@ -92,14 +92,6 @@ const Review = ({ comment, userId, changeListener }: Props) => {
                 }}
               >
                 ...
-                {/* <PlusSquareFilled
-                  className="more-info"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    // setIsInputBoxShow(false);
-                    // setIsOptBoxShow(!isOptBoxShow);
-                  }}
-                /> */}
               </div>
               {isOptBoxShow && (
                 <div className="select-box">
