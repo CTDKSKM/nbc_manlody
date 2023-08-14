@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { auth } from '../firebase';
 import { FirebaseError } from 'firebase/app';
 import { useNavigate } from 'react-router-dom';
-import { getReturnedParamsFromSpotifyAuth, handleSpotifyLogin } from '../api/accesstoken';
+import { handleSpotifyLogin } from '../api/accesstoken';
 import { styled, keyframes } from 'styled-components';
 
 const SocialLogin: React.FC = () => {
@@ -23,15 +23,11 @@ const SocialLogin: React.FC = () => {
     }
   };
 
+  const user = auth.currentUser;
   useEffect(() => {
-    //윈도우 브라우저 현재 주소에 해쉬가 존재하면
-    if (window.location.hash) {
-      //잘라버리는 작업을 수행합니다.
-      const { access_token } = getReturnedParamsFromSpotifyAuth(window.location.hash);
-      sessionStorage.setItem('access_token', access_token);
+    const isToken = sessionStorage.getItem('access_token');
 
-      navigate('/');
-    }
+    if (user && isToken) navigate('/');
   }, []);
 
   return (
