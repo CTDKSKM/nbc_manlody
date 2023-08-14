@@ -182,9 +182,9 @@
 
 <br />
 
-#### 6. 반응형 구현
+#### 6. 플레이 리스트
 
-![small](https://github.com/kimhwanhoon/20230724_team_project/assets/109304556/d6907671-c743-49dd-8bca-b504238a363f)
+![playList](https://github.com/CTDKSKM/nbc_manlody/assets/105066603/b1e0adb8-1886-4123-b292-7ff2710523a4)
 
 <br />
 
