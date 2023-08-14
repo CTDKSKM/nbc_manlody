@@ -1,9 +1,8 @@
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { auth } from '../firebase';
 import { FirebaseError } from 'firebase/app';
 import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from 'react-query';
 import { handleSpotifyLogin } from '../api/accesstoken';
 import { styled, keyframes } from 'styled-components';
 
@@ -16,7 +15,7 @@ const SocialLogin: React.FC = () => {
 
       handleSpotifyLogin();
 
-      navigate('/');
+      // navigate('/');
     } catch (error) {
       if (error instanceof FirebaseError) {
         console.log(error.message);
@@ -24,12 +23,19 @@ const SocialLogin: React.FC = () => {
     }
   };
 
+  const user = auth.currentUser;
+  useEffect(() => {
+    const isToken = sessionStorage.getItem('access_token');
+
+    if (user && isToken) navigate('/');
+  }, []);
+
   return (
     <LoginBody>
       <LoginWrap>
         <LoginInner>
           <p>
-            <LogoImage src="/logo_horizontal.png" alt="Logo" />
+            <LogoImage src="/assets/logo_horizontal.png" alt="Logo" />
           </p>
           <button
             onClick={() => {
@@ -101,4 +107,4 @@ const LoginInner = styled.div`
 `;
 const LogoImage = styled.img`
   width: 100%;
-`
+`;

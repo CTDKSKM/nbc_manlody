@@ -6,12 +6,13 @@ import GlobalStyle from '../GlobalStyle';
 import PlayList from '../pages/PlayList';
 import FavoriteSongs from '../pages/FavoriteSongs';
 import { styled } from 'styled-components';
+import LoginLoading from '../components/LoginLoading';
 
 const images: string[] = [
-  '/test_wallpaper_1.jpg',
-  '/test_wallpaper_2.jpg',
-  '/test_wallpaper_3.jpg',
-  '/test_wallpaper_4.jpg'
+  '/assets/No1_wallpaper.jpg',
+  '/assets/No2_wallpaper.jpg',
+  '/assets/No3_wallpaper.jpg',
+  '/assets/No4_wallpaper.jpg'
 ];
 interface BackgroundImageProps {
   image: string;
@@ -36,37 +37,44 @@ const BackgroundImageContainer = styled.div<BackgroundImageProps>`
 const Router = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [darkened, setDarkened] = useState<boolean>(false);
-  const [opacity, setOpacity] = useState<number>(1);
+
+  const [showLoading, setShowLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setTimeout(() => {
+      setShowLoading(false);
+    }, 4000);
+
     const interval = setInterval(() => {
       setDarkened(true);
       setTimeout(() => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
         setDarkened(false);
-        setOpacity(0.5); // 이미지 어두워짐
-        setTimeout(() => {
-          setOpacity(1); // 이미지 밝아짐
-        }, 5000); // 1.5초로 조정하여 더 천천히 전환됨
       }, 700);
-    }, 10000); // 7초로 interval 간격을 늘림
+    }, 10000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   return (
     <>
       <GlobalStyle />
       <BackgroundImageContainer image={images[currentImageIndex]} darkened={darkened} />
-      <Routes>
-        <Route path="/login" element={<SocialLogin />} />
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/playlist" element={<PlayList />} />
-          <Route path="/favorites" element={<FavoriteSongs />} />
-          <Route path="/detail/:album_id" element={<DetailAlbum />} />
-        </Route>
-      </Routes>
+      {showLoading ? (
+        <LoginLoading />
+      ) : (
+        <Routes>
+          <Route path="/login" element={<SocialLogin />} />
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/playlist" element={<PlayList />} />
+            <Route path="/favorites" element={<FavoriteSongs />} />
+            <Route path="/detail/:album_id" element={<DetailAlbum />} />
+          </Route>
+        </Routes>
+      )}
     </>
   );
 };
