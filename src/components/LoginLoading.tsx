@@ -70,6 +70,7 @@ const LoadingContainer = styled.div`
   h2 {
     margin-top: 20px;
     color: orange;
+    font-size: 24px;
     text-align: center;
     animation: ${waveAnimation} 1s infinite;
   }

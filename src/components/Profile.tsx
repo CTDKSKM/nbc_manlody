@@ -183,7 +183,8 @@ const Modal = styled.div`
   transform: translate(-50%, -50%);
   width: 340px;
   padding: 30px;
-  background-color: #777;
+  background-color: rgba(57, 57, 57, 0.683);
+  box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.422);
   border-radius: 10px;
   z-index: 999;
   h2 {
@@ -193,7 +194,7 @@ const Modal = styled.div`
     display: flex;
   }
   input {
-    width: 240px !important;
+    width: 180px !important;
     background-color: #eee;
     margin-bottom: 14px;
     padding-left: 10px !important;
@@ -218,6 +219,7 @@ const ModalInner = styled.div`
       position: relative;
       left: 0;
       top: 0;
+      box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.422);
     }
     label {
       display: flex;
@@ -251,10 +253,20 @@ const UserInfo = styled.h1`
   align-items: center;
   gap: 16px;
   cursor: pointer;
+  padding: 6px 20px;
+  border-radius: 8px;
+  box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.422);
+  transition: background-color 0.5s ease, box-shadow 0.5s ease;
+
   > img {
     width: 48px;
     height: 48px;
     border-radius: 50px;
+    box-shadow: 8px 8px 18px rgba(0, 0, 0, 0.422);
+  }
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
   }
 `;
 const UserSettingWrap = styled.div`
@@ -284,8 +296,9 @@ const UserDetailWrap = styled.div`
   position: absolute;
   right: 0;
   top: 72px;
-  padding: 25px 30px 14px 30px;
-  background: #444;
+  padding: 25px 30px 12px 30px;
+  background: rgba(42, 42, 42, 0.814);
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5);
   border-radius: 6px;
   z-index: 99;
   > div > h1 {
@@ -299,16 +312,32 @@ const UserDetailWrap = styled.div`
     margin-left: 15px;
   }
   &::before {
-    display: block;
+    // display: block;
+    // content: '';
+    // position: absolute;
+    // right: 18px;
+    // top: -6px;
+    // width: 14px;
+    // height: 14px;
+    // border-width: 8px;
+    // border-style: solid;
+    // background-color: rgba(42, 42, 42, 0.514);
+    transform: rotate(180deg);
     content: '';
     position: absolute;
-    right: 18px;
-    top: -6px;
-    width: 14px;
-    height: 14px;
-    background-color: #444;
-    transform: rotate(45deg);
+    top: -16px;
+    right: 24px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: rgba(42, 42, 42, 0.814) transparent transparent transparent;
   }
+
+  // content: '';
+  // position: absolute;
+  // top: 98%;
+  // right: 24px;
+  // border-width: 8px;
+  // border-style: solid;
 `;
 
 const ProfileBtnWrap = styled.div`
