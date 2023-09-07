@@ -272,9 +272,9 @@ const DetailAlbum = ({ data }: any) => {
 
   const imageRef = useRef<HTMLImageElement>(null);
   const extractRGBColors = (imageRef: HTMLImageElement) => {
-      const rgb = colorExtractor(imageRef)
-    dispatch(setRGB(rgb))
-  }
+    const rgb = colorExtractor(imageRef);
+    dispatch(setRGB(rgb));
+  };
   const toggleLikeHandler = (item: any) => {
     toggleMutation.mutate({ ...item, trackImg: album.images[0]?.url });
     if (likedTracks.includes(item.id)) {
@@ -283,6 +283,7 @@ const DetailAlbum = ({ data }: any) => {
       setLikedTracks([...likedTracks, item.id]);
     }
   };
+
   return (
     <>
       <AlbumTag rgba={rgba}>
@@ -290,7 +291,15 @@ const DetailAlbum = ({ data }: any) => {
           {/* <button onClick={playAlbum}>앨범플레이</button> */}
           <div className="album-info">
             <div className="info-data">
-              <img crossOrigin="anonymous" ref={imageRef} onLoad={()=>{extractRGBColors(imageRef.current!)}} src={album.images[0]?.url} alt="" />
+              <img
+                crossOrigin="anonymous"
+                ref={imageRef}
+                onLoad={() => {
+                  extractRGBColors(imageRef.current!);
+                }}
+                src={album.images[0]?.url}
+                alt=""
+              />
               <div style={{ width: '80%' }}>
                 <div className="add-player">
                   <HoverableImage
